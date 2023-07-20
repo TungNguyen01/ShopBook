@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white2"
-    tools:context=".ui.auth.signin.SignInFragment">
+    tools:context=".LoginActivity">
     <ImageView
         android:id="@+id/imgback"
         android:src="@drawable/account_top"
@@ -25,13 +24,13 @@
         android:textColor="@color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hello_register_to_get_started" />
+        android:text="@string/welcome_back_glad_to_see_you_again" />
     <EditText
         android:id="@+id/edittext1"
         app:layout_constraintTop_toBottomOf="@+id/tv1"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginTop="50dp"
-        android:text="@string/username"
+        android:hint="Enter your email"
         android:textColor="@color/gray"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
@@ -46,44 +45,40 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:background="@drawable/bg_auth_text_field"
-        android:text="@string/email"
+        android:text="@string/enter_your_password"
         android:textColor="@color/gray"
         android:layout_width="match_parent"
         android:layout_height="50dp"/>
-    <EditText
-        android:id="@+id/edittext3"
+
+    <ImageView
+        android:id="@+id/eye"
+        android:layout_width="15dp"
+        android:layout_height="9dp"
+        android:src="@drawable/eye"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/edittext2"
+        app:layout_constraintRight_toRightOf="@+id/edittext2"
+        app:layout_constraintTop_toTopOf="@+id/edittext2" />
+    <TextView
+        android:id="@+id/tv2"
         app:layout_constraintTop_toBottomOf="@+id/edittext2"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="20dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
-        android:background="@drawable/bg_auth_text_field"
-        android:text="@string/password"
-        android:textColor="@color/gray"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"/>
-    <EditText
-        android:id="@+id/edittext4"
-        app:layout_constraintTop_toBottomOf="@+id/edittext3"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/bg_auth_text_field"
-        android:text="@string/confirm_password"
-        android:textColor="@color/gray"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"/>
+        android:text="@string/forgot_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
     <Button
         android:id="@+id/bt1"
-        app:layout_constraintTop_toBottomOf="@+id/edittext4"
+        app:layout_constraintTop_toBottomOf="@+id/edittext2"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginTop="50dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         app:backgroundTint="@null"
         android:background="@drawable/bg_auth_button"
-        android:text="@string/register"
+        android:text="@string/login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
@@ -93,7 +88,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginBottom="20dp"
-        android:text="@string/don_t_have_an_account_register_now"
+        android:text="Don't have an account? Register now"
         android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
