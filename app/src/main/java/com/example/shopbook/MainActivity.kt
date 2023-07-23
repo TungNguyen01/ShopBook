@@ -7,6 +7,7 @@ import androidx.viewpager.widget.ViewPager
 import com.example.shopbook.ui.main.adapter.ViewPagerAdapter
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var bottomNavigationView: BottomNavigationView
