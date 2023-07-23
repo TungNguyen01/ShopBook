@@ -1,19 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-<<<<<<< HEAD
+
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white2"
     tools:context=".ui.auth.signin.SignInFragment">
-=======
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".LoginActivity">
->>>>>>> d5413791b1868988aa32563115641e30d879685e
     <ImageView
         android:id="@+id/imgback"
         android:src="@drawable/account_top"
@@ -39,11 +32,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv1"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginTop="50dp"
-<<<<<<< HEAD
         android:text="Enter your email"
-=======
-        android:hint="Enter your email"
->>>>>>> d5413791b1868988aa32563115641e30d879685e
         android:textColor="@color/gray"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
