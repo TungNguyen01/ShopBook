@@ -1,55 +1,44 @@
 package com.example.shopbook
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentStatePagerAdapter
-import androidx.viewpager.widget.ViewPager
-import com.example.shopbook.ui.main.adapter.ViewPagerAdapter
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.example.shopbook.databinding.ActivityMainBinding
+import com.example.shopbook.ui.auth.signin.SignInFragment
+import com.example.shopbook.ui.onboarding.OnboardingFragment
 
 
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var bottomNavigationView: BottomNavigationView
-    private lateinit var viewPager: ViewPager
-
-
+    private lateinit var bnd: ActivityMainBinding
+    private lateinit var pref: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        bottomNavigationView = findViewById(R.id.bottom_nav)
-        viewPager = findViewById(R.id.viewPager)
-
-
-        val adapter = ViewPagerAdapter(supportFragmentManager, FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT)
-        viewPager.adapter = adapter
-
-        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-            }
-
-            override fun onPageSelected(position: Int) {
-                when (position) {
-                    0 -> bottomNavigationView.menu.findItem(R.id.mHome).isChecked = true
-                    1 -> bottomNavigationView.menu.findItem(R.id.mSearch).isChecked = true
-                    2 -> bottomNavigationView.menu.findItem(R.id.mWishList).isChecked = true
-                    3 -> bottomNavigationView.menu.findItem(R.id.mBag).isChecked = true
-                }
-            }
-
-            override fun onPageScrollStateChanged(state: Int) {
-            }
-        })
-
-        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.mHome -> viewPager.currentItem = 0
-                R.id.mSearch -> viewPager.currentItem = 1
-                R.id.mWishList -> viewPager.currentItem = 2
-                R.id.mBag -> viewPager.currentItem = 3
-            }
-            true
+        bnd = ActivityMainBinding.inflate(layoutInflater)
+        val view: View = bnd.getRoot()
+        setContentView(view)
+        pref = getSharedPreferences("myPreference", MODE_PRIVATE)
+        val support = supportFragmentManager.beginTransaction()
+        if (isFirstLaunch()) {
+            val fragmentOnboard = OnboardingFragment()
+            support.replace(R.id.container, fragmentOnboard).commit()
+            setFirstLaunch(false)
+        } else {
+            val fragmentSignin = SignInFragment()
+            support.replace(R.id.container, fragmentSignin).commit()
         }
     }
+
+    private fun isFirstLaunch(): Boolean {
+        return pref.getBoolean("first_launch", true)
+    }
+
+    private fun setFirstLaunch(isFirstTime: Boolean) {
+        var editor: SharedPreferences.Editor = pref.edit()
+        editor.putBoolean("first_launch", isFirstTime)
+        editor.apply()
+    }
+
+
 }

@@ -7,40 +7,74 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
-import com.example.shopbook.MainActivity
 import com.example.shopbook.R
+import com.example.shopbook.databinding.FragmentSignInBinding
+import com.example.shopbook.ui.auth.forgot.ForgotPasswordFragment
 import com.example.shopbook.ui.auth.signin.viewmodel.SignInViewModel
+import com.example.shopbook.ui.auth.signup.SignUpFragment
+import com.example.shopbook.ui.main.MainMenuFragment
 
 class SignInFragment : Fragment() {
-    private lateinit var emailEditText: EditText
-    private lateinit var passwordEditText: EditText
-    private lateinit var loginButton: Button
 
+    companion object {
+        fun newInstance() = SignInFragment()
+    }
+
+    private lateinit var viewModel: SignInViewModel
+    private var binding: FragmentSignInBinding?=null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_sign_in, container, false)
+        binding = FragmentSignInBinding.inflate(layoutInflater, container, false)
+        return binding?.root
+    }
 
-        emailEditText = view.findViewById(R.id.edittext1)
-        passwordEditText = view.findViewById(R.id.edittext2)
-        loginButton = view.findViewById(R.id.bt1)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        loginButton.setOnClickListener {
-            val email = emailEditText.text.toString()
-            val password = passwordEditText.text.toString()
+        binding?.buttonLogin?.setOnClickListener {
+            val email = binding?.edittext1?.text.toString()
+            val password = binding?.edittext2?.text.toString()
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 // Gọi phương thức đăng nhập
-                navigateToMainScreen()
+                val fragment= MainMenuFragment()
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .commit()
             } else {
                 Toast.makeText(requireContext(), "Please enter email and password", Toast.LENGTH_SHORT).show()
             }
         }
 
-        return view
+//        binding?.buttonLogin?.setOnClickListener {
+//            val fragment= MainMenuFragment()
+//            parentFragmentManager.beginTransaction()
+//                .replace(R.id.container, fragment)
+//                .commit()
+//        }
+//        binding?.textForgotPass?.setOnClickListener {
+//            val fragment= ForgotPasswordFragment()
+//            parentFragmentManager.beginTransaction()
+//                .replace(R.id.container, fragment)
+//                .addToBackStack("Signin")
+//                .commit()
+//        }
+//        binding?.textRegister?.setOnClickListener {
+//            val fragment= SignUpFragment()
+//            parentFragmentManager.beginTransaction()
+//                .replace(R.id.container, fragment)
+//                .addToBackStack("Signin")
+//                .commit()
+//        }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel = ViewModelProvider(this).get(SignInViewModel::class.java)
+        // TODO: Use the ViewModel
+
     }
 
 //    private fun performLogin(email: String, password: String) {
@@ -72,9 +106,9 @@ class SignInFragment : Fragment() {
 //        editor.apply()
 //    }
 
-    private fun navigateToMainScreen() {
-        val intent = Intent(requireContext(), MainActivity::class.java)
-        startActivity(intent)
-        requireActivity().finish()
-    }
+//    private fun navigateToMainScreen() {
+//        val intent = Intent(requireContext(), MainActivity::class.java)
+//        startActivity(intent)
+//        requireActivity().finish()
+//    }
 }

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/image_left_order"
+        android:layout_width="@dimen/dp_34"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_24"
+        android:layout_marginTop="22dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_left_order" />
+
+    <TextView
+        android:id="@+id/text_order_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/dp_30"
+        android:layout_marginEnd="@dimen/dp_24"
+        android:text="@string/orderDetail"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/text_id_order"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="#Order1231"
+        android:textColor="@color/colorProduct"
+        android:layout_marginTop="12dp"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/text_order_detail"
+        app:layout_constraintBottom_toTopOf="@+id/text_pro"
+        app:layout_constraintStart_toStartOf="@+id/image_left_order"
+        app:layout_constraintTop_toBottomOf="@+id/image_left_order" />
+
+    <TextView
+        android:id="@+id/text_pro"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Sản phẩm"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="@+id/text_id_order"
+        app:layout_constraintBottom_toTopOf="@+id/recycler_order_detail"
+        app:layout_constraintStart_toStartOf="@+id/text_id_order"
+        app:layout_constraintTop_toBottomOf="@+id/text_id_order" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_order_detail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/text_detail"
+        app:layout_constraintEnd_toEndOf="@+id/text_id_order"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/text_id_order"
+        app:layout_constraintTop_toBottomOf="@+id/text_pro" />
+
+    <TextView
+        android:id="@+id/text_detail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Chi tiết"
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toTopOf="@+id/text_order_date"
+        app:layout_constraintEnd_toEndOf="@+id/text_id_order"
+        app:layout_constraintStart_toStartOf="@+id/recycler_order_detail"
+        app:layout_constraintTop_toBottomOf="@+id/recycler_order_detail" />
+
+    <TextView
+        android:id="@+id/text_order_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="40dp"
+        android:textColor="@color/primary"
+        app:layout_constraintEnd_toEndOf="@+id/text_id_order"
+        app:layout_constraintBottom_toTopOf="@+id/text_order_address"
+        app:layout_constraintTop_toBottomOf="@+id/text_detail"
+        app:layout_constraintStart_toStartOf="@+id/text_detail"
+        android:text="Ngày đặt hàng : 11/07/2023"
+        android:textSize="14dp" />
+
+    <TextView
+        android:id="@+id/text_order_address"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Địa chỉ giao hàng : Số 1 Nguyễn Thị Định, Thanh Xuân Trung, Thanh Xuân, Hà Nội"
+        android:textSize="14dp"
+        android:textColor="@color/primary"
+        app:layout_constraintBottom_toTopOf="@+id/text_order_sum"
+        app:layout_constraintEnd_toEndOf="@+id/text_order_date"
+        app:layout_constraintStart_toStartOf="@+id/text_order_date"
+        app:layout_constraintTop_toBottomOf="@+id/text_order_date"/>
+
+    <TextView
+        android:id="@+id/text_order_sum"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Tổng số lượng : 3"
+        android:textSize="14dp"
+        android:textColor="@color/primary"
+        app:layout_constraintEnd_toEndOf="@+id/text_order_date"
+        app:layout_constraintStart_toStartOf="@+id/text_order_address"
+        app:layout_constraintTop_toBottomOf="@+id/text_order_address" />
+
+    <TextView
+        android:id="@+id/text_status"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Tình tạng đơn hàng: "
+        android:textSize="14dp"
+        android:textColor="@color/primary"
+        app:layout_constraintStart_toStartOf="@+id/text_order_sum"
+        app:layout_constraintTop_toBottomOf="@+id/text_order_sum"/>
+
+    <TextView
+        android:id="@+id/text_order_status"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Đang được chuẩn bị"
+        android:textColor="@color/status"
+        android:textSize="14dp"
+        app:layout_constraintEnd_toEndOf="@+id/text_order_date"
+        app:layout_constraintStart_toEndOf="@+id/text_status"
+        app:layout_constraintTop_toBottomOf="@+id/text_order_sum"/>
+
+    <TextView
+        android:id="@+id/text_total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tổng tiền: "
+        android:textColor="@color/black"
+        android:layout_marginTop="12dp"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/text_total_money"
+        app:layout_constraintTop_toBottomOf="@+id/text_status"/>
+
+    <TextView
+        android:id="@+id/text_total_money"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="500,000 VND"
+        android:textSize="18dp"
+        android:textColor="@color/red"
+        android:textStyle="bold"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="@+id/text_order_detail"
+        app:layout_constraintTop_toBottomOf="@+id/text_order_status"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

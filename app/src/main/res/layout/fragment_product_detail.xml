@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary">
+    <ImageView
+        android:id="@+id/image_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_24"
+        android:layout_marginTop="22dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_left_pro" />
+
+    <ImageView
+        android:id="@+id/image_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="@dimen/dp_24"
+        android:src="@drawable/ic_acc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="144dp"
+        android:background="@drawable/bg_product"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_left"
+        app:layout_constraintVertical_bias="1.0">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_avatar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/image_account"
+        app:layout_constraintStart_toStartOf="@+id/image_left"
+        app:layout_constraintTop_toBottomOf="@+id/image_left">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/image_pro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="matrix"
+                app:srcCompat="@drawable/image_pro" />
+        </androidx.cardview.widget.CardView>
+        <ImageView
+            android:id="@+id/iamge_favorite"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_ellipse"
+            android:padding="5dp"
+            android:elevation="2dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/favor_white"
+            app:layout_constraintTop_toTopOf="@+id/cardview"
+            app:layout_constraintEnd_toEndOf="@+id/cardview" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/text_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="@dimen/dp_30"
+        android:layout_marginRight="32dp"
+        android:text="Mắt biếc"
+        android:textColor="@color/primaryDeep"
+        android:textSize="@dimen/dp_24"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraint_avatar" />
+
+    <TextView
+        android:id="@+id/text_num"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Số lượng : 10"
+        android:textColor="@color/secondaryDeep"
+        android:textSize="12dp"
+        app:layout_constraintEnd_toEndOf="@+id/text_name"
+        app:layout_constraintStart_toStartOf="@+id/text_name"
+        app:layout_constraintTop_toBottomOf="@+id/text_name" />
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="14dp"
+        app:layout_constraintEnd_toEndOf="@+id/text_name"
+        app:layout_constraintBottom_toTopOf="@+id/constraint_avatar_nxb"
+        app:layout_constraintStart_toStartOf="@+id/text_name"
+        app:layout_constraintTop_toBottomOf="@+id/text_num">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/text_info"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Thông tin sản phẩm"
+                android:textColor="@color/primaryDeep"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/text_ma"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Mã hàng: 8934974163442-2022"
+                android:textColor="@color/secondaryDeep"
+                android:textSize="14dp"
+                app:layout_constraintEnd_toEndOf="@+id/text_info"
+                app:layout_constraintStart_toStartOf="@+id/text_info"
+                app:layout_constraintTop_toBottomOf="@+id/text_info" />
+
+            <TextView
+                android:id="@+id/text_ncc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Tên NCC: NXB Trẻ"
+                android:textColor="@color/secondaryDeep"
+                android:textSize="14dp"
+                app:layout_constraintEnd_toEndOf="@+id/text_info"
+                app:layout_constraintStart_toStartOf="@+id/text_info"
+                app:layout_constraintTop_toBottomOf="@+id/text_ma" />
+
+            <TextView
+                android:id="@+id/text_author"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Tác giả: "
+                android:textColor="@color/secondaryDeep"
+                android:textSize="14dp"
+                app:layout_constraintStart_toStartOf="@+id/txtInfo"
+                app:layout_constraintTop_toBottomOf="@+id/text_ncc" />
+
+            <TextView
+                android:id="@+id/text_name_author"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Nguyễn Nhật Ánh"
+                android:textColor="@color/colorAuth"
+                android:textSize="14dp"
+                app:layout_constraintEnd_toEndOf="@+id/txtInfo"
+                app:layout_constraintStart_toEndOf="@+id/text_author"
+                app:layout_constraintTop_toBottomOf="@+id/text_ncc" />
+
+            <TextView
+                android:id="@+id/text_year"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Năm XB: 2022"
+                android:textColor="@color/secondaryDeep"
+                android:textSize="14dp"
+                app:layout_constraintEnd_toEndOf="@+id/txtInfo"
+                app:layout_constraintStart_toStartOf="@+id/txtInfo"
+                app:layout_constraintTop_toBottomOf="@+id/text_author" />
+
+            <TextView
+                android:id="@+id/text_language"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Ngôn Ngữ: Tiếng Việt"
+                android:textColor="@color/secondaryDeep"
+                android:textSize="14dp"
+                app:layout_constraintEnd_toEndOf="@+id/text_info"
+                app:layout_constraintStart_toStartOf="@+id/text_info"
+                app:layout_constraintTop_toBottomOf="@+id/text_year" />
+
+            <TextView
+                android:id="@+id/text_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:text="Giá sản phẩm trên Fahasa.com đã bao gồm thuế theo luật hiện hành. Bên cạnh đó, tuỳ vào loại sản phẩm, hình thức và địa chỉ giao hàng mà có thể phát sinh thêm chi phí khác như Phụ phí đóng gói, phí vận chuyển, phụ phí hàng cồng kềnh,...
+                    Chính sách khuyến mãi trên Fahasa.com không áp dụng cho Hệ thống Nhà sách Fahasa trên toàn quốcMột tác phẩm được nhiều người bình chọn là hay nhất của nhà văn này.Một tác phẩm đang được dịch và giới thiệu tại Nhật Bản (theo thông tin từ các báo)… Bởi sự"
+                android:textColor="@color/secondaryDeep"
+                android:textSize="14dp"
+                app:layout_constraintEnd_toEndOf="@+id/text_info"
+                app:layout_constraintStart_toStartOf="@+id/text_info"
+                app:layout_constraintTop_toBottomOf="@+id/text_language" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/readmore"
+                android:text="Read more."
+                android:textSize="14dp"
+                android:textColor="@color/primary"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/text_description"
+                app:layout_constraintStart_toStartOf="@+id/text_info"
+                app:layout_constraintEnd_toEndOf="@+id/text_info"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_avatar_nxb"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="9dp"
+
+        android:layout_marginRight="8.5dp"
+        android:background="@drawable/bg_publish"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="26dp"
+        app:layout_constraintBottom_toTopOf="@+id/constraint_avatar_check"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/text_publish"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_24"
+            android:layout_marginTop="18dp"
+            android:paddingRight="15dp"
+            android:text="NXB TRẺ"
+            android:textColor="@color/colorPublish"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/text_pickup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/ic_pickup"
+            app:layout_constraintStart_toEndOf="@+id/text_publish"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/text_readmore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Mua thêm các sản phẩm khác"
+            android:textSize="12dp"
+            android:textColor="@color/colorPublish"
+            app:layout_constraintStart_toStartOf="@+id/text_publish"
+            app:layout_constraintTop_toBottomOf="@+id/text_publish" />
+
+        <TextView
+            android:id="@+id/text_promotion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="Ưu đãi lên tới 10%"
+            android:textColor="@color/status"
+            android:textSize="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/text_readmore"
+            app:layout_constraintTop_toBottomOf="@+id/text_readmore" />
+
+        <ImageView
+            android:id="@+id/text_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="23dp"
+            android:layout_marginBottom="20dp"
+            android:padding="3dp"
+            android:src="@drawable/ic_arrow"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_publish"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_avatar_check"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:background="@drawable/bg_checkout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/text_price_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="43.5dp"
+            android:text="Price"
+            android:textColor="@color/secondary"
+            android:textSize="14dp"
+            app:layout_constraintBottom_toTopOf="@+id/text_price"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="45.72dp"
+            android:text="110,00 VND"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/text_price_name"
+            app:layout_constraintTop_toBottomOf="@+id/text_price_name" />
+
+        <TextView
+            android:id="@+id/text_checkout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36.5dp"
+            android:layout_marginRight="26dp"
+            android:layout_marginBottom="36.72dp"
+            android:background="@drawable/bg_btn_checkout"
+            android:paddingLeft="22dp"
+            android:paddingTop="21dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="22dp"
+            android:text="ADD TO BAG"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

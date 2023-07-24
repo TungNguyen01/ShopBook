@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.shopbook.R
+import com.example.shopbook.databinding.FragmentSignUpBinding
 import com.example.shopbook.ui.auth.signup.viewmodel.SignUpViewModel
 
 class SignUpFragment : Fragment() {
@@ -16,18 +17,22 @@ class SignUpFragment : Fragment() {
     }
 
     private lateinit var viewModel: SignUpViewModel
-
+    private var binding: FragmentSignUpBinding? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
-        return inflater.inflate(R.layout.fragment_sign_up, container, false)
+        binding= FragmentSignUpBinding.inflate(layoutInflater, container, false)
+        return binding?.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(SignUpViewModel::class.java)
         // TODO: Use the ViewModel
+        binding?.imgback?.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
     }
 
 }

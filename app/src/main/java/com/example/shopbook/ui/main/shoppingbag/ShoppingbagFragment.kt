@@ -21,7 +21,7 @@ class ShoppingbagFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_shoppingbag, container, false)
+        return inflater.inflate(R.layout.fragment_shopping_bag, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

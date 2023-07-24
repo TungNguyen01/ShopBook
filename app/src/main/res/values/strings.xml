@@ -16,4 +16,33 @@
     <string name="send_code">Send code</string>
     <string name="don_t_worry_it_occurs_please_enter_the_email_address_linked_with_your_account">Don\'t worry! It occurs. Please enter the email address linked with your account.</string>
     <string name="new_community"><![CDATA[New & Community]]></string>
+
+    <string name="profile">Profile</string>
+    <string name="signin">SIGN IN</string>
+    <string name="changepassword">Change password</string>
+    <string name="updateprofile">Update Profile</string>
+    <string name="permission">Permission</string>
+    <string name="create">Create new account</string>
+    <string name="current">Current Pass</string>
+    <string name="newpass">New Pass</string>
+    <string name="confirm">Confirm Pass</string>
+    <string name="fullname">Full Name</string>
+    <string name="gender">Gender</string>
+    <string name="dof">Date Of Birthday</string>
+    <string name="phone">Phone Number</string>
+    <string name="address">Address</string>
+    <string name="update">Update</string>
+    <string name="accept">Accept</string>
+    <string name="searchNew">Mới nhất</string>
+    <string name="searchSelling">Bán Chạy</string>
+    <string name="searchPrice">Giá</string>
+    <string name="myOrder">Order</string>
+    <string name="orderDetail">Order Detail</string>
+    <string name="author">Tác giả</string>
+    <string name="home_bar">Product</string>
+    <string name="search_bar">Search</string>
+    <string name="wishlist_bar">Wishlist</string>
+    <string name="cart_bar">Cart</string>
+    <string name="onboard">Book Store</string>
+    <string name="introduce">Good books, like good friends, are few and chosen; the more select, the more enjoyable</string>
 </resources>
