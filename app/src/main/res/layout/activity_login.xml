@@ -12,7 +12,7 @@
         android:src="@drawable/account_top"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="@dimen/dp_30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <TextView
@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:gravity="center"
         android:layout_marginTop="80dp"
-        android:textSize="30dp"
+        android:textSize="@dimen/dp_30"
         android:textStyle="bold"
         android:textColor="@color/black"
         android:layout_width="match_parent"
@@ -43,7 +43,7 @@
         android:id="@+id/edittext2"
         app:layout_constraintTop_toBottomOf="@+id/edittext1"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="@dimen/dp_30"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:background="@drawable/bg_auth_text_field"

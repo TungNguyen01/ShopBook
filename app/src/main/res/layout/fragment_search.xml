@@ -1,13 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.search.SearchFragment">
+    android:paddingLeft="@dimen/dp_24"
+    android:paddingRight="@dimen/dp_24"
+    android:paddingTop="22dp"
+    android:background="@color/background">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
+    <EditText
+        android:id="@+id/edit_search"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="@drawable/bg_search"
+        android:maxLines="1"
+        android:paddingStart="20dp"
+        android:paddingEnd="16dp"
+        android:singleLine="true"
+        app:layout_constraintBottom_toTopOf="@+id/constraint_avatar"
+        app:layout_constraintEnd_toStartOf="@+id/image_seach"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</FrameLayout>
+    <ImageView
+        android:id="@+id/image_seach"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:layout_marginBottom="14dp"
+        android:padding="11dp"
+        android:src="@drawable/ic_search"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_search"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/edit_search"
+        app:layout_constraintTop_toTopOf="@id/edit_search" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:id="@+id/constraint_avatar"
+        android:background="@drawable/bg_search2"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@+id/edit_search"
+        app:layout_constraintTop_toBottomOf="@+id/edit_search"
+        app:layout_constraintEnd_toEndOf="@+id/image_seach"
+        app:layout_constraintBottom_toTopOf="@+id/recycler_product">
+        <TextView
+            android:id="@+id/text_product_new"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawableRight="@drawable/line_16"
+            android:gravity="center"
+            android:text="@string/searchNew"
+            android:textColor="@color/colorsearch"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/text_prodcut_selling"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/text_prodcut_selling"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableRight="@drawable/line_16"
+            android:gravity="center"
+            android:text="@string/searchSelling"
+            android:textColor="@color/colorsearch"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/text_product_new"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/linear_product_price"
+            android:textSize="20dp" />
+
+        <LinearLayout
+            android:id="@+id/linear_product_price"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/text_prodcut_selling">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/searchPrice"
+                android:textColor="@color/colorsearch"
+                android:textSize="20dp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="2dp"
+                android:src="@drawable/ic_incre" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_product"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/constraint_avatar"
+        app:layout_constraintStart_toStartOf="@+id/constraint_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/constraint_avatar" />
+</androidx.constraintlayout.widget.ConstraintLayout>
