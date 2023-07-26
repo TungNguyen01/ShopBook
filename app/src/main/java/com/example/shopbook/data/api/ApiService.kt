@@ -1,6 +1,8 @@
 package com.example.shopbook.data.api
 
+import com.example.shopbook.data.model.AccessTokenResponse
 import com.example.shopbook.data.model.LoginResponse
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -13,6 +15,13 @@ interface ApiService {
         @Field("email") email: String,
         @Field("password") password: String
     ): Response<LoginResponse>
+    @FormUrlEncoded
+    @POST("/customers")
+    fun register(
+        @Field("email") email: String,
+        @Field("name") name: String,
+        @Field("password") password: String,
+    ): Call<AccessTokenResponse>
 }
 
 

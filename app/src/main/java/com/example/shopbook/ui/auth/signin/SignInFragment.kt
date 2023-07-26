@@ -1,7 +1,6 @@
 package com.example.shopbook.ui.auth.signin
 
-import android.content.Intent
-import androidx.lifecycle.ViewModelProvider
+
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,13 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import com.example.shopbook.R
 import com.example.shopbook.data.model.LoginResponse
-import com.example.shopbook.databinding.FragmentSignInBinding
-import com.example.shopbook.ui.auth.forgot.ForgotPasswordFragment
-import com.example.shopbook.ui.auth.signin.viewmodel.SignInViewModel
 import com.example.shopbook.ui.auth.signup.SignUpFragment
+import com.example.shopbook.ui.author.AuthorFragment
 import com.example.shopbook.ui.main.MainMenuFragment
 import com.example.shopbook.utils.RetrofitClient
 import kotlinx.coroutines.Dispatchers
@@ -28,6 +27,7 @@ import retrofit2.Response
 class SignInFragment : Fragment() {
     private lateinit var emailEditText: EditText
     private lateinit var passwordEditText: EditText
+    private lateinit var registerTextView: TextView
     private lateinit var loginButton: Button
 
     override fun onCreateView(
@@ -38,6 +38,7 @@ class SignInFragment : Fragment() {
 
         emailEditText = view.findViewById(R.id.edittext1)
         passwordEditText = view.findViewById(R.id.edittext2)
+        registerTextView = view.findViewById(R.id.text_register)
         loginButton = view.findViewById(R.id.button_login)
 
         loginButton.setOnClickListener {
@@ -49,12 +50,14 @@ class SignInFragment : Fragment() {
                 Toast.makeText(requireContext(), "Please enter email and password", Toast.LENGTH_SHORT).show()
             }
         }
-
+        registerTextView.setOnClickListener {
+            navigateToSignUpFragment()
+        }
         return view
     }
 
     private fun performLogin(email: String, password: String) {
-        GlobalScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val response : Response<LoginResponse> = RetrofitClient.apiService.login(email, password)
                 if (response.isSuccessful) {
@@ -82,7 +85,17 @@ class SignInFragment : Fragment() {
         val fragmentManager = requireActivity().supportFragmentManager
         val transaction = fragmentManager.beginTransaction()
         transaction.replace(R.id.container, fragment)
-        transaction.addToBackStack(null)
+        transaction.addToBackStack("signinFragment")
         transaction.commit()
     }
+    private fun navigateToSignUpFragment() {
+        val fragment = SignUpFragment()
+        val fragmentManager = requireActivity().supportFragmentManager
+        val transaction = fragmentManager.beginTransaction()
+        transaction.replace(R.id.container, fragment)
+        transaction.addToBackStack("signinFragment")
+        transaction.commit()
+    }
+
 }
+
