@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primary">
+
     <ImageView
         android:id="@+id/image_left"
         android:layout_width="wrap_content"
@@ -38,43 +39,44 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraint_avatar"
+        android:id="@+id/constraint_image_product"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toEndOf="@+id/image_account"
-        app:layout_constraintStart_toStartOf="@+id/image_left"
+        app:layout_constraintDimensionRatio="w,4:6"
+        app:layout_constraintRight_toRightOf="@id/image_account"
+        app:layout_constraintLeft_toLeftOf="@id/image_left"
         app:layout_constraintTop_toBottomOf="@+id/image_left">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             app:cardCornerRadius="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/image_pro"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:scaleType="matrix"
                 app:srcCompat="@drawable/image_pro" />
         </androidx.cardview.widget.CardView>
+
         <ImageView
             android:id="@+id/iamge_favorite"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_ellipse"
-            android:padding="5dp"
-            android:elevation="2dp"
             android:layout_marginTop="16dp"
             android:layout_marginRight="16dp"
+            android:background="@drawable/bg_ellipse"
+            android:elevation="2dp"
+            android:padding="5dp"
             android:src="@drawable/favor_white"
-            app:layout_constraintTop_toTopOf="@+id/cardview"
-            app:layout_constraintEnd_toEndOf="@+id/cardview" />
+            app:layout_constraintEnd_toEndOf="@+id/cardview"
+            app:layout_constraintTop_toTopOf="@+id/cardview" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
@@ -90,7 +92,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraint_avatar" />
+        app:layout_constraintTop_toBottomOf="@+id/constraint_image_product" />
 
     <TextView
         android:id="@+id/text_num"
@@ -110,8 +112,8 @@
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="14dp"
-        app:layout_constraintEnd_toEndOf="@+id/text_name"
         app:layout_constraintBottom_toTopOf="@+id/constraint_avatar_nxb"
+        app:layout_constraintEnd_toEndOf="@+id/text_name"
         app:layout_constraintStart_toStartOf="@+id/text_name"
         app:layout_constraintTop_toBottomOf="@+id/text_num">
 
@@ -160,7 +162,7 @@
                 android:text="Tác giả: "
                 android:textColor="@color/secondaryDeep"
                 android:textSize="14dp"
-                app:layout_constraintStart_toStartOf="@+id/txtInfo"
+                app:layout_constraintStart_toStartOf="@+id/text_ncc"
                 app:layout_constraintTop_toBottomOf="@+id/text_ncc" />
 
             <TextView
@@ -170,7 +172,7 @@
                 android:text="Nguyễn Nhật Ánh"
                 android:textColor="@color/colorAuth"
                 android:textSize="14dp"
-                app:layout_constraintEnd_toEndOf="@+id/txtInfo"
+                app:layout_constraintEnd_toEndOf="@+id/text_ncc"
                 app:layout_constraintStart_toEndOf="@+id/text_author"
                 app:layout_constraintTop_toBottomOf="@+id/text_ncc" />
 
@@ -181,8 +183,8 @@
                 android:text="Năm XB: 2022"
                 android:textColor="@color/secondaryDeep"
                 android:textSize="14dp"
-                app:layout_constraintEnd_toEndOf="@+id/txtInfo"
-                app:layout_constraintStart_toStartOf="@+id/txtInfo"
+                app:layout_constraintEnd_toEndOf="@+id/text_name_author"
+                app:layout_constraintStart_toStartOf="@+id/text_ncc"
                 app:layout_constraintTop_toBottomOf="@+id/text_author" />
 
             <TextView
@@ -200,8 +202,8 @@
                 android:id="@+id/text_description"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:maxLines="2"
                 android:ellipsize="end"
+                android:maxLines="2"
                 android:text="Giá sản phẩm trên Fahasa.com đã bao gồm thuế theo luật hiện hành. Bên cạnh đó, tuỳ vào loại sản phẩm, hình thức và địa chỉ giao hàng mà có thể phát sinh thêm chi phí khác như Phụ phí đóng gói, phí vận chuyển, phụ phí hàng cồng kềnh,...
                     Chính sách khuyến mãi trên Fahasa.com không áp dụng cho Hệ thống Nhà sách Fahasa trên toàn quốcMột tác phẩm được nhiều người bình chọn là hay nhất của nhà văn này.Một tác phẩm đang được dịch và giới thiệu tại Nhật Bản (theo thông tin từ các báo)… Bởi sự"
                 android:textColor="@color/secondaryDeep"
@@ -209,17 +211,18 @@
                 app:layout_constraintEnd_toEndOf="@+id/text_info"
                 app:layout_constraintStart_toStartOf="@+id/text_info"
                 app:layout_constraintTop_toBottomOf="@+id/text_language" />
+
             <TextView
+                android:id="@+id/readmore"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/readmore"
                 android:text="Read more."
-                android:textSize="14dp"
                 android:textColor="@color/primary"
+                android:textSize="14dp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@+id/text_description"
+                app:layout_constraintEnd_toEndOf="@+id/text_info"
                 app:layout_constraintStart_toStartOf="@+id/text_info"
-                app:layout_constraintEnd_toEndOf="@+id/text_info"/>
+                app:layout_constraintTop_toBottomOf="@+id/text_description" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
@@ -230,10 +233,10 @@
         android:layout_marginLeft="9dp"
 
         android:layout_marginRight="8.5dp"
-        android:background="@drawable/bg_publish"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="26dp"
+        android:background="@drawable/bg_publish"
         app:layout_constraintBottom_toTopOf="@+id/constraint_avatar_check"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
@@ -257,7 +260,7 @@
             android:layout_marginTop="20dp"
             android:src="@drawable/ic_pickup"
             app:layout_constraintStart_toEndOf="@+id/text_publish"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/text_readmore"
@@ -265,8 +268,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Mua thêm các sản phẩm khác"
-            android:textSize="12dp"
             android:textColor="@color/colorPublish"
+            android:textSize="12dp"
             app:layout_constraintStart_toStartOf="@+id/text_publish"
             app:layout_constraintTop_toBottomOf="@+id/text_publish" />
 
@@ -292,7 +295,7 @@
             android:src="@drawable/ic_arrow"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_publish"/>
+            app:layout_constraintTop_toBottomOf="@+id/text_publish" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -301,9 +304,9 @@
         android:layout_height="wrap_content"
 
         android:background="@drawable/bg_checkout"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/text_price_name"

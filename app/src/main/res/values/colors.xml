@@ -28,4 +28,5 @@
     <color name="colorAuth">#0C84FD</color>
     <color name="colorPublish">#0E1514</color>
     <color name="colorProduct">#101010</color>
+    <color name="line">#B4B4B4</color>
 </resources>

@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     android:paddingLeft="@dimen/dp_24"
-    android:paddingRight="@dimen/dp_24"
     android:paddingTop="22dp"
-    android:background="@color/background">
+    android:paddingRight="@dimen/dp_24">
 
     <EditText
         android:id="@+id/edit_search"
@@ -15,10 +15,14 @@
         android:layout_height="50dp"
         android:background="@drawable/bg_search"
         android:maxLines="1"
+        android:hint="Tìm kiếm sách"
+        android:textColorHint="@color/primary"
         android:paddingStart="20dp"
         android:paddingEnd="16dp"
         android:singleLine="true"
-        app:layout_constraintBottom_toTopOf="@+id/constraint_avatar"
+        android:textSize="20dp"
+        android:textColor="@color/primary"
+        app:layout_constraintBottom_toTopOf="@+id/constraint_filter"
         app:layout_constraintEnd_toStartOf="@+id/image_seach"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -35,17 +39,48 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/edit_search"
         app:layout_constraintTop_toTopOf="@id/edit_search" />
+    <TextView
+        android:id="@+id/text_title_search"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/history_search"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginTop="10dp"
+        android:textSize="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/image_seach"
+        app:layout_constraintStart_toStartOf="@+id/edit_search"
+        app:layout_constraintTop_toBottomOf="@+id/edit_search" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_history_search"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/text_title_search"
+        app:layout_constraintStart_toStartOf="@id/text_title_search"
+        app:layout_constraintTop_toBottomOf="@id/text_title_search" />
+    <androidx.constraintlayout.widget.Group
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/group_history_search"
+        android:visibility="invisible"
+        app:constraint_referenced_ids="recycler_history_search, text_title_search"/>
+    <androidx.constraintlayout.widget.Group
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/group_search"
+        app:constraint_referenced_ids="constraint_filter, recycler_product"/>
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_filter"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:id="@+id/constraint_avatar"
-        android:background="@drawable/bg_search2"
         android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="@+id/edit_search"
-        app:layout_constraintTop_toBottomOf="@+id/edit_search"
+        android:background="@drawable/bg_search2"
+        app:layout_constraintBottom_toTopOf="@+id/recycler_product"
         app:layout_constraintEnd_toEndOf="@+id/image_seach"
-        app:layout_constraintBottom_toTopOf="@+id/recycler_product">
+        app:layout_constraintStart_toStartOf="@+id/edit_search"
+        app:layout_constraintTop_toBottomOf="@+id/edit_search">
+
         <TextView
             android:id="@+id/text_product_new"
             android:layout_width="0dp"
@@ -54,11 +89,11 @@
             android:gravity="center"
             android:text="@string/searchNew"
             android:textColor="@color/colorsearch"
+            android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/text_prodcut_selling"
-            android:textSize="20dp" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/text_prodcut_selling"
@@ -69,11 +104,11 @@
             android:gravity="center"
             android:text="@string/searchSelling"
             android:textColor="@color/colorsearch"
+            android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/text_product_new"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/linear_product_price"
-            android:textSize="20dp" />
+            app:layout_constraintStart_toEndOf="@+id/text_product_new"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:id="@+id/linear_product_price"
@@ -82,10 +117,10 @@
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="horizontal"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/text_prodcut_selling">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/text_prodcut_selling"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -109,7 +144,7 @@
         android:layout_height="0dp"
         android:paddingTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/constraint_avatar"
-        app:layout_constraintStart_toStartOf="@+id/constraint_avatar"
-        app:layout_constraintTop_toBottomOf="@+id/constraint_avatar" />
+        app:layout_constraintEnd_toEndOf="@id/constraint_filter"
+        app:layout_constraintStart_toStartOf="@+id/constraint_filter"
+        app:layout_constraintTop_toBottomOf="@+id/constraint_filter" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -58,11 +58,11 @@ class HomeFragment : Fragment() {
         discoverStoreList.add(DiscoverStore("Store 2"))
 
 
-        categoryList.add(Category("Category 1"))
-        categoryList.add(Category("Category 2"))
-        categoryList.add(Category("Category 2"))
-        categoryList.add(Category("Category 2"))
-        categoryList.add(Category("Category 2"))
+        categoryList.add(Category(1,"Category 1",""))
+        categoryList.add(Category(1,"Category 2",""))
+        categoryList.add(Category(1,"Category 2",""))
+        categoryList.add(Category(1,"Category 2",""))
+        categoryList.add(Category(1,"Category 2",""))
 
 
         newArrivalList.add(NewArrival("Book 1", "10.99", "8.99"))

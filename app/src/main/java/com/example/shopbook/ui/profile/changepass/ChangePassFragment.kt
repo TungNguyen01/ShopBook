@@ -16,22 +16,23 @@ class ChangePassFragment : Fragment() {
     }
 
     private lateinit var viewModel: ChangePassViewModel
-    private var binding:FragmentChangePassBinding?=null
+    private var binding: FragmentChangePassBinding? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
-        binding= FragmentChangePassBinding.inflate(layoutInflater, container, false)
+        binding = FragmentChangePassBinding.inflate(layoutInflater, container, false)
         return binding?.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this).get(ChangePassViewModel::class.java)
-        // TODO: Use the ViewModel
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding?.imageLeft?.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
     }
-
 }

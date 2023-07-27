@@ -16,6 +16,7 @@ import com.example.shopbook.ui.profile.updateprofile.UpdateProfileFragment
 
 class ProfileFragment : Fragment() {
     private var binding: FragmentProfileBinding? = null
+
     companion object {
         fun newInstance() = ProfileFragment()
     }
@@ -24,39 +25,42 @@ class ProfileFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
-        binding=FragmentProfileBinding.inflate(layoutInflater)
+        binding = FragmentProfileBinding.inflate(layoutInflater)
         return binding?.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
-        binding?.imageLeft?.setOnClickListener{
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding?.imageLeft?.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
-        binding?.imageUpdate?.setOnClickListener{
-            val fragmentUpdate=UpdateProfileFragment()
+        binding?.imageUpdate?.setOnClickListener {
+            val fragmentUpdate = UpdateProfileFragment()
             parentFragmentManager.beginTransaction()
                 .replace(R.id.frame_layout, fragmentUpdate)
                 .addToBackStack("profile")
                 .commit()
         }
-        binding?.textChange?.setOnClickListener{
-            val fragmentChangePass=ChangePassFragment()
+        binding?.textChange?.setOnClickListener {
+            val fragmentChangePass = ChangePassFragment()
             parentFragmentManager.beginTransaction()
                 .replace(R.id.frame_layout, fragmentChangePass)
                 .addToBackStack("profile")
                 .commit()
         }
         binding?.textLogout?.setOnClickListener {
-            val fragmentSignin=ProfileSigninFragment()
+            val fragmentSignin = ProfileSigninFragment()
             parentFragmentManager.beginTransaction()
                 .replace(R.id.frame_layout, fragmentSignin)
                 .addToBackStack("profile")
                 .commit()
         }
     }
-
 }

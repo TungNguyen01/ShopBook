@@ -8,26 +8,33 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.shopbook.R
+import com.example.shopbook.databinding.FragmentProfileSigninBinding
+import com.example.shopbook.ui.auth.signin.SignInFragment
 
 class ProfileSigninFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = ProfileSigninFragment()
-    }
-
     private lateinit var viewModel: ProfileSigninViewModel
-
+    private var binding:FragmentProfileSigninBinding?=null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider(this).get(ProfileSigninViewModel::class.java)
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_profile_signin, container, false)
+        binding= FragmentProfileSigninBinding.inflate(layoutInflater, container, false)
+        return binding?.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(ProfileSigninViewModel::class.java)
-        // TODO: Use the ViewModel
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding?.apply {
+            textBtnSignin.setOnClickListener{
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.container, SignInFragment())
+                    .commit()
+            }
+        }
     }
-
 }

@@ -26,9 +26,8 @@ class OnboardingFragment : Fragment() {
         return binding?.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        // TODO: Use the ViewModel
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding?.textStart?.setOnClickListener {
             val fragment= SignInFragment()
             parentFragmentManager.beginTransaction()
@@ -36,5 +35,4 @@ class OnboardingFragment : Fragment() {
                 .commit()
         }
     }
-
 }

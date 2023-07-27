@@ -29,7 +29,7 @@ class CategoryAdapter(private val categories: List<Category>) : RecyclerView.Ada
         private val categoryTextView: TextView = itemView.findViewById(R.id.tv_category)
 
         fun bind(category: Category) {
-            categoryTextView.text = category.category
+            categoryTextView.text = category.name
         }
     }
 }

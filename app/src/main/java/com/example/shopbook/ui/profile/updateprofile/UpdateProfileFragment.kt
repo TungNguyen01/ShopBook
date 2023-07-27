@@ -27,10 +27,8 @@ class UpdateProfileFragment : Fragment() {
         return binding?.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(UpdateProfileViewModel::class.java)
-        // TODO: Use the ViewModel
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding?.imageLeft?.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
@@ -44,6 +42,11 @@ class UpdateProfileFragment : Fragment() {
         binding?.imageLeft?.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
+    }
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel = ViewModelProvider(this).get(UpdateProfileViewModel::class.java)
+        // TODO: Use the ViewModel
     }
 
 }

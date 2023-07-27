@@ -8,14 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
-import android.widget.SearchView.OnQueryTextListener
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.shopbook.R
-import com.example.shopbook.adapter.BookAdapter
+import com.example.shopbook.ui.adapter.BookAdapter
 import com.example.shopbook.databinding.FragmentAuthorBinding
+import com.example.shopbook.ui.adapter.ItemSpacingDecoration
+import com.example.shopbook.ui.adapter.OnItemClickListener
 import com.example.shopbook.ui.productdetail.ProductdetailFragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import java.util.Objects
 
 class AuthorFragment : Fragment() {
 
@@ -33,41 +32,59 @@ class AuthorFragment : Fragment() {
         return binding?.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this).get(AuthorViewModel::class.java)
-
-
-        binding?.searchProduct?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                // task HERE
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String): Boolean {
-                if (newText.isEmpty()) {
-                    binding?.textAuthor?.setVisibility(View.VISIBLE);
-                } else {
-                    val layoutParams = binding?.searchProduct?.layoutParams as ViewGroup.MarginLayoutParams
-                    val newMarginTopInDp = 12
-                    val newMarginTopInPx = TypedValue.applyDimension(
-                        TypedValue.COMPLEX_UNIT_DIP, newMarginTopInDp.toFloat(),
-                        resources.displayMetrics
-                    ).toInt()
-                    layoutParams.topMargin = newMarginTopInPx
-                    binding?.searchProduct?.layoutParams = layoutParams
-
-                    binding?.textAuthor?.setVisibility(View.GONE);
-                }
-                return false;
-            }
-        })
-
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val bookList = viewModel.getProducts()
         val adapter = BookAdapter(bookList)
-        binding?.recyclerAuthor?.layoutManager = GridLayoutManager(context, 2)
-        binding?.recyclerAuthor?.adapter = adapter
-        adapter.setOnItemClickListener(object : BookAdapter.OnItemClickListener {
+        val horizontalSpacing =
+            resources.getDimensionPixelSize(R.dimen.horizontal_spacing)
+        val verticalSpacing =
+            resources.getDimensionPixelSize(R.dimen.vertical_spacing)
+        binding?.apply {
+            searchProduct.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String): Boolean {
+                    // task HERE
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String): Boolean {
+                    if (newText.isEmpty()) {
+                        textAuthor.visibility = View.VISIBLE;
+                    } else {
+                        val layoutParams =
+                            searchProduct.layoutParams as ViewGroup.MarginLayoutParams
+                        val newMarginTopInDp = 12
+                        val newMarginTopInPx = TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP, newMarginTopInDp.toFloat(),
+                            resources.displayMetrics
+                        ).toInt()
+                        layoutParams.topMargin = newMarginTopInPx
+                        searchProduct.layoutParams = layoutParams
+                        textAuthor.visibility = View.GONE;
+                    }
+                    return false;
+                }
+            })
+            recyclerAuthor.addItemDecoration(
+                ItemSpacingDecoration(
+                    horizontalSpacing,
+                    verticalSpacing
+                )
+            )
+            recyclerAuthor.layoutManager = GridLayoutManager(context, 2)
+            recyclerAuthor.adapter = adapter
+            imageLeft.setOnClickListener {
+                parentFragmentManager.popBackStack()
+            }
+            imageLeft.setOnClickListener {
+                parentFragmentManager.popBackStack()
+            }
+        }
+        adapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(position: Int) {
                 val productFragment = ProductdetailFragment()
                 parentFragmentManager.beginTransaction()
@@ -76,9 +93,5 @@ class AuthorFragment : Fragment() {
                     .commit()
             }
         })
-        binding?.imageLeft?.setOnClickListener {
-            parentFragmentManager.popBackStack()
-        }
     }
-
 }

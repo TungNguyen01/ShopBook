@@ -16,22 +16,24 @@ class PermissionFragment : Fragment() {
     }
 
     private lateinit var viewModel: PermissionViewModel
-    private var binding:FragmentPermissionBinding?=null
+    private var binding: FragmentPermissionBinding? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        binding=FragmentPermissionBinding.inflate(layoutInflater, container, false)
+        binding = FragmentPermissionBinding.inflate(layoutInflater, container, false)
         return binding?.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this).get(PermissionViewModel::class.java)
-        // TODO: Use the ViewModel
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding?.imageLeft?.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
     }
-
 }
