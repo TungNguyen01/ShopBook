@@ -11,25 +11,31 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.example.shopbook.R
 import com.example.shopbook.data.model.LoginResponse
+import com.example.shopbook.ui.auth.forgot.ForgotPasswordFragment
 import com.example.shopbook.ui.auth.signup.SignUpFragment
-import com.example.shopbook.ui.author.AuthorFragment
 import com.example.shopbook.ui.main.MainMenuFragment
-import com.example.shopbook.utils.RetrofitClient
+import com.example.shopbook.data.api.RetrofitClient
+import com.example.shopbook.data.repository.auth.AuthRepository
+import com.example.shopbook.data.repository.auth.AuthRepositoryImp
+import com.example.shopbook.ui.auth.signin.viewmodel.SignInViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Response
 
 class SignInFragment : Fragment() {
+    private val viewModel: SignInViewModel by viewModels()
+    private val authRepository: AuthRepository = AuthRepositoryImp()
     private lateinit var emailEditText: EditText
     private lateinit var passwordEditText: EditText
     private lateinit var registerTextView: TextView
+    private lateinit var forgotTextView: TextView
     private lateinit var loginButton: Button
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,54 +45,33 @@ class SignInFragment : Fragment() {
         emailEditText = view.findViewById(R.id.edittext1)
         passwordEditText = view.findViewById(R.id.edittext2)
         registerTextView = view.findViewById(R.id.text_register)
+        forgotTextView = view.findViewById(R.id.text_forgot_pass)
         loginButton = view.findViewById(R.id.button_login)
 
         loginButton.setOnClickListener {
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
             if (email.isNotEmpty() && password.isNotEmpty()) {
-                performLogin(email, password)
+                var a = 0
+                //performLogin(email, password)
+                viewModel.performLogin(email, password)
+                Log.d("tung", a.toString())
             } else {
                 Toast.makeText(requireContext(), "Please enter email and password", Toast.LENGTH_SHORT).show()
             }
         }
+        viewModel.loginSuccess.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                navigateToMainScreen()
+            }
+        })
         registerTextView.setOnClickListener {
             navigateToSignUpFragment()
         }
-        return view
-    }
-
-    private fun performLogin(email: String, password: String) {
-        lifecycleScope.launch(Dispatchers.IO) {
-            try {
-                val response : Response<LoginResponse> = RetrofitClient.apiService.login(email, password)
-                if (response.isSuccessful) {
-                    val loginResponse: LoginResponse? = response.body()
-                    Log.d("tung", loginResponse.toString())
-                    if (loginResponse != null) {
-                        navigateToMainScreen()
-                    }
-                } else {
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(requireContext(), "Login failed", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            } catch (e: Exception) {
-                e.localizedMessage?.let { Log.d("tung", it) }
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(requireContext(), "An error occurred", Toast.LENGTH_SHORT).show()
-                }
-            }
+        forgotTextView.setOnClickListener {
+            navigateToForGotPassWordFragment()
         }
-    }
-
-    private fun navigateToMainScreen() {
-        val fragment = MainMenuFragment()
-        val fragmentManager = requireActivity().supportFragmentManager
-        val transaction = fragmentManager.beginTransaction()
-        transaction.replace(R.id.container, fragment)
-        transaction.addToBackStack("signinFragment")
-        transaction.commit()
+        return view
     }
     private fun navigateToSignUpFragment() {
         val fragment = SignUpFragment()
@@ -96,6 +81,21 @@ class SignInFragment : Fragment() {
         transaction.addToBackStack("signinFragment")
         transaction.commit()
     }
-
+    private fun navigateToForGotPassWordFragment() {
+        val fragment = ForgotPasswordFragment()
+        val fragmentManager = requireActivity().supportFragmentManager
+        val transaction = fragmentManager.beginTransaction()
+        transaction.replace(R.id.container, fragment)
+        transaction.addToBackStack("signinFragment")
+        transaction.commit()
+    }
+    fun navigateToMainScreen() {
+        val fragment = MainMenuFragment()
+        val fragmentManager = requireActivity().supportFragmentManager
+        val transaction = fragmentManager.beginTransaction()
+        transaction.replace(R.id.container, fragment)
+        transaction.addToBackStack("signinFragment")
+        transaction.commit()
+    }
 }
 

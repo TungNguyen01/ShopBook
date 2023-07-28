@@ -1,11 +1,10 @@
-package com.example.shopbook.utils
+package com.example.shopbook.data.api
 
-import com.example.shopbook.data.api.ApiService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
-    private const val BASE_URL = "https://424f-116-97-243-66.ngrok-free.app"
+    private const val BASE_URL = "https://424f-116-97-243-66.ngrok-free.app/"
 
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()

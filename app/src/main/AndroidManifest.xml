@@ -12,9 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ShopBook"
         tools:targetApi="31">
-        <activity
-            android:name=".ui.auth.signin.LoginActivity"
-            android:exported="false"/>
 
         <activity
             android:name=".MainActivity"

@@ -9,13 +9,10 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.lifecycle.lifecycleScope
 import com.example.shopbook.R
 import com.example.shopbook.data.model.AccessTokenResponse
 import com.example.shopbook.ui.auth.signin.SignInFragment
-import com.example.shopbook.utils.RetrofitClient
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.example.shopbook.data.api.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
