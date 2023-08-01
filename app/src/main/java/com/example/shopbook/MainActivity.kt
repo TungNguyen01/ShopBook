@@ -13,6 +13,7 @@ import com.example.shopbook.ui.onboarding.OnboardingFragment
 class MainActivity : AppCompatActivity() {
     private lateinit var bnd: ActivityMainBinding
     private lateinit var pref: SharedPreferences
+   // private var accessToken: String? = "a"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bnd = ActivityMainBinding.inflate(layoutInflater)
@@ -29,7 +30,6 @@ class MainActivity : AppCompatActivity() {
             support.replace(R.id.container, fragmentSignin).commit()
         }
     }
-
     private fun isFirstLaunch(): Boolean {
         return pref.getBoolean("first_launch", true)
     }

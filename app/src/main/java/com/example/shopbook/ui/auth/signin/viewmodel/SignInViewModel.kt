@@ -19,17 +19,18 @@ class SignInViewModel : ViewModel() {
     private val authRepository : AuthRepository = AuthRepositoryImp()
     private val _loginSuccess = MutableLiveData<Boolean>()
     val loginSuccess: LiveData<Boolean> get() = _loginSuccess
+    private val _accessToken = MutableLiveData<String>()
+    val accessToken: LiveData<String>get() = _accessToken
     fun performLogin(email: String, password: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val loginResponse = authRepository.login(email, password)
-               // Log.d("tung", loginResponse.toString())
-               // Log.d("tung", (loginResponse.body()).toString())
                 val response : LoginResponse? = loginResponse.body()
                 Log.d("tung", response.toString())
                 withContext(Dispatchers.Main) {
                     if (response != null) {
                         _loginSuccess.postValue(true)
+                        _accessToken.postValue(response.accessToken)
                     } else {
                     }
                 }

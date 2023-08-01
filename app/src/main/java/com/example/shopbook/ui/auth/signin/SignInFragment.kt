@@ -1,6 +1,8 @@
 package com.example.shopbook.ui.auth.signin
 
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -13,20 +15,14 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import com.example.shopbook.R
-import com.example.shopbook.data.model.LoginResponse
 import com.example.shopbook.ui.auth.forgot.ForgotPasswordFragment
 import com.example.shopbook.ui.auth.signup.SignUpFragment
 import com.example.shopbook.ui.main.MainMenuFragment
-import com.example.shopbook.data.api.RetrofitClient
 import com.example.shopbook.data.repository.auth.AuthRepository
 import com.example.shopbook.data.repository.auth.AuthRepositoryImp
 import com.example.shopbook.ui.auth.signin.viewmodel.SignInViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import retrofit2.Response
+
 
 class SignInFragment : Fragment() {
     private val viewModel: SignInViewModel by viewModels()
@@ -36,10 +32,17 @@ class SignInFragment : Fragment() {
     private lateinit var registerTextView: TextView
     private lateinit var forgotTextView: TextView
     private lateinit var loginButton: Button
+    private lateinit var pref: SharedPreferences
+
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val sharedPreferences = context?.getSharedPreferences("my_app_pref", Context.MODE_PRIVATE)
+        val editor = sharedPreferences?.edit()
+
         val view = inflater.inflate(R.layout.fragment_sign_in, container, false)
 
         emailEditText = view.findViewById(R.id.edittext1)
@@ -48,23 +51,37 @@ class SignInFragment : Fragment() {
         forgotTextView = view.findViewById(R.id.text_forgot_pass)
         loginButton = view.findViewById(R.id.button_login)
 
+        Log.d("tung", editor.toString())
+        if(editor != null){
+            navigateToMainScreen()
+        }
+        viewModel.accessToken.observe(viewLifecycleOwner, Observer{
+            if(it!=null){
+                editor?.putString("access_token", it.toString())
+                Log.d("tung", it.toString())
+                editor?.apply()
+                Log.d("SHAREEEE", sharedPreferences?.getString("access_token", "").toString())
+            }
+        })
+
         loginButton.setOnClickListener {
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
             if (email.isNotEmpty() && password.isNotEmpty()) {
-                var a = 0
-                //performLogin(email, password)
                 viewModel.performLogin(email, password)
-                Log.d("tung", a.toString())
+               // onSignInSuccess()
             } else {
                 Toast.makeText(requireContext(), "Please enter email and password", Toast.LENGTH_SHORT).show()
             }
         }
+
         viewModel.loginSuccess.observe(viewLifecycleOwner, Observer {
             if (it) {
+
                 navigateToMainScreen()
             }
         })
+
         registerTextView.setOnClickListener {
             navigateToSignUpFragment()
         }
@@ -73,6 +90,7 @@ class SignInFragment : Fragment() {
         }
         return view
     }
+
     private fun navigateToSignUpFragment() {
         val fragment = SignUpFragment()
         val fragmentManager = requireActivity().supportFragmentManager
