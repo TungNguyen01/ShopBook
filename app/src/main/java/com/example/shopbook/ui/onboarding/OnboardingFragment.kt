@@ -1,5 +1,6 @@
 package com.example.shopbook.ui.onboarding
 
+import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -18,6 +19,7 @@ class OnboardingFragment : Fragment() {
     }
 
     private var binding:FragmentOnboardingBinding?=null
+    private var accessToken: String? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -28,11 +30,25 @@ class OnboardingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.textStart?.setOnClickListener {
-            val fragment= SignInFragment()
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.container, fragment)
-                .commit()
+        if (accessToken != null) {
+            openMainPage()
+        } else {
+            binding?.textStart?.setOnClickListener {
+                val fragment = SignInFragment()
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .commit()
+            }
         }
+    }
+    fun onSignInSuccess(accessToken: String) {
+        this.accessToken = accessToken
+        openMainPage()
+    }
+    private fun openMainPage() {
+        val fragment = MainMenuFragment()
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.container, fragment)
+            .commit()
     }
 }

@@ -109,7 +109,7 @@
                 android:layout_height="0dp"/>
             <TextView
                 android:id="@+id/tv_discoverstore"
-                android:text="New Arrivals"
+                android:text="Discover Author"
                 android:textSize="20dp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
@@ -128,7 +128,7 @@
                 android:layout_height="0dp"/>
             <TextView
                 android:id="@+id/tv_hotbook"
-                android:text="New Arrivals"
+                android:text="Hot Book"
                 android:textSize="20dp"
                 android:textStyle="bold"
                 android:textColor="@color/black"

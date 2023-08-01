@@ -66,7 +66,7 @@ class SearchViewModel() : ViewModel() {
             if (response?.isSuccessful == true) {
                 _productList.postValue(response.body()?.products)
             } else {
-                Log.d("NNULLL", "NULLLL")
+                Log.d("NULLL", "NULLLL")
             }
         }
     }

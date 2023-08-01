@@ -1,12 +1,11 @@
 package com.example.shopbook.data.api
 
-import com.example.shopbook.data.model.AccessTokenResponse
-import com.example.shopbook.data.model.ForgotResponse
-import com.example.shopbook.data.model.LoginResponse
+import com.example.shopbook.data.model.*
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface ApiService {

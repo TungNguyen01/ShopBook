@@ -7,7 +7,7 @@ data class Author(
     var author_id: Int,
     @SerializedName("author_name")
     var author_name: String,
-    @SerializedName("author_des")
+    @SerializedName("author_description")
     var author_des: String,
     @SerializedName("author_avatar")
     var author_avatar: String
