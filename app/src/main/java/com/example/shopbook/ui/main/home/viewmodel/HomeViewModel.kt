@@ -14,6 +14,8 @@ import com.example.shopbook.data.repository.hotbook.HotBookRepository
 import com.example.shopbook.data.repository.hotbook.HotBookRepositoryImp
 import com.example.shopbook.data.repository.newbook.NewBookRepository
 import com.example.shopbook.data.repository.newbook.NewBookRepositoryImp
+import com.example.shopbook.data.repository.product.ProductRepository
+import com.example.shopbook.data.repository.product.ProductRepositoryImp
 import com.example.shopbook.datasource.remote.RemoteDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -73,6 +75,22 @@ class HomeViewModel : ViewModel() {
             Log.d("tung", (response?.body()).toString())
             if(response?.isSuccessful == true){
                 _authorList.postValue(response.body()?.authors)
+            }
+        }
+    }
+    private val _productListInfo = MutableLiveData<ProductInfoList?>()
+    val productInfo: MutableLiveData<ProductInfoList?> get() = _productListInfo
+
+    private var productRepository: ProductRepository? = ProductRepositoryImp(RemoteDataSource())
+    fun getProductInfo(id: Int) {
+
+        viewModelScope.launch(Dispatchers.IO) {
+
+            val response = productRepository?.getProductInfo(id)
+            if (response?.isSuccessful == true) {
+                _productListInfo.postValue(response.body())
+            } else {
+                Log.d("NNULLL", "NULLLL")
             }
         }
     }

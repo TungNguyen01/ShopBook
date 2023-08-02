@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="120dp"
+    android:layout_width="100dp"
     android:layout_height="wrap_content"
     android:layout_marginTop="15dp"
-    android:layout_marginLeft="15dp"
+    android:layout_marginLeft="13dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="10dp">
 
     <TextView
         android:id="@+id/tv_category"
         android:text="Hai Kich"
-        android:textSize="20dp"
+        android:textSize="15dp"
         android:textColor="@color/white"
         android:gravity="center"
-        android:textStyle="bold"
         android:background="@color/black"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

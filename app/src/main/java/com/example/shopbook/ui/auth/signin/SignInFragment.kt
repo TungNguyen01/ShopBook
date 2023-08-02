@@ -23,7 +23,6 @@ import com.example.shopbook.data.repository.auth.AuthRepository
 import com.example.shopbook.data.repository.auth.AuthRepositoryImp
 import com.example.shopbook.ui.auth.signin.viewmodel.SignInViewModel
 
-
 class SignInFragment : Fragment() {
     private val viewModel: SignInViewModel by viewModels()
     private val authRepository: AuthRepository = AuthRepositoryImp()
@@ -33,8 +32,6 @@ class SignInFragment : Fragment() {
     private lateinit var forgotTextView: TextView
     private lateinit var loginButton: Button
     private lateinit var pref: SharedPreferences
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,9 +47,9 @@ class SignInFragment : Fragment() {
         registerTextView = view.findViewById(R.id.text_register)
         forgotTextView = view.findViewById(R.id.text_forgot_pass)
         loginButton = view.findViewById(R.id.button_login)
-
-        Log.d("tung", editor.toString())
-        if(editor != null){
+        val accessToken = sharedPreferences?.getString("access_token", null)
+        Log.d("tung", accessToken.toString())
+        if(accessToken != null){
             navigateToMainScreen()
         }
         viewModel.accessToken.observe(viewLifecycleOwner, Observer{
@@ -77,7 +74,6 @@ class SignInFragment : Fragment() {
 
         viewModel.loginSuccess.observe(viewLifecycleOwner, Observer {
             if (it) {
-
                 navigateToMainScreen()
             }
         })
