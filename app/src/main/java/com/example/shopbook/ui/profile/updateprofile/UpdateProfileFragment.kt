@@ -19,6 +19,7 @@ import com.example.shopbook.R
 import com.example.shopbook.data.model.Customer
 import com.example.shopbook.databinding.FragmentUpdateProfileBinding
 import com.example.shopbook.ui.profile.permission.PermissionFragment
+import com.example.shopbook.utils.MySharedPreferences
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -56,13 +57,15 @@ class UpdateProfileFragment : Fragment() {
         binding?.layoutLoading?.root?.visibility = View.VISIBLE
         viewModel.getCustomer()
         observeProfile()
+
+        activity?.let { MySharedPreferences.init(it.applicationContext) }
         binding?.apply {
             cardview.setOnClickListener {
                 if (context?.checkSelfPermission(Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
                     requestPermissions(arrayOf(Manifest.permission.READ_MEDIA_IMAGES), 1)
                 } else {
                     openImageDirectory()
-                    binding?.layoutLoading?.root?.visibility = View.VISIBLE
+//                    binding?.layoutLoading?.root?.visibility = View.VISIBLE
                 }
 
             }
@@ -98,7 +101,7 @@ class UpdateProfileFragment : Fragment() {
             type = "image/*" // Loại tệp tin là ảnh
         }
         startActivityForResult(intent, 1)
-        binding?.layoutLoading?.root?.visibility = View.INVISIBLE
+//        binding?.layoutLoading?.root?.visibility = View.INVISIBLE
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -111,14 +114,16 @@ class UpdateProfileFragment : Fragment() {
             val requestBody = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
             val multiPart = MultipartBody.Part.createFormData("image", file.name, requestBody)
             viewModel.changeAvatar(multiPart)
-            viewModel.profile.observe(viewLifecycleOwner, Observer {
-                binding?.apply {
-                    Glide.with(root)
-                        .load(it.avatar)
-                        .centerCrop()
-                        .into(imageAvatar)
-                }
-            })
+            MySharedPreferences.putString("imageAvatar", picturePath.toString())
+            binding?.imageAvatar?.setImageURI(uri)
+//            viewModel.profile.observe(viewLifecycleOwner, Observer {
+//                binding?.apply {
+//                    Glide.with(root)
+//                        .load(it.avatar)
+//                        .centerCrop()
+//                        .into(imageAvatar)
+//                }
+//            })
         }
     }
 

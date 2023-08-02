@@ -2,6 +2,7 @@ package com.example.shopbook.ui.profile
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,7 @@ import com.example.shopbook.ui.order.orderhistory.OrderHistoryFragment
 import com.example.shopbook.ui.profile.changepass.ChangePassFragment
 import com.example.shopbook.ui.profile.profilesignin.ProfileSigninFragment
 import com.example.shopbook.ui.profile.updateprofile.UpdateProfileFragment
+import com.example.shopbook.utils.MySharedPreferences
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class ProfileFragment : Fragment() {
@@ -43,16 +45,17 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.layoutLoading?.root?.visibility=View.VISIBLE
+        binding?.layoutLoading?.root?.visibility = View.VISIBLE
         val bottomNavigationView =
             requireActivity().findViewById<BottomNavigationView>(R.id.navigation)
         bottomNavigationView.visibility = View.GONE
         viewModel.getCustomer()
-        var email=""
+        var email = ""
+        activity?.let { MySharedPreferences.init(it.applicationContext) }
 //        var passw
         viewModel.profile.observe(viewLifecycleOwner, Observer {
             bindData(it)
-            email= it.email.toString()
+            email = it.email.toString()
         })
         binding?.apply {
             imageLeft.setOnClickListener {
@@ -74,10 +77,10 @@ class ProfileFragment : Fragment() {
             }
             textChange.setOnClickListener {
                 val fragmentChangePass = ChangePassFragment()
-                val bundle=Bundle()
+                val bundle = Bundle()
                 bundle.putString("email", email)
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.frame_layout, fragmentChangePass.apply { arguments=bundle })
+                    .replace(R.id.frame_layout, fragmentChangePass.apply { arguments = bundle })
                     .addToBackStack("profile")
                     .commit()
             }
@@ -91,14 +94,33 @@ class ProfileFragment : Fragment() {
     }
 
     private fun bindData(profile: Customer) {
-        binding?.apply {
-            Glide.with(root)
-                .load(profile.avatar)
-                .centerCrop()
-                .into(imageAvatar)
-            textName.text = profile.name
-            textMail.text = profile.email
+        val imgAvatar = MySharedPreferences.getString("imageAvatar", "")
+        val name = MySharedPreferences.getString("name", "")
+        val email = MySharedPreferences.getString("email", "")
+        Log.d("NAMEEEE", name)
+        Log.d("EMAILLL", email)
+        if (imgAvatar != "" && name != "" && email != "") {
+            binding?.apply {
+                Glide.with(root)
+                    .load(imgAvatar)
+                    .centerCrop()
+                    .into(imageAvatar)
+                textName.text = name
+                textMail.text = email
+            }
+        } else {
+            binding?.apply {
+                Glide.with(root)
+                    .load(profile.avatar)
+                    .centerCrop()
+                    .into(imageAvatar)
+                textName.text = profile.name
+                textMail.text = profile.email
+            }
+            MySharedPreferences.putString("imageAvatar", profile.avatar.toString())
+            MySharedPreferences.putString("name", profile.name.toString())
+            MySharedPreferences.putString("email", profile.email.toString())
         }
-        binding?.layoutLoading?.root?.visibility=View.INVISIBLE
+        binding?.layoutLoading?.root?.visibility = View.INVISIBLE
     }
 }

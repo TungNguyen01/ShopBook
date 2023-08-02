@@ -49,7 +49,7 @@ class MainMenuFragment : Fragment() {
                     true
                 }
                 else -> {
-                    loadFragment(AuthorFragment())
+                    loadFragment(ShoppingbagFragment())
                     true
                 }
             }

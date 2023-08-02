@@ -18,37 +18,23 @@ class OnboardingFragment : Fragment() {
         fun newInstance() = OnboardingFragment()
     }
 
-    private var binding:FragmentOnboardingBinding?=null
+    private var binding: FragmentOnboardingBinding? = null
     private var accessToken: String? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        binding=FragmentOnboardingBinding.inflate(layoutInflater, container, false)
+        binding = FragmentOnboardingBinding.inflate(layoutInflater, container, false)
         return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (accessToken != null) {
-            openMainPage()
-        } else {
-            binding?.textStart?.setOnClickListener {
-                val fragment = SignInFragment()
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.container, fragment)
-                    .commit()
-            }
+        binding?.textStart?.setOnClickListener {
+            val fragment = SignInFragment()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.container, fragment)
+                .commit()
         }
-    }
-    fun onSignInSuccess(accessToken: String) {
-        this.accessToken = accessToken
-        openMainPage()
-    }
-    private fun openMainPage() {
-        val fragment = MainMenuFragment()
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.container, fragment)
-            .commit()
     }
 }
