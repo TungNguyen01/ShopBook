@@ -61,12 +61,11 @@
                 android:id="@+id/image_pro"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="matrix"
-                app:srcCompat="@drawable/image_pro" />
+                android:scaleType="matrix" />
         </androidx.cardview.widget.CardView>
 
         <ImageView
-            android:id="@+id/iamge_favorite"
+            android:id="@+id/image_favorite"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -84,9 +83,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="32dp"
-        android:layout_marginTop="@dimen/dp_30"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="32dp"
-        android:text="Mắt biếc"
         android:textColor="@color/primaryDeep"
         android:textSize="@dimen/dp_24"
         android:textStyle="bold"
@@ -99,7 +97,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="Số lượng : 10"
         android:textColor="@color/secondaryDeep"
         android:textSize="12dp"
         app:layout_constraintEnd_toEndOf="@+id/text_name"
@@ -137,7 +134,6 @@
                 android:id="@+id/text_ma"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Mã hàng: 8934974163442-2022"
                 android:textColor="@color/secondaryDeep"
                 android:textSize="14dp"
                 app:layout_constraintEnd_toEndOf="@+id/text_info"
@@ -148,7 +144,6 @@
                 android:id="@+id/text_ncc"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Tên NCC: NXB Trẻ"
                 android:textColor="@color/secondaryDeep"
                 android:textSize="14dp"
                 app:layout_constraintEnd_toEndOf="@+id/text_info"
@@ -159,7 +154,6 @@
                 android:id="@+id/text_author"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Tác giả: "
                 android:textColor="@color/secondaryDeep"
                 android:textSize="14dp"
                 app:layout_constraintStart_toStartOf="@+id/text_ncc"
@@ -169,7 +163,6 @@
                 android:id="@+id/text_name_author"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Nguyễn Nhật Ánh"
                 android:textColor="@color/colorAuth"
                 android:textSize="14dp"
                 app:layout_constraintEnd_toEndOf="@+id/text_ncc"
@@ -180,7 +173,6 @@
                 android:id="@+id/text_year"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Năm XB: 2022"
                 android:textColor="@color/secondaryDeep"
                 android:textSize="14dp"
                 app:layout_constraintEnd_toEndOf="@+id/text_name_author"
@@ -191,7 +183,6 @@
                 android:id="@+id/text_language"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Ngôn Ngữ: Tiếng Việt"
                 android:textColor="@color/secondaryDeep"
                 android:textSize="14dp"
                 app:layout_constraintEnd_toEndOf="@+id/text_info"
@@ -204,19 +195,15 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:text="Giá sản phẩm trên Fahasa.com đã bao gồm thuế theo luật hiện hành. Bên cạnh đó, tuỳ vào loại sản phẩm, hình thức và địa chỉ giao hàng mà có thể phát sinh thêm chi phí khác như Phụ phí đóng gói, phí vận chuyển, phụ phí hàng cồng kềnh,...
-                    Chính sách khuyến mãi trên Fahasa.com không áp dụng cho Hệ thống Nhà sách Fahasa trên toàn quốcMột tác phẩm được nhiều người bình chọn là hay nhất của nhà văn này.Một tác phẩm đang được dịch và giới thiệu tại Nhật Bản (theo thông tin từ các báo)… Bởi sự"
                 android:textColor="@color/secondaryDeep"
                 android:textSize="14dp"
                 app:layout_constraintEnd_toEndOf="@+id/text_info"
                 app:layout_constraintStart_toStartOf="@+id/text_info"
                 app:layout_constraintTop_toBottomOf="@+id/text_language" />
-
             <TextView
                 android:id="@+id/readmore"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Read more."
                 android:textColor="@color/primary"
                 android:textSize="14dp"
                 android:textStyle="bold"
@@ -231,7 +218,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="9dp"
-
         android:layout_marginRight="8.5dp"
         android:layout_marginBottom="26dp"
         android:background="@drawable/bg_publish"
@@ -246,7 +232,6 @@
             android:layout_marginLeft="@dimen/dp_24"
             android:layout_marginTop="18dp"
             android:paddingRight="15dp"
-            android:text="NXB TRẺ"
             android:textColor="@color/colorPublish"
             android:textSize="15dp"
             android:textStyle="bold"
@@ -263,7 +248,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/text_readmore"
+            android:id="@+id/text_buymore"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -282,8 +267,8 @@
             android:textColor="@color/status"
             android:textSize="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/text_readmore"
-            app:layout_constraintTop_toBottomOf="@+id/text_readmore" />
+            app:layout_constraintStart_toStartOf="@+id/text_buymore"
+            app:layout_constraintTop_toBottomOf="@+id/text_buymore" />
 
         <ImageView
             android:id="@+id/text_arrow"
@@ -302,7 +287,6 @@
         android:id="@+id/constraint_avatar_check"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-
         android:background="@drawable/bg_checkout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -314,7 +298,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
             android:layout_marginTop="43.5dp"
-            android:text="Price"
             android:textColor="@color/secondary"
             android:textSize="14dp"
             app:layout_constraintBottom_toTopOf="@+id/text_price"
@@ -327,7 +310,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="45.72dp"
-            android:text="110,00 VND"
             android:textColor="@color/white"
             android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -353,6 +335,10 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+    <include
+        layout="@layout/layout_loading"
+        android:id="@+id/loadingLayout"
+        android:visibility="gone" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

@@ -90,6 +90,7 @@
             android:text="@string/searchNew"
             android:textColor="@color/colorsearch"
             android:textSize="20dp"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/text_prodcut_selling"
             app:layout_constraintStart_toStartOf="parent"
@@ -137,7 +138,10 @@
                 android:src="@drawable/ic_incre" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
+    <include
+        layout="@layout/layout_loading"
+        android:id="@+id/loadingLayout"
+        android:visibility="gone" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_product"
         android:layout_width="0dp"

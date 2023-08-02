@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Customer(
     @SerializedName("customer_id")
-    val customerId: Int?,
+    val customer_id: Int?,
     @SerializedName("name")
     val name: String?,
     @SerializedName("email")
@@ -13,14 +13,15 @@ data class Customer(
     @SerializedName("address")
     val address: String?,
     @SerializedName("shipping_region_id")
-    val shippingRegionId: Int?,
+    val shipping_region_id: Int?,
     @SerializedName("mob_phone")
-    val mobPhone: String?,
+    val mob_phone: String?,
     @SerializedName("gender")
     val gender: String?,
     @SerializedName("date_of_birth")
-    val dateOfBirth: String?,
+    val date_of_birth: String?,
     @SerializedName("avatar")
     val avatar: String?
+
 )
 

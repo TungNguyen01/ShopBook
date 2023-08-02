@@ -1,20 +1,23 @@
 package com.example.shopbook.ui.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.shopbook.data.model.Book
 import com.example.shopbook.data.model.Product
 import com.example.shopbook.databinding.ItemProductBinding
+import com.example.shopbook.utils.FormatMoney
 
 class BookAdapter(private var productList: List<Product>) :
     RecyclerView.Adapter<BookAdapter.ViewHolder>() {
-
-    fun setData(products: List<Product>) {
-        productList = products
+    private var onItemClickListener: OnItemClickListener? = null
+    private val formatMoney= FormatMoney()
+    fun setList(products: List<Product>){
+        productList=products
         notifyDataSetChanged()
     }
-    private var onItemClickListener: OnItemClickListener? = null
     fun setOnItemClickListener(listener: OnItemClickListener) {
         onItemClickListener = listener
     }
@@ -29,7 +32,7 @@ class BookAdapter(private var productList: List<Product>) :
         val product = productList[position]
         holder.bind(product)
     }
-
+    fun getBook(position: Int): Product = productList[position]
     override fun getItemCount(): Int = productList.size
 
     inner class ViewHolder(private val binding: ItemProductBinding) :
@@ -38,10 +41,9 @@ class BookAdapter(private var productList: List<Product>) :
             Glide.with(binding.root)
                 .load(product.image)
                 .centerCrop()
-//                .placeholder(R.drawable.placeholder_image)
-//                .error(R.drawable.error_image)
                 .into(binding.imageProduct)
-            binding.textPrice.text = product.price
+            binding.textPrice.text = product.price?.toDouble()
+                ?.let { formatMoney.formatMoney(it.toLong()) }
             binding.textName.text = product.name
             binding.cardview.setOnClickListener {
                 val position = adapterPosition

@@ -35,9 +35,9 @@ class DiscoverStoreAdapter() : RecyclerView.Adapter<DiscoverStoreAdapter.Discove
         private val imgAuthor : ImageView = itemView.findViewById(R.id.book1)
 
         fun bind(discoverStore: Author) {
-            nameStoreTextView.text = discoverStore.author_name
+            nameStoreTextView.text = discoverStore.authorName
             Glide.with(itemView.context)
-                .load(discoverStore.author_avatar)
+                .load(discoverStore.authorAvatar)
                 .into(imgAuthor)
         }
     }

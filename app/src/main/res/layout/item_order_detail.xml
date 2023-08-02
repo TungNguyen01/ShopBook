@@ -16,7 +16,6 @@
         android:layout_marginEnd="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toStartOf="@+id/text_name"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -24,8 +23,7 @@
             android:id="@+id/image_product"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            app:srcCompat="@drawable/image_12" />
+            android:scaleType="centerCrop" />
 
     </androidx.cardview.widget.CardView>
 
@@ -35,7 +33,6 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:maxLines="1"
-        android:text="Hành trình hướng về Phương Dong sfsdf"
         android:textColor="@color/product_name"
         android:textSize="16dp"
         app:layout_constraintBottom_toTopOf="@+id/text_price"
@@ -48,16 +45,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
-        android:text="110,0007VND"
         android:textColor="@color/secondaryDeep"
         android:textSize="12dp"
-        app:layout_constraintBottom_toTopOf="@+id/text_favorite"
-        app:layout_constraintEnd_toStartOf="@+id/text_discre_product"
+        app:layout_constraintBottom_toTopOf="@+id/image_favorite"
         app:layout_constraintStart_toEndOf="@+id/cardview"
         app:layout_constraintTop_toBottomOf="@+id/text_name" />
 
     <ImageView
-        android:id="@+id/text_favorite"
+        android:id="@+id/image_favorite"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_ellipse_favor"
@@ -67,47 +62,43 @@
         app:layout_constraintStart_toStartOf="@+id/text_name"
         app:layout_constraintTop_toBottomOf="@+id/text_price" />
 
-    <ImageView
-        android:id="@+id/text_discre_product"
-        android:layout_width="@dimen/dp_30"
-        android:layout_height="@dimen/dp_30"
-        android:layout_marginLeft="18dp"
-        android:background="@drawable/bg_add"
-        android:padding="13dp"
-        android:scaleType="center"
-        android:src="@drawable/ic_sub"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/text_number"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toEndOf="@+id/text_price"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <ImageView-->
+<!--        android:id="@+id/text_discre_product"-->
+<!--        android:layout_width="@dimen/dp_30"-->
+<!--        android:layout_height="@dimen/dp_30"-->
+<!--        android:layout_marginLeft="18dp"-->
+<!--        android:background="@drawable/bg_add"-->
+<!--        android:padding="13dp"-->
+<!--        android:scaleType="center"-->
+<!--        android:src="@drawable/ic_sub"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/text_number"-->
+<!--        app:layout_constraintHorizontal_chainStyle="packed"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/text_price"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <TextView
         android:id="@+id/text_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
         android:gravity="center"
-        android:text="2"
         android:textColor="@color/secondaryDeep"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/text_incre_product"
-        app:layout_constraintStart_toEndOf="@+id/text_discre_product"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/text_incre_product"
-        android:layout_width="@dimen/dp_30"
-        android:layout_height="@dimen/dp_30"
-        android:background="@drawable/bg_add"
-        android:padding="13dp"
-        android:scaleType="center"
-        android:src="@drawable/ic_add"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/text_number"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <ImageView-->
+<!--        android:id="@+id/text_incre_product"-->
+<!--        android:layout_width="@dimen/dp_30"-->
+<!--        android:layout_height="@dimen/dp_30"-->
+<!--        android:background="@drawable/bg_add"-->
+<!--        android:padding="13dp"-->
+<!--        android:scaleType="center"-->
+<!--        android:src="@drawable/ic_add"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/text_number"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,6 +5,6 @@ import com.google.gson.annotations.SerializedName
 data class Supplier(
     @SerializedName("supplier_id")
     var supplier_id: Int,
-    @SerializedName("supplier_name")
+    @SerializedName("suppler_name")
     var supplier_name: String,
 )

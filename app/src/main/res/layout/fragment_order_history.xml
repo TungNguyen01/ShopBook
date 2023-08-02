@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/secondary"
+    android:background="@color/background"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <ImageView
         android:id="@+id/image_left_order"
@@ -29,9 +29,14 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginBottom="12dp"
         android:id="@+id/recycler_order_history"
         app:layout_constraintStart_toStartOf="@+id/image_left_order"
         app:layout_constraintEnd_toEndOf="@+id/text_order"
         app:layout_constraintTop_toBottomOf="@id/image_left_order"
         app:layout_constraintBottom_toBottomOf="parent"/>
+    <include
+        layout="@layout/layout_loading"
+        android:id="@+id/loadingLayout"
+        android:visibility="gone" />
 </androidx.constraintlayout.widget.ConstraintLayout>

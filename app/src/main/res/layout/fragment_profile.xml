@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+    <include
+        layout="@layout/layout_loading"
+        android:id="@+id/layoutLoading"
+        android:visibility="gone"/>
     <ImageView
         android:id="@+id/image_left"
         android:layout_width="@dimen/dp_34"
@@ -55,7 +57,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="14dp"
         android:layout_marginTop="53dp"
-        android:text="Nguyễn Tuấn Anh"
         android:textSize="@dimen/dp_24"
         android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/cardview"
@@ -68,7 +69,6 @@
         android:layout_marginStart="14dp"
         android:layout_marginTop="5dp"
         android:textColor="@color/black"
-        android:text="shawn_howard@gmail.com"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/cardview"
         app:layout_constraintTop_toBottomOf="@+id/text_name" />

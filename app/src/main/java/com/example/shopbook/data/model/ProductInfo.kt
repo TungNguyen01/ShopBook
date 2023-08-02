@@ -4,19 +4,19 @@ import com.google.gson.annotations.SerializedName
 
 class ProductInfo(
     @SerializedName("product_id")
-    var productId: Int?,
+    var productId: Int,
     @SerializedName("name")
-    var name: String? = null,
+    var name: String,
     @SerializedName("description")
-    var description: String?,
+    var description: String,
     @SerializedName("price")
-    var price: String?,
+    var price: String,
     @SerializedName("discounted_price")
-    var discountedPrice: String?,
+    var discountedPrice: String,
     @SerializedName("thumbnail")
-    var thumbnail: String?,
+    var thumbnail: String,
     @SerializedName("author_avatar")
-    var authorAvatar: String?,
+    var authorAvatar: String,
     @SerializedName("wishlist")
-    var wishlist: Int?,
+    var wishlist: Int,
 )

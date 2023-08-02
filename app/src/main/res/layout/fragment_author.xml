@@ -78,4 +78,8 @@
         app:layout_constraintEnd_toEndOf="@+id/search_product"
         app:layout_constraintStart_toStartOf="@+id/text_hot"
         app:layout_constraintTop_toBottomOf="@+id/text_hot" />
+    <include
+        layout="@layout/layout_loading"
+        android:id="@+id/loadingLayout"
+        android:visibility="gone"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

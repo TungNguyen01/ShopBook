@@ -69,7 +69,7 @@ class HomeViewModel : ViewModel() {
 
     fun getAllAuthor(){
         viewModelScope.launch(Dispatchers.IO) {
-            val response = authorRepository?.getAuthor()
+            val response = authorRepository?.getAllAuthors()
             Log.d("tung", (response?.body()).toString())
             if(response?.isSuccessful == true){
                 _authorList.postValue(response.body()?.authors)

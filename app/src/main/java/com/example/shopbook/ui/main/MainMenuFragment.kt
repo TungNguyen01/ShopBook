@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.example.shopbook.R
 import com.example.shopbook.databinding.FragmentMainMenuBinding
+import com.example.shopbook.ui.author.AuthorFragment
 import com.example.shopbook.ui.category.CategoryBookFragment
 import com.example.shopbook.ui.main.adapter.ViewPagerAdapter
 import com.example.shopbook.ui.main.home.HomeFragment
@@ -16,6 +17,7 @@ import com.example.shopbook.ui.main.search.SearchFragment
 import com.example.shopbook.ui.main.shoppingbag.ShoppingbagFragment
 import com.example.shopbook.ui.main.wishlist.WishlistFragment
 import com.example.shopbook.ui.order.orderdetail.OrderDetailFragment
+import com.example.shopbook.ui.order.orderhistory.OrderHistoryFragment
 import com.example.shopbook.ui.productdetail.ProductdetailFragment
 
 class MainMenuFragment : Fragment() {
@@ -43,11 +45,11 @@ class MainMenuFragment : Fragment() {
                     true
                 }
                 R.id.menu_wishlist -> {
-                    loadFragment(CategoryBookFragment())
+                    loadFragment(WishlistFragment())
                     true
                 }
                 else -> {
-                    loadFragment(OrderDetailFragment())
+                    loadFragment(AuthorFragment())
                     true
                 }
             }

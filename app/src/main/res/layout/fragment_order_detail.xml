@@ -32,7 +32,6 @@
         android:id="@+id/text_id_order"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="#Order1231"
         android:textColor="@color/colorProduct"
         android:layout_marginTop="12dp"
         android:textSize="20dp"
@@ -46,7 +45,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:text="Sản phẩm"
         android:textSize="18dp"
         android:textStyle="bold"
         android:textColor="@color/black"
@@ -64,13 +62,13 @@
         app:layout_constraintEnd_toEndOf="@+id/text_id_order"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/text_id_order"
-        app:layout_constraintTop_toBottomOf="@+id/text_pro" />
+        app:layout_constraintTop_toBottomOf="@+id/text_pro"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/text_detail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Chi tiết"
         android:textColor="@color/black"
         android:textSize="18dp"
         app:layout_constraintBottom_toTopOf="@+id/text_order_date"
@@ -87,14 +85,12 @@
         app:layout_constraintEnd_toEndOf="@+id/text_id_order"
         app:layout_constraintBottom_toTopOf="@+id/text_order_address"
         app:layout_constraintStart_toStartOf="@+id/text_detail"
-        android:text="Ngày đặt hàng : 11/07/2023"
         android:textSize="14dp" />
 
     <TextView
         android:id="@+id/text_order_address"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Địa chỉ giao hàng : Số 1 Nguyễn Thị Định, Thanh Xuân Trung, Thanh Xuân, Hà Nội"
         android:textSize="14dp"
         android:textColor="@color/primary"
         app:layout_constraintBottom_toTopOf="@+id/text_order_sum"
@@ -105,7 +101,6 @@
         android:id="@+id/text_order_sum"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Tổng số lượng : 3"
         android:textSize="14dp"
         android:textColor="@color/primary"
         app:layout_constraintBottom_toTopOf="@id/text_status"
@@ -117,7 +112,6 @@
         android:id="@+id/text_status"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Tình tạng đơn hàng: "
         android:textSize="14dp"
         android:textColor="@color/primary"
         app:layout_constraintBottom_toTopOf="@id/text_total"
@@ -127,7 +121,6 @@
         android:id="@+id/text_order_status"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Đang được chuẩn bị"
         android:textColor="@color/status"
         android:textSize="14dp"
         app:layout_constraintBottom_toTopOf="@id/text_total"
@@ -145,7 +138,6 @@
         android:id="@+id/text_total"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tổng tiền: "
         android:textColor="@color/black"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="63dp"
@@ -158,7 +150,6 @@
         android:id="@+id/text_total_money"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="500,000 VND"
         android:textSize="18dp"
         android:layout_marginBottom="63dp"
         android:textColor="@color/red"
@@ -167,5 +158,8 @@
         android:layout_marginTop="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/text_order_detail" />
-
+    <include
+        layout="@layout/layout_loading"
+        android:id="@+id/loadingLayout"
+        android:visibility="gone"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
