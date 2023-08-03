@@ -1,6 +1,7 @@
 package com.example.shopbook.data.api
 
 import com.example.shopbook.data.model.*
+import com.example.shopbook.utils.MySharedPreferences
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Response
@@ -12,8 +13,9 @@ interface ApiInterface {
     @POST("customers/login")
     suspend fun login(
         @Field("email") email: String,
-        @Field("password") password: String
+        @Field("password") password: String,
     ): Response<LoginResponse>
+
     @FormUrlEncoded
     @POST("customers")
     fun register(
@@ -21,16 +23,19 @@ interface ApiInterface {
         @Field("name") name: String,
         @Field("password") password: String,
     ): Call<AccessTokenResponse>
+
     @FormUrlEncoded
     @POST("customers/forgotPass")
     suspend fun forgot(
-        @Field("email") email : String,
+        @Field("email") email: String,
     ): Response<ForgotResponse>
 
     @GET("products")
     suspend fun getProducts(): Response<ProductList>
+
     @GET("products/hot")
     suspend fun getHotBook(): Response<HotBookList>
+
     @GET("category")
     suspend fun getCategory(): Response<CategoryList>
 
@@ -67,8 +72,17 @@ interface ApiInterface {
     suspend fun getProductsByAuthor(
         @Query("author_id") author_id: Int,
         @Query("limit") limit: Int,
+        @Query("page") page: Int,
         @Query("description_length") description_length: Int,
     ): Response<ProductsByAuthor>
+
+    @GET("products/incategory/{categoryId}")
+    suspend fun getProductsByCategory(
+        @Path("categoryId") categoryId: Int,
+        @Query("limit") limit: Int,
+        @Query("page") page: Int,
+        @Query("description_length") description_length: Int,
+    ):Response<ProductList>
 
     @GET("author/{authorId}")
     suspend fun getAuthor(@Path("authorId") authorId: Int): Response<AuthorResult>
@@ -114,5 +128,8 @@ interface ApiInterface {
     @GET("orders/{orderId}")
     suspend fun getOrderDetail(@Path("orderId") orderId: Int): Response<OrderDetail>
 
-
+    @FormUrlEncoded
+    @Headers("user-key: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcl9pZCI6MiwibmFtZSI6IlR1YW4gQW5oIiwiZW1haWwiOiJhbmhkdDFAeW9wbWFpbC5jb20iLCJpYXQiOjE2ODk4NDM5NTMsImV4cCI6MTY5MTEzOTk1M30.Hg_DXIPz_uDjBbX8d5khpFWdu0or6Xxd8Ij-k_pOcuA")
+    @POST("shoppingCart/add")
+    suspend fun addProduct2Cart(@Field("product_id") productId: Int): Response<List<CartItem>>
 }

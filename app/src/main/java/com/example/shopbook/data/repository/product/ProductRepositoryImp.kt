@@ -14,8 +14,18 @@ class ProductRepositoryImp(private val dataSource: IDataSource) : ProductReposit
     override suspend fun getProductsByAuthor(
         author_id: Int,
         limit: Int,
+        page: Int,
         description_length: Int,
     ): Response<ProductsByAuthor>? {
-        return dataSource.getProductsByAuthor(author_id, limit, description_length)
+        return dataSource.getProductsByAuthor(author_id, limit, page, description_length)
+    }
+
+    override suspend fun getProductsByCategory(
+        author_id: Int,
+        limit: Int,
+        page: Int,
+        description_length: Int
+    ): Response<ProductList>? {
+        return dataSource.getProductsByCategory(author_id, limit, page, description_length)
     }
 }

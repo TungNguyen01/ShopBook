@@ -8,6 +8,7 @@ import com.example.shopbook.data.model.Author
 import com.example.shopbook.data.model.ProductInfo
 import com.example.shopbook.data.model.ProductInfoList
 import com.example.shopbook.data.model.Supplier
+import com.example.shopbook.data.repository.cart.CartRepositoryImp
 import com.example.shopbook.data.repository.product.ProductRepository
 import com.example.shopbook.data.repository.product.ProductRepositoryImp
 import com.example.shopbook.datasource.remote.RemoteDataSource
@@ -20,10 +21,10 @@ class ProductdetailViewModel : ViewModel() {
     val productInfo: MutableLiveData<ProductInfoList?> get() = _productListInfo
 
     private var productRepository: ProductRepository? = ProductRepositoryImp(RemoteDataSource())
+    private var cartRepository: CartRepositoryImp? = CartRepositoryImp(RemoteDataSource())
     fun getProductInfo(id: Int) {
 
         viewModelScope.launch(Dispatchers.IO) {
-
             val response = productRepository?.getProductInfo(id)
             if (response?.isSuccessful == true) {
 //                _productInfo.postValue(response.body()?.product)
@@ -32,6 +33,17 @@ class ProductdetailViewModel : ViewModel() {
                 _productListInfo.postValue(response.body())
             } else {
                 Log.d("NNULLL", "NULLLL")
+            }
+        }
+    }
+
+    fun addItemToCart(productId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = cartRepository?.addCartItem(productId)
+            if (response?.isSuccessful == true) {
+                Log.d("SUCCESSFUL", "OK")
+            } else {
+                Log.d("NULL", "NULL")
             }
         }
     }

@@ -317,7 +317,7 @@
             app:layout_constraintTop_toBottomOf="@+id/text_price_name" />
 
         <TextView
-            android:id="@+id/text_checkout"
+            android:id="@+id/text_additemtocart"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="36.5dp"

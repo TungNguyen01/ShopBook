@@ -1,25 +1,26 @@
 package com.example.shopbook.ui.profile
 
-import androidx.lifecycle.ViewModelProvider
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.shopbook.R
 import com.example.shopbook.data.model.Customer
-import com.example.shopbook.databinding.FragmentProductDetailBinding
 import com.example.shopbook.databinding.FragmentProfileBinding
-import com.example.shopbook.ui.auth.signin.SignInFragment
 import com.example.shopbook.ui.order.orderhistory.OrderHistoryFragment
 import com.example.shopbook.ui.profile.changepass.ChangePassFragment
 import com.example.shopbook.ui.profile.profilesignin.ProfileSigninFragment
 import com.example.shopbook.ui.profile.updateprofile.UpdateProfileFragment
 import com.example.shopbook.utils.MySharedPreferences
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.io.File
 
 class ProfileFragment : Fragment() {
     private var binding: FragmentProfileBinding? = null
@@ -68,6 +69,9 @@ class ProfileFragment : Fragment() {
                     .addToBackStack("profile")
                     .commit()
             }
+            textClear.setOnClickListener {
+                Toast.makeText(context, "CLEAR SUCCESSFUL", Toast.LENGTH_SHORT).show()
+            }
             textLogout.setOnClickListener {
                 val fragmentSignin = ProfileSigninFragment()
                 parentFragmentManager.beginTransaction()
@@ -97,8 +101,6 @@ class ProfileFragment : Fragment() {
         val imgAvatar = MySharedPreferences.getString("imageAvatar", "")
         val name = MySharedPreferences.getString("name", "")
         val email = MySharedPreferences.getString("email", "")
-        Log.d("NAMEEEE", name)
-        Log.d("EMAILLL", email)
         if (imgAvatar != "" && name != "" && email != "") {
             binding?.apply {
                 Glide.with(root)

@@ -8,6 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.shopbook.data.model.Product
 import com.example.shopbook.data.model.ProductList
 import com.example.shopbook.data.model.ProductNew
+import com.example.shopbook.data.repository.cart.CartRepository
+import com.example.shopbook.data.repository.cart.CartRepositoryImp
 import com.example.shopbook.data.repository.search.SearchRepository
 import com.example.shopbook.data.repository.search.SearchRepositoryImp
 import com.example.shopbook.datasource.remote.RemoteDataSource
@@ -61,10 +63,16 @@ class SearchViewModel() : ViewModel() {
 
     //    val productList:MutableList<Product> get() = _productList
     private var searchRepository: SearchRepository? = SearchRepositoryImp(RemoteDataSource())
-    fun getAllProducts() {
+    private var cartRepository: CartRepository? = CartRepositoryImp(RemoteDataSource())
+    fun getAllProducts(limit: Int,
+                       page: Int,
+                       description_length: Int,
+                       query_string: String,
+                       filter_type: Int,
+                       price_sort_order: String,) {
 
         viewModelScope.launch(Dispatchers.IO) {
-            val response = searchRepository?.getSearchProducts(10, 1, 100, "the gioi", 1, "asc")
+            val response = searchRepository?.getSearchProducts(limit, page, description_length, query_string, filter_type, price_sort_order)
             if (response?.isSuccessful == true) {
                 _productList.postValue(response.body()?.products)
             } else {
@@ -81,6 +89,16 @@ class SearchViewModel() : ViewModel() {
                 Log.d("PRODUCTLIST", response.body()?.productsNew.toString())
             } else {
                 Log.d("NULL", "NULL")
+            }
+        }
+    }
+    fun addItemToCart(productId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = cartRepository?.addCartItem(productId)
+            if (response?.isSuccessful == true) {
+                Log.d("SUCCESSFUL", "OK")
+            } else {
+                Log.d("ADDITEMTOCARTNULL", "NULL")
             }
         }
     }

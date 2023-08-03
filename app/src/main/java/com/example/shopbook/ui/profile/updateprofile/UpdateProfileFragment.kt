@@ -139,11 +139,28 @@ class UpdateProfileFragment : Fragment() {
     }
 
     private fun bindData(profile: Customer) {
+        val imgAvatar = MySharedPreferences.getString("imageAvatar", "")
+        if (imgAvatar != "") {
+            binding?.apply {
+                Glide.with(root)
+                    .load(imgAvatar)
+                    .centerCrop()
+                    .into(imageAvatar)
+            }
+        } else {
+            binding?.apply {
+                Glide.with(root)
+                    .load(profile.avatar)
+                    .centerCrop()
+                    .into(imageAvatar)
+            }
+            MySharedPreferences.putString("imageAvatar", profile.avatar.toString())
+        }
         binding?.apply {
-            Glide.with(root)
-                .load(profile.avatar)
-                .centerCrop()
-                .into(imageAvatar)
+//            Glide.with(root)
+//                .load(profile.avatar)
+//                .centerCrop()
+//                .into(imageAvatar)
             editFullname.setText(profile.name)
             editDob.setText(profile.date_of_birth)
             editPhone.setText(profile.mob_phone)

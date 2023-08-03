@@ -49,11 +49,20 @@ class RemoteDataSource() : IDataSource {
     override suspend fun getProductsByAuthor(
         id: Int,
         limit: Int,
+        page: Int,
         description_length: Int,
     ): Response<ProductsByAuthor>? {
-        return RetrofitClient.apiService.getProductsByAuthor(id, limit, description_length)
+        return RetrofitClient.apiService.getProductsByAuthor(id, limit, page, description_length)
     }
 
+    override suspend fun getProductsByCategory(
+        id: Int,
+        limit: Int,
+        page: Int,
+        description_length: Int
+    ): Response<ProductList> {
+        return RetrofitClient.apiService.getProductsByCategory(id, limit, page, description_length)
+    }
     override suspend fun getAuthor(authorId: Int): Response<AuthorResult>? {
         return RetrofitClient.apiService.getAuthor(authorId)
     }
@@ -87,6 +96,7 @@ class RemoteDataSource() : IDataSource {
     override suspend fun changeAvatar(image: MultipartBody.Part): Response<Customer>? {
         return RetrofitClient.apiService.changeAvatar(image)
     }
+
     override suspend fun getOrderHistory(): Response<OrderList>? {
         return RetrofitClient.apiService.getOrderHistory()
     }
@@ -109,5 +119,9 @@ class RemoteDataSource() : IDataSource {
 
     override suspend fun getAllAuthor(): Response<AuthorList>? {
         return RetrofitClient.apiService.getAuthor()
+    }
+
+    override suspend fun addCartItem(productId: Int): Response<List<CartItem>>? {
+        return RetrofitClient.apiService.addProduct2Cart(productId)
     }
 }

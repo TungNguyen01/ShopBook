@@ -1,4 +1,4 @@
-package com.example.shopbook.ui.adapter
+package com.example.shopbook.utils
 import android.graphics.Rect
 import android.util.Log
 import android.view.View

@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bnd = ActivityMainBinding.inflate(layoutInflater)
-        val view: View = bnd.getRoot()
+        val view: View = bnd.root
         setContentView(view)
 //        pref = getSharedPreferences("myPreference", MODE_PRIVATE)
         MySharedPreferences.init(this)

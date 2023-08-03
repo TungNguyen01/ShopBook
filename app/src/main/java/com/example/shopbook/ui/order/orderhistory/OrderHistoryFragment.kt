@@ -51,11 +51,13 @@ class OrderHistoryFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        adapter= OrderHistoryAdapter()
         binding?.loadingLayout?.root?.visibility = View.VISIBLE
         viewModel.getOrderHistory()
         val list = mutableListOf<OrderHistory>()
         val currentDate = formatDate.formatDate(LocalDateTime.now().toString())
         val mapOrder: MutableMap<String, MutableList<Order>> = mutableMapOf()
+        Log.d("ADAPTER0", adapter.toString())
         viewModel.orderHistory.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 mapOrder.clear()
@@ -74,13 +76,13 @@ class OrderHistoryFragment : Fragment() {
                         list.add(OrderHistory(null, values))
                     }
                 }
-                adapter = OrderHistoryAdapter(list)
-                binding?.recyclerOrderHistory?.layoutManager = LinearLayoutManager(context)
-                binding?.recyclerOrderHistory?.adapter = adapter
+                adapter.setData(list)
                 navToOrderDetail()
                 binding?.loadingLayout?.root?.visibility = View.INVISIBLE
             }
         })
+        binding?.recyclerOrderHistory?.layoutManager = LinearLayoutManager(context)
+        binding?.recyclerOrderHistory?.adapter = adapter
         binding?.apply {
             imageLeftOrder.setOnClickListener {
                 parentFragmentManager.popBackStack()

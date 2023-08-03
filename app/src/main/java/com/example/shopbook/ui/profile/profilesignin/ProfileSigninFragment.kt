@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import com.example.shopbook.R
 import com.example.shopbook.databinding.FragmentProfileSigninBinding
 import com.example.shopbook.ui.auth.signin.SignInFragment
+import com.example.shopbook.ui.auth.signup.SignUpFragment
 
 class ProfileSigninFragment : Fragment() {
 
@@ -33,6 +34,11 @@ class ProfileSigninFragment : Fragment() {
             textBtnSignin.setOnClickListener{
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.container, SignInFragment())
+                    .commit()
+            }
+            textCreate.setOnClickListener {
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.container, SignUpFragment())
                     .commit()
             }
         }

@@ -7,12 +7,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.shopbook.R
 import com.example.shopbook.data.model.OrderDetailProduct
+import com.example.shopbook.data.model.Product
 import com.example.shopbook.databinding.ItemOrderDetailBinding
 import com.example.shopbook.utils.FormatMoney
 
-class OrderDetailAdapter(private var orderDetailProductList: List<OrderDetailProduct>) :
+class OrderDetailAdapter :
     RecyclerView.Adapter<OrderDetailAdapter.ViewHolder>() {
-    private val formatMoney=FormatMoney()
+    private val formatMoney = FormatMoney()
+    private var orderDetailProductList: MutableList<OrderDetailProduct> = mutableListOf()
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
@@ -22,6 +24,11 @@ class OrderDetailAdapter(private var orderDetailProductList: List<OrderDetailPro
         return ViewHolder(binding)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun setData(orderDetailProducts: List<OrderDetailProduct>) {
+        orderDetailProductList = orderDetailProducts as MutableList<OrderDetailProduct>
+        notifyDataSetChanged()
+    }
     override fun onBindViewHolder(holder: OrderDetailAdapter.ViewHolder, position: Int) {
         val orderDetailProductList = orderDetailProductList[position]
         holder.bind(orderDetailProductList)
@@ -37,10 +44,11 @@ class OrderDetailAdapter(private var orderDetailProductList: List<OrderDetailPro
                 .load(orderDetailProduct.image)
                 .centerCrop()
                 .into(binding.imageProduct)
-            binding.textPrice.text = orderDetailProduct.subtotal?.let { formatMoney.formatMoney(it.toDouble().toLong()) }
+            binding.textPrice.text =
+                orderDetailProduct.subtotal?.let { formatMoney.formatMoney(it.toDouble().toLong()) }
             binding.textName.text = orderDetailProduct.productName
-            binding.textNumber.text = "x"+orderDetailProduct.quantity.toString()
-            if(orderDetailProduct.wishlist==0){
+            binding.textNumber.text = "x" + orderDetailProduct.quantity.toString()
+            if (orderDetailProduct.wishlist == 0) {
                 binding.imageFavorite.setBackgroundResource(R.drawable.bg_ellipse)
                 binding.imageFavorite.setImageResource(R.drawable.favor_white)
             }

@@ -45,7 +45,6 @@ class UpdateProfileViewModel : ViewModel() {
             val response=userRepository?.changeAvatar(image)
             if(response?.isSuccessful==true){
                 _profile.postValue(response.body())
-                Log.d("OKKKKK", "OKKKK")
             }else{
                 Log.d("FAILLLL", "FAILLL")
             }

@@ -10,6 +10,8 @@ import com.example.shopbook.data.model.AuthorResult
 import com.example.shopbook.data.model.Product
 import com.example.shopbook.data.repository.author.AuthorRepository
 import com.example.shopbook.data.repository.author.AuthorRepositoryImp
+import com.example.shopbook.data.repository.cart.CartRepository
+import com.example.shopbook.data.repository.cart.CartRepositoryImp
 import com.example.shopbook.data.repository.product.ProductRepository
 import com.example.shopbook.data.repository.product.ProductRepositoryImp
 import com.example.shopbook.data.repository.search.SearchRepository
@@ -28,10 +30,10 @@ class AuthorViewModel : ViewModel() {
     private var productRepository: ProductRepository? = ProductRepositoryImp(RemoteDataSource())
     private var authorRepository: AuthorRepository? = AuthorRepositoryImp(RemoteDataSource())
     private var searchRepository: SearchRepository? = SearchRepositoryImp(RemoteDataSource())
-    fun getProductsByAuthor(author_id: Int) {
-
+    private var cartRepository: CartRepository? = CartRepositoryImp(RemoteDataSource())
+    fun getProductsByAuthor(authorId: Int, limit: Int, page: Int, desLength: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = productRepository?.getProductsByAuthor(author_id, 20, 100)
+            val response = productRepository?.getProductsByAuthor(authorId, limit, page, desLength)
             if (response?.isSuccessful == true) {
                 _productList.postValue(response.body()?.products)
             } else {
@@ -59,6 +61,17 @@ class AuthorViewModel : ViewModel() {
                 _author.postValue(response.body())
             } else {
                 Log.d("AUTHORNULL", "NULL")
+            }
+        }
+    }
+    fun addItemToCart(productId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = cartRepository?.addCartItem(productId)
+            Log.d("FAILL", response?.body().toString())
+            if (response?.isSuccessful == true) {
+                Log.d("SUCCESSFUL", "OK")
+            } else {
+                Log.d("NULL", "NULL")
             }
         }
     }

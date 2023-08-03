@@ -28,30 +28,15 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <SearchView
-        android:id="@+id/search_product"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="22dp"
-        android:background="@drawable/bg_search"
-        android:iconifiedByDefault="false"
-        android:queryBackground="@null"
-        android:queryHint="Search"
-        app:layout_constraintEnd_toEndOf="@+id/text_category"
-        app:layout_constraintStart_toStartOf="@+id/image_left"
-        app:layout_constraintTop_toBottomOf="@+id/image_left" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_category"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="-10dp"
+        android:layout_marginEnd="-11dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/search_product"
-        app:layout_constraintStart_toStartOf="@+id/search_product"
-        app:layout_constraintTop_toBottomOf="@+id/search_product" />
-    <include
-        layout="@layout/layout_loading"
-        android:id="@+id/loadingLayout"
-        android:visibility="gone"/>
+        app:layout_constraintEnd_toEndOf="@+id/text_category"
+        app:layout_constraintStart_toStartOf="@+id/image_left"
+        app:layout_constraintTop_toBottomOf="@+id/image_left" />
 </androidx.constraintlayout.widget.ConstraintLayout>
