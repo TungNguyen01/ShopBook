@@ -13,7 +13,6 @@ interface IDataSource {
     suspend fun getNewBook(): Response<NewArrivalList>?
 
     suspend fun getAllAuthor(): Response<AuthorList>?
-
     suspend fun getSearchProducts(
         limit: Int,
         page: Int,
@@ -38,12 +37,14 @@ interface IDataSource {
         page: Int,
         description_length: Int,
     ): Response<ProductsByAuthor>?
+
     suspend fun getProductsByCategory(
         id: Int,
         limit: Int,
         page: Int,
         description_length: Int,
     ): Response<ProductList>?
+
     suspend fun getAuthor(authorId: Int): Response<AuthorResult>?
     suspend fun getSearchNewProduct(): Response<ProductNewList>?
     suspend fun getCustomer(): Response<Customer>?
@@ -63,6 +64,7 @@ interface IDataSource {
     suspend fun changeAvatar(image: MultipartBody.Part): Response<Customer>?
     suspend fun getOrderHistory(): Response<OrderList>?
     suspend fun getOrderDetail(orderId: Int): Response<OrderDetail>?
-
     suspend fun addCartItem(productId: Int): Response<List<CartItem>>?
+    suspend fun addItemToWishList(productId: Int): Response<Messeage>?
+    suspend fun removeItemInWishList(productId: Int): Response<Messeage>
 }

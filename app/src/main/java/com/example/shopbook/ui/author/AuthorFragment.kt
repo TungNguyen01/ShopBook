@@ -40,6 +40,8 @@ class AuthorFragment : Fragment() {
     private var lastPosition = 0
     private var totalPosition = 0
     private var currentPosition = 0
+    private var pastPage = -1
+    private var check = true
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -59,11 +61,13 @@ class AuthorFragment : Fragment() {
         binding?.loadingLayout?.root?.visibility = View.VISIBLE
         val authorId = arguments?.getString("authorId")?.toInt()
         authorId?.let {
-            viewModel.getProductsByAuthor(authorId, 20, 1, 100)
+            viewModel.getProductsByAuthor(authorId, 10, currentPage, 100)
             viewModel.getAuthor(authorId)
             loadData(authorId)
-            observeProducts()
         }
+        observeProducts()
+        Log.d("CURRENT", currentPage.toString())
+
         val horizontalSpacing =
             resources.getDimensionPixelSize(R.dimen.horizontal_spacing)
         val verticalSpacing =
@@ -77,13 +81,22 @@ class AuthorFragment : Fragment() {
 
                 override fun onQueryTextChange(newText: String): Boolean {
                     if (newText.isEmpty()) {
+                        if (!check) {
+                            currentPage = 1
+                        }
+                        check = true
                         textAuthor.visibility = View.VISIBLE
                         textHot.visibility = View.VISIBLE
                         if (authorId != null) {
-                            viewModel.getProductsByAuthor(authorId, 20, 1, 100)
+                            adapter.clearData()
+                            Log.d("CURRENTPAGE", currentPage.toString())
+                            Log.d("PASTPAGE", pastPage.toString())
+                            Log.d("ADAPTER", adapter.itemCount.toString())
+                            viewModel.getProductsByAuthor(authorId, 10, 1, 100)
+                            loadingLayout.root.visibility = View.VISIBLE
                         }
-                        observeProducts()
                     } else {
+                        check = false
                         val layoutParams =
                             searchProduct.layoutParams as ViewGroup.MarginLayoutParams
                         val newMarginTopInDp = 12
@@ -96,8 +109,8 @@ class AuthorFragment : Fragment() {
                         textAuthor.visibility = View.GONE
                         textHot.visibility = View.GONE
                         authorId?.let {
-                            viewModel.getSearchAuthorProduct(it, newText)
-//                            observeProducts()
+                            viewModel.getSearchAuthorProduct(it, 1, newText)
+//                            loadData(authorId)
                         }
                     }
                     return false;
@@ -124,14 +137,18 @@ class AuthorFragment : Fragment() {
     private fun observeProducts() {
         viewModel.productList.observe(viewLifecycleOwner, Observer { productList ->
             if (productList != null) {
-//                adapter.setData(productList)
-                bookList.addAll(productList)
-                adapter.setData(productList)
+                Log.d("CHECK", check.toString())
+                if (pastPage != currentPage && check) {
+                    bookList.addAll(productList)
+                    Log.d("BOOKADD", bookList.size.toString())
+                } else if (!check) {
+                    bookList = productList as MutableList<Product>
+                    Log.d("BOOK", bookList.size.toString())
+                }
+                adapter.setData(bookList)
                 navToProductDetail()
                 addItemToCart()
                 binding?.loadingLayout?.root?.visibility = View.INVISIBLE
-            } else {
-                Log.d("NULLLL", "HEllo")
             }
         })
         viewModel.author.observe(viewLifecycleOwner, Observer {
@@ -156,6 +173,7 @@ class AuthorFragment : Fragment() {
                     .replace(R.id.frame_layout, productFragment.apply { arguments = bundle })
                     .addToBackStack("AuthorFragment")
                     .commit()
+                pastPage = currentPage
             }
         })
     }
@@ -197,9 +215,8 @@ class AuthorFragment : Fragment() {
                     totalPosition = adapter.itemCount
                     if (lastPosition != currentPosition && ((lastPosition == totalPosition - 3 && totalPosition % 2 == 0) || (lastPosition == totalPosition - 2 && totalPosition % 2 != 0))) {
                         currentPage++
-                        viewModel.getProductsByAuthor(authorId, 20, currentPage, 100)
+                        viewModel.getProductsByAuthor(authorId, 10, currentPage, 100)
                         currentPosition = lastPosition
-//                        observeProducts()
                     }
                 }
             })

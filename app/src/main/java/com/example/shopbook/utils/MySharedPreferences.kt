@@ -30,4 +30,14 @@ object MySharedPreferences {
         editor.putBoolean(key, value)
         editor.apply()
     }
+
+    fun putInt(key: String, value: Int) {
+        val editor = sharedPreferences.edit()
+        editor.putInt(key, value)
+        editor.apply()
+    }
+
+    fun getInt(key: String, defaultValue: Int): Int {
+        return sharedPreferences.getInt(key, defaultValue)
+    }
 }

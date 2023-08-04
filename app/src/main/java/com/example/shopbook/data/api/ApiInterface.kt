@@ -82,7 +82,7 @@ interface ApiInterface {
         @Query("limit") limit: Int,
         @Query("page") page: Int,
         @Query("description_length") description_length: Int,
-    ):Response<ProductList>
+    ): Response<ProductList>
 
     @GET("author/{authorId}")
     suspend fun getAuthor(@Path("authorId") authorId: Int): Response<AuthorResult>
@@ -132,4 +132,13 @@ interface ApiInterface {
     @Headers("user-key: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcl9pZCI6MiwibmFtZSI6IlR1YW4gQW5oIiwiZW1haWwiOiJhbmhkdDFAeW9wbWFpbC5jb20iLCJpYXQiOjE2ODk4NDM5NTMsImV4cCI6MTY5MTEzOTk1M30.Hg_DXIPz_uDjBbX8d5khpFWdu0or6Xxd8Ij-k_pOcuA")
     @POST("shoppingCart/add")
     suspend fun addProduct2Cart(@Field("product_id") productId: Int): Response<List<CartItem>>
+
+    @FormUrlEncoded
+    @Headers("user-key: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcl9pZCI6MiwibmFtZSI6IlR1YW4gQW5oIiwiZW1haWwiOiJhbmhkdDFAeW9wbWFpbC5jb20iLCJpYXQiOjE2ODk4NDM5NTMsImV4cCI6MTY5MTEzOTk1M30.Hg_DXIPz_uDjBbX8d5khpFWdu0or6Xxd8Ij-k_pOcuA")
+    @POST("wishlist/add")
+    suspend fun addItemToWishList(@Field("product_id") productId: Int): Response<Messeage>
+
+    @Headers("user-key: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcl9pZCI6MiwibmFtZSI6IlR1YW4gQW5oIiwiZW1haWwiOiJhbmhkdDFAeW9wbWFpbC5jb20iLCJpYXQiOjE2ODk4NDM5NTMsImV4cCI6MTY5MTEzOTk1M30.Hg_DXIPz_uDjBbX8d5khpFWdu0or6Xxd8Ij-k_pOcuA")
+    @DELETE("wishlist/remove/{product_id}")
+    suspend fun removeItemInWishList(@Path("product_id") productId: Int): Response<Messeage>
 }

@@ -19,43 +19,6 @@ import java.util.*
 class SearchViewModel() : ViewModel() {
     private var bookList = mutableListOf<Product>()
     private val historyList = mutableListOf<Product>()
-
-
-//    init {
-//        bookList.add(
-//            Product(1, "Đắc nhân tâm", "Descriptisfdson", "1000VND",
-//                "200VND", "https://cdn0.fahasa.com/media/catalog/product/h/o/hoi-chung-tuoi-thanh-xuan_9_ban-pho-thong.jpg", "", "", 0, 0, 0))
-//        bookList.add(Product(3, "Đắc đạo", "Descriptisfdson", "1000VND",
-//            "200VND", "https://cdn0.fahasa.com/media/catalog/product/8/9/8935280913738-dd.jpg", "", "", 0, 0, 0))
-//        bookList.add(Product(2, "Đắc văn kỉ tử", "Descriptisfdson", "1000VND",
-//            "200VND", "https://cdn0.fahasa.com/media/catalog/product/8/9/8935280913738-dd.jpg", "", "", 0, 0, 0))
-//        bookList.add(
-//            Product(1, "Đắc nhân tâm", "Descriptisfdson", "1000VND",
-//                "200VND", "https://cdn0.fahasa.com/media/catalog/product/h/o/hoi-chung-tuoi-thanh-xuan_9_ban-pho-thong.jpg", "", "", 0, 0, 0))
-//        bookList.add(Product(3, "Đắc đạo", "Descriptisfdson", "1000VND",
-//            "200VND", "https://cdn0.fahasa.com/media/catalog/product/8/9/8935280913738-dd.jpg", "", "", 0, 0, 0))
-//        bookList.add(Product(2, "Đắc văn kỉ tử", "Descriptisfdson", "1000VND",
-//            "200VND", "https://cdn0.fahasa.com/media/catalog/product/8/9/8935280913738-dd.jpg", "", "", 0, 0, 0))
-//        bookList.add(
-//            Product(1, "Đắc nhân tâm", "Descriptisfdson", "1000VND",
-//                "200VND", "https://cdn0.fahasa.com/media/catalog/product/h/o/hoi-chung-tuoi-thanh-xuan_9_ban-pho-thong.jpg", "", "", 0, 0, 0))
-//        bookList.add(Product(3, "Đắc đạo", "Descriptisfdson", "1000VND",
-//            "200VND", "https://cdn0.fahasa.com/media/catalog/product/8/9/8935280913738-dd.jpg", "", "", 0, 0, 0))
-//        bookList.add(Product(2, "Đắc văn kỉ tử", "Descriptisfdson", "1000VND",
-//            "200VND", "https://cdn0.fahasa.com/media/catalog/product/8/9/8935280913738-dd.jpg", "", "", 0, 0, 0))
-//        bookList.add(
-//            Product(1, "Đắc nhân tâm", "Descriptisfdson", "1000VND",
-//                "200VND", "https://cdn0.fahasa.com/media/catalog/product/8/9/8935280913738-dd.jpg", "", "", 0, 0, 0))
-//    }
-//
-//    fun getProducts(): MutableList<Product> {
-//        return bookList
-//    }
-//
-//    fun getHistory(): MutableList<Product> {
-//        return historyList
-//    }
-
     private val _productList = MutableLiveData<List<Product>>()
     val productList: LiveData<List<Product>> get() = _productList
     private val _productNewList = MutableLiveData<List<ProductNew>>()
@@ -70,7 +33,7 @@ class SearchViewModel() : ViewModel() {
                        query_string: String,
                        filter_type: Int,
                        price_sort_order: String,) {
-
+        Log.d("SEARCHFRAGMENT", "OK${page}")
         viewModelScope.launch(Dispatchers.IO) {
             val response = searchRepository?.getSearchProducts(limit, page, description_length, query_string, filter_type, price_sort_order)
             if (response?.isSuccessful == true) {

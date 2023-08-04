@@ -21,6 +21,7 @@ class CategoryBookViewModel : ViewModel() {
     private var productRepository: ProductRepository? = ProductRepositoryImp(RemoteDataSource())
     private var cartRepository: CartRepository? = CartRepositoryImp(RemoteDataSource())
     fun getProductsInCategory(categoryId: Int, limit: Int, page: Int, desLength: Int) {
+        Log.d("SEARCHFRAGMENT", "OK${page}")
         viewModelScope.launch(Dispatchers.IO) {
             val response =
                 productRepository?.getProductsByCategory(categoryId, limit, page, desLength)

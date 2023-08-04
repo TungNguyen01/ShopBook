@@ -271,7 +271,7 @@
             app:layout_constraintTop_toBottomOf="@+id/text_buymore" />
 
         <ImageView
-            android:id="@+id/text_arrow"
+            android:id="@+id/image_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="23dp"

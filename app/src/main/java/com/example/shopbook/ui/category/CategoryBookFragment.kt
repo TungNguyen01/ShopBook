@@ -28,11 +28,13 @@ class CategoryBookFragment : Fragment() {
     private lateinit var viewModel: CategoryBookViewModel
     private var binding: FragmentCategoryBookBinding? = null
     private lateinit var adapter: BookAdapter
+    private lateinit var layoutManager: GridLayoutManager
     private var bookList = mutableListOf<Product>()
     private var currentPage = 1
     private var lastPosition = 0
     private var totalPosition = 0
     private var currentPosition = 0
+    private var pastPage = -1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this).get(CategoryBookViewModel::class.java)
@@ -51,11 +53,11 @@ class CategoryBookFragment : Fragment() {
         binding?.loadingLayout?.root?.visibility = View.VISIBLE
         adapter = BookAdapter()
         val categoryId = arguments?.getString("categoryId")?.toInt()
-        categoryId?.let {
-            viewModel.getProductsInCategory(it, 10, 1, 100)
-            loadData(categoryId)
-        }
         observeProducts()
+        categoryId?.let {
+            loadData(categoryId)
+            viewModel.getProductsInCategory(it, 10, currentPage, 100)
+        }
         val horizontalSpacing =
             resources.getDimensionPixelSize(R.dimen.horizontal_spacing)
         val verticalSpacing =
@@ -67,7 +69,8 @@ class CategoryBookFragment : Fragment() {
                     verticalSpacing
                 )
             )
-            recyclerCategory.layoutManager = GridLayoutManager(context, 2)
+            layoutManager = GridLayoutManager(context, 2)
+            recyclerCategory.layoutManager = layoutManager
             recyclerCategory.adapter = adapter
             imageLeft.setOnClickListener {
                 parentFragmentManager.popBackStack()
@@ -86,6 +89,7 @@ class CategoryBookFragment : Fragment() {
                     .replace(R.id.frame_layout, productFragment.apply { arguments = bundle })
                     .addToBackStack("CategoryBookFragment")
                     .commit()
+                pastPage = currentPage
             }
         })
     }
@@ -102,10 +106,13 @@ class CategoryBookFragment : Fragment() {
 
     private fun observeProducts() {
         viewModel.producList.observe(viewLifecycleOwner, Observer { productList ->
-            Log.d("PRODUCTT", productList.toString())
+            Log.d("PRODUCT", productList.toString())
             if (productList != null) {
-//                    adapter.setData(productList)
-                bookList.addAll(productList)
+                Log.d("PRODUCT", productList.size.toString())
+                if (pastPage != currentPage) {
+                    bookList.addAll(productList)
+                    Log.d("OBSERVE", "OKKKKK")
+                }
                 adapter.setData(bookList)
                 navToProductDetail()
                 addItemToCart()
@@ -122,13 +129,16 @@ class CategoryBookFragment : Fragment() {
                     lastPosition =
                         (recyclerCategory.layoutManager as GridLayoutManager).findLastVisibleItemPosition()
                     totalPosition = adapter.itemCount
-                    Log.d("CURRENT", currentPage.toString())
+
                     if (lastPosition != currentPosition && ((lastPosition == totalPosition - 3 && totalPosition % 2 == 0) || (lastPosition == totalPosition - 2 && totalPosition % 2 != 0))) {
                         currentPage++
                         viewModel.getProductsInCategory(categoryId, 10, currentPage, 100)
                         currentPosition = lastPosition
 //                        observeProducts()
                     }
+//                    val visibleItemCount = layoutManager.childCount
+//                    val totalItemCount = layoutManager.itemCount;
+//                    val pastVisiblesItems = layoutManager.findFirstVisibleItemPosition()
                 }
             })
         }

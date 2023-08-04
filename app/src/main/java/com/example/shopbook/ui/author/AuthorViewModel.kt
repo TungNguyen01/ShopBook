@@ -42,10 +42,16 @@ class AuthorViewModel : ViewModel() {
         }
     }
 
-    fun getSearchAuthorProduct(authorId: Int, queryString: String) {
+    fun getSearchAuthorProduct(authorId: Int, currentPage: Int, queryString: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val response =
-                searchRepository?.getSearchAuthorProducts(authorId, 10, 1, 100, queryString)
+                searchRepository?.getSearchAuthorProducts(
+                    authorId,
+                    10,
+                    currentPage,
+                    100,
+                    queryString
+                )
             if (response?.isSuccessful == true) {
                 _productList.postValue(response.body()?.products)
             } else {
@@ -64,6 +70,7 @@ class AuthorViewModel : ViewModel() {
             }
         }
     }
+
     fun addItemToCart(productId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             val response = cartRepository?.addCartItem(productId)

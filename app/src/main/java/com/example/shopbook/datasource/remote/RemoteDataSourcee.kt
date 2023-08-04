@@ -7,7 +7,6 @@ import okhttp3.MultipartBody
 import retrofit2.Response
 
 class RemoteDataSource() : IDataSource {
-
     override suspend fun getSearchProducts(
         limit: Int,
         page: Int,
@@ -59,10 +58,11 @@ class RemoteDataSource() : IDataSource {
         id: Int,
         limit: Int,
         page: Int,
-        description_length: Int
+        description_length: Int,
     ): Response<ProductList> {
         return RetrofitClient.apiService.getProductsByCategory(id, limit, page, description_length)
     }
+
     override suspend fun getAuthor(authorId: Int): Response<AuthorResult>? {
         return RetrofitClient.apiService.getAuthor(authorId)
     }
@@ -105,6 +105,22 @@ class RemoteDataSource() : IDataSource {
         return RetrofitClient.apiService.getOrderDetail(orderId)
     }
 
+    override suspend fun getAllAuthor(): Response<AuthorList>? {
+        return RetrofitClient.apiService.getAuthor()
+    }
+
+    override suspend fun addCartItem(productId: Int): Response<List<CartItem>>? {
+        return RetrofitClient.apiService.addProduct2Cart(productId)
+    }
+
+    override suspend fun addItemToWishList(productId: Int): Response<Messeage>? {
+        return RetrofitClient.apiService.addItemToWishList(productId)
+    }
+
+    override suspend fun removeItemInWishList(productId: Int): Response<Messeage> {
+        return RetrofitClient.apiService.removeItemInWishList(productId)
+    }
+
     override suspend fun getBooks(): Response<HotBookList>? {
         return RetrofitClient.apiService.getHotBook()
     }
@@ -117,11 +133,4 @@ class RemoteDataSource() : IDataSource {
         return RetrofitClient.apiService.getNewBook()
     }
 
-    override suspend fun getAllAuthor(): Response<AuthorList>? {
-        return RetrofitClient.apiService.getAuthor()
-    }
-
-    override suspend fun addCartItem(productId: Int): Response<List<CartItem>>? {
-        return RetrofitClient.apiService.addProduct2Cart(productId)
-    }
 }

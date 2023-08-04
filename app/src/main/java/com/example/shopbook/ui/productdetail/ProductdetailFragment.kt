@@ -22,13 +22,15 @@ import com.example.shopbook.data.model.ProductInfoList
 import com.example.shopbook.databinding.FragmentProductDetailBinding
 import com.example.shopbook.ui.author.AuthorFragment
 import com.example.shopbook.ui.profile.ProfileFragment
+import com.example.shopbook.ui.publisher.PublisherFragment
 import com.example.shopbook.utils.FormatMoney
+import com.example.shopbook.utils.MySharedPreferences
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class ProductdetailFragment : Fragment() {
     private var binding: FragmentProductDetailBinding? = null
     private lateinit var viewModel: ProductdetailViewModel
-    private val formatMoney= FormatMoney()
+    private val formatMoney = FormatMoney()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -50,12 +52,16 @@ class ProductdetailFragment : Fragment() {
         binding?.loadingLayout?.root?.visibility = View.VISIBLE
         val productId = arguments?.getString("bookId")?.toInt()
         var authorId = 0
+        var wishlist = 0
+        var publisherId = 0
         productId?.let {
             viewModel.getProductInfo(it)
             viewModel.productInfo.observe(viewLifecycleOwner, Observer { productInfoList ->
                 if (productInfoList != null) {
                     bindData(productInfoList)
                     authorId = productInfoList.author.authorId
+                    wishlist = productInfoList.product.wishlist
+                    publisherId = productInfoList.supplier.supplier_id
                 } else {
                     Log.d("NULLLL", "HEllo")
                 }
@@ -63,7 +69,7 @@ class ProductdetailFragment : Fragment() {
         }
 
         readmoreInfo()
-
+        activity?.let { MySharedPreferences.init(it.applicationContext) }
         binding?.apply {
             imageLeft.setOnClickListener {
                 parentFragmentManager.popBackStack()
@@ -85,11 +91,45 @@ class ProductdetailFragment : Fragment() {
                     .commit()
             }
             textAdditemtocart.setOnClickListener {
-                if (productId != null) {
+                productId?.let { productId ->
                     viewModel.addItemToCart(productId)
-                    Toast.makeText(context, "ADD ITEM TO CART SUCCESSFUL", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "ADD ITEM TO CART SUCCESSFUL", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
+            imageFavorite.setOnClickListener {
+                productId?.let { productId -> itemWishList(productId, wishlist) }
+            }
+            imageArrow.setOnClickListener {
+                val bundle = Bundle()
+                bundle.putString("publisherId", publisherId.toString())
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.frame_layout, PublisherFragment().apply { arguments = bundle })
+                    .addToBackStack("ProductDetail")
+                    .commit()
+            }
+        }
+    }
+
+    private fun itemWishList(productId: Int, wishlist: Int) {
+        MySharedPreferences.putInt("productId", productId)
+        if (wishlist == 0) {
+            viewModel.addItemToWishList(productId)
+            Log.d("ADD", "ADD")
+            viewModel.messeageAdd.observe(viewLifecycleOwner, Observer {
+                Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+            })
+            MySharedPreferences.putInt("wishlist", 1)
+            binding?.imageFavorite?.setImageResource(R.drawable.ic_favorite)
+            binding?.imageFavorite?.setBackgroundResource(R.drawable.bg_ellipse_favor)
+        } else {
+            viewModel.removeItemInWishList(productId)
+            viewModel.messeageRemove.observe(viewLifecycleOwner, Observer {
+                Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+            })
+            MySharedPreferences.putInt("wishlist", 0)
+            binding?.imageFavorite?.setImageResource(R.drawable.favor_white)
+            binding?.imageFavorite?.setBackgroundResource(R.drawable.bg_ellipse)
         }
     }
 
@@ -116,9 +156,24 @@ class ProductdetailFragment : Fragment() {
             readmore.text = resources.getString(R.string.readmore)
             textPublish.text = productInfoList.supplier.supplier_name
             textPriceName.text = resources.getString(R.string.price)
-            if (productInfoList.product.wishlist == 1) {
-                imageFavorite.setBackgroundResource(R.drawable.bg_ellipse_favor)
-                imageFavorite.setImageResource(R.drawable.ic_favorite)
+            val wishListPre=MySharedPreferences.getInt("wishlist", -1)
+            val productIdPre=MySharedPreferences.getInt("productId", -1)
+            if (wishListPre!=-1 && productIdPre==productInfoList.product.productId) {
+                if (MySharedPreferences.getInt("wishlist", -1) == 1) {
+                    imageFavorite.setBackgroundResource(R.drawable.bg_ellipse_favor)
+                    imageFavorite.setImageResource(R.drawable.ic_favorite)
+                } else {
+                    binding?.imageFavorite?.setImageResource(R.drawable.favor_white)
+                    binding?.imageFavorite?.setBackgroundResource(R.drawable.bg_ellipse)
+                }
+            } else {
+                if (productInfoList.product.wishlist == 1) {
+                    imageFavorite.setBackgroundResource(R.drawable.bg_ellipse_favor)
+                    imageFavorite.setImageResource(R.drawable.ic_favorite)
+                } else {
+                    binding?.imageFavorite?.setImageResource(R.drawable.favor_white)
+                    binding?.imageFavorite?.setBackgroundResource(R.drawable.bg_ellipse)
+                }
             }
             binding?.loadingLayout?.root?.visibility = View.INVISIBLE
         }

@@ -32,6 +32,8 @@ class SearchFragment : Fragment() {
     private var lastPosition = 0
     private var totalPosition = 0
     private var currentPosition = 0
+    private var pastPage = -1
+    private lateinit var layoutManager: GridLayoutManager
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,11 +52,9 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         adapter = BookAdapter()
         binding?.loadingLayout?.root?.visibility = View.VISIBLE
-        Log.d("CURRENT", currentPage.toString())
-        Log.d("CURRENTLAST", lastPosition.toString())
-        Log.d("CURRENTTOTAL", totalPosition.toString())
-        Log.d("CURRENTPOSITION", currentPosition.toString())
         loadData()
+        Log.d("TAGGGG", currentPage.toString())
+        Log.d("FIRST", "FIRST")
         viewModel.getAllProducts(10, currentPage, 100, "the gioi", 0, "asc")
         observeProducts()
         val horizontalSpacing =
@@ -107,8 +107,8 @@ class SearchFragment : Fragment() {
                     }
                 }
             })
-
-            recyclerProduct.layoutManager = GridLayoutManager(context, 2)
+            layoutManager = GridLayoutManager(context, 2)
+            recyclerProduct.layoutManager = layoutManager
             binding?.recyclerProduct?.adapter = adapter
             recyclerProduct.addItemDecoration(
                 ItemSpacingDecoration(
@@ -145,7 +145,9 @@ class SearchFragment : Fragment() {
     private fun observeProducts() {
         viewModel.productList.observe(viewLifecycleOwner, Observer { productList ->
             if (productList != null) {
-                bookList.addAll(productList)
+                if (pastPage != currentPage) {
+                    bookList.addAll(productList)
+                }
                 adapter.setData(bookList)
 //                adapter.addData(productList)
                 binding?.loadingLayout?.root?.visibility = View.INVISIBLE
@@ -167,10 +169,12 @@ class SearchFragment : Fragment() {
                         ProductdetailFragment().apply { arguments = bundle })
                     .addToBackStack("SearchFragment")
                     .commit()
+                pastPage = currentPage
             }
         })
     }
-    private fun loadData(){
+
+    private fun loadData() {
         binding?.apply {
             recyclerProduct.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -178,12 +182,13 @@ class SearchFragment : Fragment() {
                     lastPosition =
                         (recyclerProduct.layoutManager as GridLayoutManager).findLastVisibleItemPosition()
                     totalPosition = adapter.itemCount
-                    Log.d("CURRENT", currentPage.toString())
+//                    val visibleItemCount = layoutManager.childCount
+//                    val totalItemCount = layoutManager.itemCount;
+//                    val pastVisiblesItems = layoutManager.findFirstVisibleItemPosition();
                     if (lastPosition != currentPosition && ((lastPosition == totalPosition - 3 && totalPosition % 2 == 0) || (lastPosition == totalPosition - 2 && totalPosition % 2 != 0))) {
                         currentPage++
                         viewModel.getAllProducts(10, currentPage, 100, "the gioi", 0, "asc")
                         currentPosition = lastPosition
-//                        observeProducts()
                     }
                 }
             })
