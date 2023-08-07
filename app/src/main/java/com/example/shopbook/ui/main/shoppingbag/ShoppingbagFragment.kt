@@ -20,7 +20,8 @@ import com.example.shopbook.databinding.FragmentShoppingBagBinding
 import com.example.shopbook.ui.adapter.OnItemClickListener
 import com.example.shopbook.ui.main.adapter.BagAdapter
 import com.example.shopbook.ui.main.shoppingbag.viewmodel.ShoppingbagViewModel
-
+import com.example.shopbook.ui.profile.ProfileFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class ShoppingbagFragment : Fragment() {
@@ -34,6 +35,9 @@ class ShoppingbagFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        val bottomNavigationView =
+            requireActivity().findViewById<BottomNavigationView>(R.id.navigation)
+        bottomNavigationView.visibility = View.VISIBLE
         viewModel = ViewModelProvider(this).get(ShoppingbagViewModel::class.java)
         val binding = FragmentShoppingBagBinding.inflate(inflater, container, false)
 
@@ -44,6 +48,15 @@ class ShoppingbagFragment : Fragment() {
         viewModel.cart.observe(viewLifecycleOwner, {cart ->
             bookAdapter.updateData(cart)
         })
+        binding?.apply {
+            imageProfile.setOnClickListener {
+                val profileFragment = ProfileFragment()
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.frame_layout, profileFragment)
+                    .addToBackStack("productFragment")
+                    .commit()
+            }
+        }
         binding.recyclerviewBag.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = bookAdapter

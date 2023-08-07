@@ -15,12 +15,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shopbook.R
 import com.example.shopbook.data.model.*
 import com.example.shopbook.databinding.FragmentHomeBinding
+import com.example.shopbook.ui.adapter.OnItemClickListener
+import com.example.shopbook.ui.category.CategoryBookFragment
 import com.example.shopbook.ui.category.categoryindex.CategoryIndexFragment
 import com.example.shopbook.ui.main.adapter.BookAdapter
 import com.example.shopbook.ui.main.adapter.CategoryAdapter
 import com.example.shopbook.ui.main.adapter.DiscoverStoreAdapter
 import com.example.shopbook.ui.main.adapter.NewArrivalAdapter
 import com.example.shopbook.ui.main.home.viewmodel.HomeViewModel
+import com.example.shopbook.ui.productdetail.ProductdetailFragment
+import com.example.shopbook.ui.profile.ProfileFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -36,6 +40,8 @@ class HomeFragment : Fragment() {
     private lateinit var categoriesAdapter: CategoryAdapter
     private lateinit var newBooksAdapter: NewArrivalAdapter
     private lateinit var authorsAdapter: DiscoverStoreAdapter
+    private var pastPage = -1
+    private var currentPage = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,6 +62,13 @@ class HomeFragment : Fragment() {
         viewModel.getAllCategory()
         viewModel.getAllNewBook()
         viewModel.getAllAuthor()
+//        .setOnClickListener {
+//            val profileFragment = ProfileFragment()
+//            parentFragmentManager.beginTransaction()
+//                .replace(R.id.frame_layout, profileFragment)
+//                .addToBackStack("productFragment")
+//                .commit()
+//        }
 
         viewModel.hotBookList.observe(viewLifecycleOwner, { hotBooks ->
             hotBooksAdapter.updateData(hotBooks)
@@ -72,20 +85,68 @@ class HomeFragment : Fragment() {
         viewModel.authorList.observe(viewLifecycleOwner, { authors ->
             authorsAdapter.updateData(authors)
         })
-        // Log.d("tung", bookList.toString())
+        binding?.apply {
+            imageProfile.setOnClickListener {
+            val profileFragment = ProfileFragment()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.frame_layout, profileFragment)
+                .addToBackStack("productFragment")
+                .commit()
+            }
+        }
         binding.recyclerviewHotbook.apply {
             layoutManager = GridLayoutManager(requireContext(), 2)
             adapter = hotBooksAdapter
+            hotBooksAdapter.setOnItemClickListener(object : OnItemClickListener {
+                override fun onItemClick(position: Int) {
+                    val product = hotBooksAdapter.getBook(position)
+                    val bundle = Bundle()
+                    bundle.putString("bookId", product.product_id.toString())
+                    parentFragmentManager.beginTransaction()
+                        .replace(
+                            R.id.frame_layout,
+                            ProductdetailFragment().apply { arguments = bundle })
+                        .addToBackStack("SearchFragment")
+                        .commit()
+                    pastPage = currentPage
+                }
+            })
         }
 
         binding.recyclerviewCategory.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = categoriesAdapter
+            categoriesAdapter.setOnItemClickListener(object : OnItemClickListener {
+                override fun onItemClick(position: Int) {
+                    val bundle = Bundle()
+                    val categoryId = categoriesAdapter.getCategory(position).categoryId
+                    bundle.putString("categoryId", categoryId.toString())
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.frame_layout, CategoryBookFragment()
+                            .apply { arguments = bundle })
+                        .addToBackStack("CategoryIndex")
+                        .commit()
+                }
+            })
         }
 
         binding.recyclerviewNewarrival.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = newBooksAdapter
+            newBooksAdapter.setOnItemClickListener(object : OnItemClickListener {
+                override fun onItemClick(position: Int) {
+                    val product = newBooksAdapter.getBook(position)
+                    val bundle = Bundle()
+                    bundle.putString("bookId", product.product_id.toString())
+                    parentFragmentManager.beginTransaction()
+                        .replace(
+                            R.id.frame_layout,
+                            ProductdetailFragment().apply { arguments = bundle })
+                        .addToBackStack("SearchFragment")
+                        .commit()
+                    pastPage = currentPage
+                }
+            })
         }
 
         binding.recyclerviewDiscoverstore.apply {
@@ -98,7 +159,11 @@ class HomeFragment : Fragment() {
                 .addToBackStack("HomeFragment")
                 .commit()
         }
+
+
+
         return binding.root
     }
+
 }
 

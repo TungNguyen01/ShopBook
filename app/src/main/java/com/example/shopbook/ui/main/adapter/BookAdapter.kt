@@ -24,11 +24,14 @@ class BookAdapter : RecyclerView.Adapter<BookAdapter.BookViewHolder>() {
     override fun onBindViewHolder(holder: BookViewHolder, position: Int) {
         val hotBook = hotBooks[position]
         holder.bind(hotBook)
+        holder.imgBook.setOnClickListener {
+            onItemClickListener?.onItemClick(position)
+        }
     }
     fun setOnItemClickListener(listener: OnItemClickListener) {
         onItemClickListener = listener
     }
-
+    fun getBook(position: Int): HotBook = hotBooks[position]
     override fun getItemCount(): Int {
         return hotBooks.size
     }
@@ -38,7 +41,7 @@ class BookAdapter : RecyclerView.Adapter<BookAdapter.BookViewHolder>() {
         notifyDataSetChanged()
     }
     class BookViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val imgBook : ImageView = itemView.findViewById(R.id.book1)
+        val imgBook : ImageView = itemView.findViewById(R.id.book1)
         private val bookName: TextView = itemView.findViewById(R.id.tv_namebook)
         private val bookPrice: TextView = itemView.findViewById(R.id.tv_price)
         private val bookSPrice: TextView = itemView.findViewById(R.id.tv_sprice)
