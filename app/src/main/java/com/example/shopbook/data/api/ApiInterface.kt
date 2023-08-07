@@ -64,7 +64,7 @@ interface ApiInterface {
         @Query("query_string") queryString: String,
     ): Response<ProductList>
 
-    
+
     @GET("products/{product_id}")
     suspend fun getProductInfo(@Path("product_id") product_id: Int): Response<ProductInfoList>
 
@@ -90,12 +90,12 @@ interface ApiInterface {
     @GET("products/new")
     suspend fun getSearchNewProduct(): Response<ProductNewList>
 
-    
+
     @GET("customers")
     suspend fun getCustomer(): Response<Customer>
 
     @FormUrlEncoded
-    
+
     @PUT("customers")
     suspend fun updateCustomer(
         @Field("name") name: String,
@@ -114,22 +114,22 @@ interface ApiInterface {
     ): Response<Customer>
 
     @Multipart
-    
+
     @POST("customers/update/avatar")
     suspend fun changeAvatar(
         @Part image: MultipartBody.Part,
     ): Response<Customer>
 
-    
+
     @GET("orders")
     suspend fun getOrderHistory(): Response<OrderList>
 
-    
+
     @GET("orders/{orderId}")
     suspend fun getOrderDetail(@Path("orderId") orderId: Int): Response<OrderDetail>
 
     @FormUrlEncoded
-    
+
     @POST("shoppingCart/add")
     suspend fun addProduct2Cart(@Field("product_id") productId: Int): Response<List<CartItem>>
 
@@ -137,7 +137,17 @@ interface ApiInterface {
     @POST("wishlist/add")
     suspend fun addItemToWishList(@Field("product_id") productId: Int): Response<Messeage>
 
-    
+
     @DELETE("wishlist/remove/{product_id}")
     suspend fun removeItemInWishList(@Path("product_id") productId: Int): Response<Messeage>
+
+    @GET("shoppingCart")
+    suspend fun getCart(): Response<CartList>
+
+    @DELETE("shoppingCart/removeProduct/{item_id}")
+    suspend fun removeProduct(@Path("item_id") itemId: Int): Response<Messeage>
+
+    @FormUrlEncoded
+    @POST("shoppingCart/update")
+    suspend fun updateQuantity(@Field("item_id") itemId: Int, @Field("quantity") quantity : Int) : Response<Messeage>
 }

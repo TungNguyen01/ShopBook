@@ -67,7 +67,7 @@ class HomeViewModel : ViewModel() {
     }
     private val _authorList = MutableLiveData<List<Author>>()
     val authorList: LiveData<List<Author>> get() = _authorList
-    protected var authorRepository: AuthorRepository? = AuthorRepositoryImp(RemoteDataSource())
+    private var authorRepository: AuthorRepository? = AuthorRepositoryImp(RemoteDataSource())
 
     fun getAllAuthor(){
         viewModelScope.launch(Dispatchers.IO) {
@@ -87,10 +87,9 @@ class HomeViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
 
             val response = productRepository?.getProductInfo(id)
+            Log.d("tungnui", (response?.body()).toString())
             if (response?.isSuccessful == true) {
                 _productListInfo.postValue(response.body())
-            } else {
-                Log.d("NNULLL", "NULLLL")
             }
         }
     }

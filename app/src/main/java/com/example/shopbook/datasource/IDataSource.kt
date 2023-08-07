@@ -2,6 +2,7 @@ package com.example.shopbook.datasource
 
 import com.example.shopbook.data.model.*
 import okhttp3.MultipartBody
+import retrofit2.Call
 import retrofit2.Response
 
 interface IDataSource {
@@ -13,6 +14,13 @@ interface IDataSource {
     suspend fun getNewBook(): Response<NewArrivalList>?
 
     suspend fun getAllAuthor(): Response<AuthorList>?
+
+    suspend fun getCart() : Response<CartList>?
+
+    suspend fun removeProduct(itemId : Int) : Response<Messeage>?
+
+    suspend fun updateQuantity(itemId : Int, quantity : Int) : Response<Messeage>?
+
     suspend fun getSearchProducts(
         limit: Int,
         page: Int,
@@ -37,14 +45,12 @@ interface IDataSource {
         page: Int,
         description_length: Int,
     ): Response<ProductsByAuthor>?
-
     suspend fun getProductsByCategory(
         id: Int,
         limit: Int,
         page: Int,
         description_length: Int,
     ): Response<ProductList>?
-
     suspend fun getAuthor(authorId: Int): Response<AuthorResult>?
     suspend fun getSearchNewProduct(): Response<ProductNewList>?
     suspend fun getCustomer(): Response<Customer>?
