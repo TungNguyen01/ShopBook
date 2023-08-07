@@ -10,7 +10,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
     private const val BASE_URL = "https://7f02-116-97-243-66.ngrok-free.app/"
-//    val accessToken=MySharedPreferences.getAccessToken(null)
     private var accessToken=""
 
     fun updateAccessToken(token: String) {

@@ -84,19 +84,15 @@ class AuthorFragment : Fragment() {
                         if (!check) {
                             currentPage = 1
                         }
-                        check = true
+                        adapter.clearData()
                         textAuthor.visibility = View.VISIBLE
                         textHot.visibility = View.VISIBLE
                         if (authorId != null) {
-                            adapter.clearData()
-                            Log.d("CURRENTPAGE", currentPage.toString())
-                            Log.d("PASTPAGE", pastPage.toString())
-                            Log.d("ADAPTER", adapter.itemCount.toString())
                             viewModel.getProductsByAuthor(authorId, 10, 1, 100)
                             loadingLayout.root.visibility = View.VISIBLE
                         }
+                        check = true
                     } else {
-                        check = false
                         val layoutParams =
                             searchProduct.layoutParams as ViewGroup.MarginLayoutParams
                         val newMarginTopInDp = 12
@@ -112,6 +108,7 @@ class AuthorFragment : Fragment() {
                             viewModel.getSearchAuthorProduct(it, 1, newText)
 //                            loadData(authorId)
                         }
+                        check = false
                     }
                     return false;
                 }
@@ -137,13 +134,10 @@ class AuthorFragment : Fragment() {
     private fun observeProducts() {
         viewModel.productList.observe(viewLifecycleOwner, Observer { productList ->
             if (productList != null) {
-                Log.d("CHECK", check.toString())
                 if (pastPage != currentPage && check) {
                     bookList.addAll(productList)
-                    Log.d("BOOKADD", bookList.size.toString())
                 } else if (!check) {
                     bookList = productList as MutableList<Product>
-                    Log.d("BOOK", bookList.size.toString())
                 }
                 adapter.setData(bookList)
                 navToProductDetail()
