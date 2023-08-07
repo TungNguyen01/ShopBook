@@ -27,13 +27,12 @@ class SearchViewModel() : ViewModel() {
     //    val productList:MutableList<Product> get() = _productList
     private var searchRepository: SearchRepository? = SearchRepositoryImp(RemoteDataSource())
     private var cartRepository: CartRepository? = CartRepositoryImp(RemoteDataSource())
-    fun getAllProducts(limit: Int,
+    fun getSearchProducts(limit: Int,
                        page: Int,
                        description_length: Int,
                        query_string: String,
                        filter_type: Int,
                        price_sort_order: String,) {
-        Log.d("SEARCHFRAGMENT", "OK${page}")
         viewModelScope.launch(Dispatchers.IO) {
             val response = searchRepository?.getSearchProducts(limit, page, description_length, query_string, filter_type, price_sort_order)
             if (response?.isSuccessful == true) {

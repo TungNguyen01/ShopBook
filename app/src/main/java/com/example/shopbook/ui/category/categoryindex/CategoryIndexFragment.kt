@@ -53,6 +53,7 @@ class CategoryIndexFragment : Fragment() {
             if (it != null) {
                 adapter.setData(it)
             }
+            binding.loadingLayout.root.visibility=View.INVISIBLE
         })
         navToProductInCategory()
         layoutManager.spanSizeLookup = MySpanLookSize(adapter, 1, 2)

@@ -50,7 +50,6 @@ class CategoryBookFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.loadingLayout?.root?.visibility = View.VISIBLE
         adapter = BookAdapter()
         val categoryId = arguments?.getString("categoryId")?.toInt()
         observeProducts()
@@ -106,12 +105,9 @@ class CategoryBookFragment : Fragment() {
 
     private fun observeProducts() {
         viewModel.producList.observe(viewLifecycleOwner, Observer { productList ->
-            Log.d("PRODUCT", productList.toString())
             if (productList != null) {
-                Log.d("PRODUCT", productList.size.toString())
                 if (pastPage != currentPage) {
                     bookList.addAll(productList)
-                    Log.d("OBSERVE", "OKKKKK")
                 }
                 adapter.setData(bookList)
                 navToProductDetail()

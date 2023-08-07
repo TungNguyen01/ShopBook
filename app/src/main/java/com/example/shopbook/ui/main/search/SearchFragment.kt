@@ -1,5 +1,6 @@
 package com.example.shopbook.ui.main.search
 
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -7,7 +8,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -20,8 +23,8 @@ import com.example.shopbook.ui.adapter.BookAdapter
 import com.example.shopbook.utils.ItemSpacingDecoration
 import com.example.shopbook.ui.adapter.OnItemClickListener
 import com.example.shopbook.ui.productdetail.ProductdetailFragment
+import com.example.shopbook.utils.MySharedPreferences
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import okhttp3.internal.notifyAll
 
 class SearchFragment : Fragment() {
     private var binding: FragmentSearchBinding? = null
@@ -33,6 +36,10 @@ class SearchFragment : Fragment() {
     private var totalPosition = 0
     private var currentPosition = 0
     private var pastPage = -1
+    private var filterType: Int = 1
+    private var queryString: String = ""
+    private var priceSort: String = "asc"
+    private var checkAsc: Boolean = true
     private lateinit var layoutManager: GridLayoutManager
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,12 +58,22 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adapter = BookAdapter()
-        binding?.loadingLayout?.root?.visibility = View.VISIBLE
-        loadData()
-        Log.d("TAGGGG", currentPage.toString())
-        Log.d("FIRST", "FIRST")
-        viewModel.getAllProducts(10, currentPage, 100, "the gioi", 0, "asc")
+        adapter.clearData()
+        loadData(filterType, queryString, priceSort, 0)
+        viewModel.getSearchProducts(10, currentPage, 100, queryString, filterType, priceSort)
         observeProducts()
+        when (filterType) {
+            1 -> binding?.textProductNew?.let { setTextColor(it, "blue") }
+            2 -> binding?.textProdcutSelling?.let { setTextColor(it, "blue") }
+            3 -> binding?.textProductPriceSort?.let { setTextColor(it, "blue") }
+        }
+        Log.d("FILTERTYPE", filterType.toString())
+        Log.d("CURRENTPAGE", currentPage.toString())
+        if (checkAsc) {
+            binding?.imagePriceSort?.setImageResource(R.drawable.ic_incre)
+        } else {
+            binding?.imagePriceSort?.setImageResource(R.drawable.ic_discre)
+        }
         val horizontalSpacing =
             resources.getDimensionPixelSize(R.dimen.horizontal_spacing)
         val verticalSpacing =
@@ -65,10 +82,6 @@ class SearchFragment : Fragment() {
             requireActivity().findViewById<BottomNavigationView>(R.id.navigation)
         bottomNavigationView.visibility = View.VISIBLE
         binding?.apply {
-            textProductNew.setOnClickListener {
-//                searchNewProduct()
-                Toast.makeText(context, "?????", Toast.LENGTH_SHORT).show()
-            }
             editSearch.setOnFocusChangeListener { v, hasFocus ->
                 if (hasFocus) {
                     groupHistorySearch.visibility = View.VISIBLE
@@ -107,6 +120,61 @@ class SearchFragment : Fragment() {
                     }
                 }
             })
+            textProductNew.setOnClickListener {
+                adapter.clearData()
+                binding?.loadingLayout?.root?.visibility = View.VISIBLE
+                currentPage = 1
+                pastPage = -1
+                filterType = 1
+                Log.d("FILTERTYPE1", filterType.toString())
+                viewModel.getSearchProducts(
+                    10,
+                    currentPage,
+                    100,
+                    queryString,
+                    filterType,
+                    priceSort
+                )
+                loadData(filterType, queryString, priceSort, 1)
+                setTextColor(textProductPriceSort, "black")
+                setTextColor(textProductNew, "blue")
+                setTextColor(textProdcutSelling, "black")
+            }
+            textProdcutSelling.setOnClickListener {
+                adapter.clearData()
+                binding?.loadingLayout?.root?.visibility = View.VISIBLE
+                currentPage = 1
+                pastPage = -1
+                filterType = 2
+                Log.d("FILTERTYPE2", filterType.toString())
+                viewModel.getSearchProducts(10, currentPage, 100, "", filterType, "asc")
+                loadData(filterType, queryString, priceSort,2)
+                setTextColor(textProductPriceSort, "black")
+                setTextColor(textProductNew, "black")
+                setTextColor(textProdcutSelling, "blue")
+            }
+            linearProductPrice.setOnClickListener {
+                adapter.clearData()
+                binding?.loadingLayout?.root?.visibility = View.VISIBLE
+                currentPage = 1
+                pastPage = -1
+                filterType = 3
+                Log.d("FILTERTYPE3", filterType.toString())
+                if (checkAsc) {
+                    priceSort = "asc"
+                    checkAsc = false
+                    imagePriceSort.setImageResource(R.drawable.ic_incre)
+                } else {
+                    priceSort = "desc"
+                    checkAsc = true
+                    imagePriceSort.setImageResource(R.drawable.ic_discre)
+                }
+                viewModel.getSearchProducts(10, currentPage, 100, "", filterType, priceSort)
+                loadData(filterType, queryString, priceSort,3)
+                setTextColor(textProductPriceSort, "blue")
+                setTextColor(textProductNew, "black")
+                setTextColor(textProdcutSelling, "black")
+            }
             layoutManager = GridLayoutManager(context, 2)
             recyclerProduct.layoutManager = layoutManager
             binding?.recyclerProduct?.adapter = adapter
@@ -129,19 +197,6 @@ class SearchFragment : Fragment() {
         })
     }
 
-    private fun searchNewProduct() {
-        viewModel.getSearchNewProduct()
-        viewModel.productList.observe(viewLifecycleOwner, Observer { productList ->
-            if (productList != null) {
-                adapter.setData(productList)
-                binding?.recyclerProduct?.adapter = adapter
-                navToProductDetail()
-            } else {
-                Log.d("NULLLL", "HEllo")
-            }
-        })
-    }
-
     private fun observeProducts() {
         viewModel.productList.observe(viewLifecycleOwner, Observer { productList ->
             if (productList != null) {
@@ -149,7 +204,6 @@ class SearchFragment : Fragment() {
                     bookList.addAll(productList)
                 }
                 adapter.setData(bookList)
-//                adapter.addData(productList)
                 binding?.loadingLayout?.root?.visibility = View.INVISIBLE
                 addItemToCart()
                 navToProductDetail()
@@ -174,7 +228,10 @@ class SearchFragment : Fragment() {
         })
     }
 
-    private fun loadData() {
+    private fun loadData(filterType: Int, queryString: String, priceSort: String, x:Int) {
+        Log.d("FILTERRRR", x.toString())
+        Log.d("LOADFILTER", filterType.toString())
+        Log.d("CURRENTPAGEFILTER", currentPage.toString())
         binding?.apply {
             recyclerProduct.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -185,13 +242,44 @@ class SearchFragment : Fragment() {
 //                    val visibleItemCount = layoutManager.childCount
 //                    val totalItemCount = layoutManager.itemCount;
 //                    val pastVisiblesItems = layoutManager.findFirstVisibleItemPosition();
-                    if (lastPosition != currentPosition && ((lastPosition == totalPosition - 3 && totalPosition % 2 == 0) || (lastPosition == totalPosition - 2 && totalPosition % 2 != 0))) {
+//                    Log.d("LoadCurrentPAGE", currentPage.toString())
+//                    Log.d("LoadPASTPAGE", pastPage.toString())
+//                    Log.d("LoadPRICESORT", priceSort)
+
+                    Log.d("LoadFilter", filterType.toString())
+//                    Log.d("LASTPOSITION", lastPosition.toString())
+//                    Log.d("TOTALPOSITION", totalPosition.toString())
+                    if (currentPage != lastPosition && lastPosition == totalPosition - 3) {
                         currentPage++
-                        viewModel.getAllProducts(10, currentPage, 100, "the gioi", 0, "asc")
+                        viewModel.getSearchProducts(
+                            10,
+                            currentPage,
+                            100,
+                            queryString,
+                            filterType,
+                            priceSort,
+                        )
                         currentPosition = lastPosition
                     }
                 }
             })
+        }
+    }
+
+    private fun setTextColor(text: TextView, color: String) {
+        when (color) {
+            "black" -> text.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.colorsearch
+                )
+            )
+            "blue" -> text.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.status
+                )
+            )
         }
     }
 }

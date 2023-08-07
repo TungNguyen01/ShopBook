@@ -37,7 +37,7 @@ class ProductdetailViewModel : ViewModel() {
 //                _authorInfo.postValue(response.body()?.author)
                 _productListInfo.postValue(response.body())
             } else {
-                Log.d("NNULLL", "NULLLL")
+                Log.d("PRODUCTINFONULL", "NULLLL")
             }
         }
     }

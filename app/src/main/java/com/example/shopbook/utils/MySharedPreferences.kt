@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 object MySharedPreferences {
     private const val sharedPreferencesName = "myPreference"
     private lateinit var sharedPreferences: SharedPreferences
+    const val ACCESS_TOKEN = "access_token"
     fun init(context: Context) {
         sharedPreferences =
             context.getSharedPreferences(sharedPreferencesName, Context.MODE_PRIVATE)
@@ -13,6 +14,16 @@ object MySharedPreferences {
 
     fun getString(key: String, defaultValue: String): String {
         return sharedPreferences.getString(key, defaultValue) ?: defaultValue
+    }
+
+    fun putAccessToken(value: String) {
+        val editor = sharedPreferences.edit()
+        editor.putString(ACCESS_TOKEN, value)
+        editor.apply()
+    }
+
+    fun getAccessToken(defaultValue: String?): String? {
+        return sharedPreferences.getString(ACCESS_TOKEN, defaultValue) ?: defaultValue
     }
 
     fun putString(key: String, value: String) {
@@ -39,5 +50,11 @@ object MySharedPreferences {
 
     fun getInt(key: String, defaultValue: Int): Int {
         return sharedPreferences.getInt(key, defaultValue)
+    }
+
+    fun clearAccessToken() {
+        val editor = sharedPreferences.edit()
+        editor.remove(ACCESS_TOKEN)
+        editor.apply()
     }
 }

@@ -30,6 +30,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class ProductdetailFragment : Fragment() {
     private var binding: FragmentProductDetailBinding? = null
     private lateinit var viewModel: ProductdetailViewModel
+    private var wishlist:Int = 0
     private val formatMoney = FormatMoney()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -98,7 +99,7 @@ class ProductdetailFragment : Fragment() {
                 }
             }
             imageFavorite.setOnClickListener {
-                productId?.let { productId -> itemWishList(productId, wishlist) }
+                productId?.let { productId -> itemWishList(productId) }
             }
             imageArrow.setOnClickListener {
                 val bundle = Bundle()
@@ -111,7 +112,7 @@ class ProductdetailFragment : Fragment() {
         }
     }
 
-    private fun itemWishList(productId: Int, wishlist: Int) {
+    private fun itemWishList(productId: Int) {
         MySharedPreferences.putInt("productId", productId)
         if (wishlist == 0) {
             viewModel.addItemToWishList(productId)
@@ -119,6 +120,7 @@ class ProductdetailFragment : Fragment() {
             viewModel.messeageAdd.observe(viewLifecycleOwner, Observer {
                 Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
             })
+            wishlist=1
             MySharedPreferences.putInt("wishlist", 1)
             binding?.imageFavorite?.setImageResource(R.drawable.ic_favorite)
             binding?.imageFavorite?.setBackgroundResource(R.drawable.bg_ellipse_favor)
@@ -127,6 +129,7 @@ class ProductdetailFragment : Fragment() {
             viewModel.messeageRemove.observe(viewLifecycleOwner, Observer {
                 Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
             })
+            wishlist=0
             MySharedPreferences.putInt("wishlist", 0)
             binding?.imageFavorite?.setImageResource(R.drawable.favor_white)
             binding?.imageFavorite?.setBackgroundResource(R.drawable.bg_ellipse)
