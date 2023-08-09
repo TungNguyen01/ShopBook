@@ -61,7 +61,11 @@ interface IDataSource {
         gender: String,
         mob_phone: String,
     ): Response<Customer>?
-
+    suspend fun updateInformation(
+        name : String,
+        address: String,
+        mob_phone: String,
+    ): Response<Customer>?
     suspend fun changePassword(
         email: String, old_password: String,
         new_password: String,
@@ -73,4 +77,8 @@ interface IDataSource {
     suspend fun addCartItem(productId: Int): Response<List<CartItem>>?
     suspend fun addItemToWishList(productId: Int): Response<Messeage>?
     suspend fun removeItemInWishList(productId: Int): Response<Messeage>
+
+    suspend fun getWishlist() : Response<WishlistList>?
+
+    suspend fun createOrder(cart_id : String, shipping_id: Int, address : String, receiver_name : String, receiver_phone : String): Response<Messeage>?
 }

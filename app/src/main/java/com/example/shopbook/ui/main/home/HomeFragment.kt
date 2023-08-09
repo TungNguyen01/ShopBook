@@ -90,7 +90,7 @@ class HomeFragment : Fragment() {
             val profileFragment = ProfileFragment()
             parentFragmentManager.beginTransaction()
                 .replace(R.id.frame_layout, profileFragment)
-                .addToBackStack("productFragment")
+                .addToBackStack("HomeFragment")
                 .commit()
             }
         }
@@ -106,7 +106,7 @@ class HomeFragment : Fragment() {
                         .replace(
                             R.id.frame_layout,
                             ProductdetailFragment().apply { arguments = bundle })
-                        .addToBackStack("SearchFragment")
+                        .addToBackStack("HomeFragment")
                         .commit()
                     pastPage = currentPage
                 }
@@ -142,7 +142,7 @@ class HomeFragment : Fragment() {
                         .replace(
                             R.id.frame_layout,
                             ProductdetailFragment().apply { arguments = bundle })
-                        .addToBackStack("SearchFragment")
+                        .addToBackStack("HomeFragment")
                         .commit()
                     pastPage = currentPage
                 }

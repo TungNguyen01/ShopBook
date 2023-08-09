@@ -14,6 +14,14 @@ class UserRepositoryImp(private val dataSource: IDataSource) : UserRepository {
         return dataSource.updateCustomer(name, address, dob, gender, mob_phone)
     }
 
+    override suspend fun updateInformation(
+        name: String,
+        address: String,
+        mob_phone: String
+    ): Response<Customer>? {
+        return dataSource.updateInformation(name, address, mob_phone)
+    }
+
     override suspend fun changePassword(
         email: String,
         old_password: String,

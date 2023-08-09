@@ -86,6 +86,13 @@ class RemoteDataSource() : IDataSource {
         return RetrofitClient.apiService.updateCustomer(name, address, dob, gender, mob_phone)
     }
 
+    override suspend fun updateInformation(
+        name: String,
+        address: String,
+        mob_phone: String
+    ): Response<Customer>? {
+        return RetrofitClient.apiService.updateInformation(name, address, mob_phone)
+    }
     override suspend fun changePassword(
         email: String,
         old_password: String,
@@ -137,11 +144,25 @@ class RemoteDataSource() : IDataSource {
     override suspend fun removeItemInWishList(productId: Int): Response<Messeage> {
         return RetrofitClient.apiService.removeItemInWishList(productId)
     }
+
+    override suspend fun getWishlist(): Response<WishlistList>? {
+        return RetrofitClient.apiService.getWishlist()
+    }
     override suspend fun removeProduct(itemId: Int): Response<Messeage>? {
         return RetrofitClient.apiService.removeProduct(itemId)
     }
 
     override suspend fun updateQuantity(itemId: Int, quantity : Int): Response<Messeage>? {
         return RetrofitClient.apiService.updateQuantity(itemId, quantity)
+    }
+
+    override suspend fun createOrder(
+        cart_id: String,
+        shipping_id: Int,
+        address: String,
+        receiver_name: String,
+        receiver_phone: String
+    ): Response<Messeage>? {
+        return RetrofitClient.apiService.createOrder(cart_id, shipping_id, address, receiver_name, receiver_phone)
     }
 }

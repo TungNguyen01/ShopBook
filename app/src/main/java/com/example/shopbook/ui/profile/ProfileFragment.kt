@@ -15,6 +15,7 @@ import com.example.shopbook.R
 import com.example.shopbook.data.model.Customer
 import com.example.shopbook.databinding.FragmentProfileBinding
 import com.example.shopbook.ui.order.orderhistory.OrderHistoryFragment
+import com.example.shopbook.ui.order.orderinfo.OrderInfoFragment
 import com.example.shopbook.ui.profile.changepass.ChangePassFragment
 import com.example.shopbook.ui.profile.profilesignin.ProfileSigninFragment
 import com.example.shopbook.ui.profile.updateprofile.UpdateProfileFragment
@@ -92,6 +93,12 @@ class ProfileFragment : Fragment() {
             linearMyOrder.setOnClickListener {
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.frame_layout, OrderHistoryFragment())
+                    .addToBackStack("profile")
+                    .commit()
+            }
+            linearOrderInfor.setOnClickListener {
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.frame_layout, OrderInfoFragment())
                     .addToBackStack("profile")
                     .commit()
             }

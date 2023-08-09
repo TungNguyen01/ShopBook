@@ -20,6 +20,7 @@ import com.example.shopbook.databinding.FragmentShoppingBagBinding
 import com.example.shopbook.ui.adapter.OnItemClickListener
 import com.example.shopbook.ui.main.adapter.BagAdapter
 import com.example.shopbook.ui.main.shoppingbag.viewmodel.ShoppingbagViewModel
+import com.example.shopbook.ui.order.checkout.CheckOutFragment
 import com.example.shopbook.ui.profile.ProfileFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -53,10 +54,19 @@ class ShoppingbagFragment : Fragment() {
                 val profileFragment = ProfileFragment()
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.frame_layout, profileFragment)
-                    .addToBackStack("productFragment")
+                    .addToBackStack("HomeFragment")
                     .commit()
             }
+            textCheckout.setOnClickListener {
+                val checkoutFragment = CheckOutFragment()
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.frame_layout, checkoutFragment)
+                    .addToBackStack("HomeFragment")
+                    .commit()
+            }
+           // textPrice.text =
         }
+
         binding.recyclerviewBag.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = bookAdapter
@@ -73,7 +83,6 @@ class ShoppingbagFragment : Fragment() {
                     return false
                 }
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-
                     val position = viewHolder.adapterPosition
                     val deletedItem = viewModel.cart.value?.get(position)
 

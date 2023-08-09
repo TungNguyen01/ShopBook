@@ -104,6 +104,23 @@ interface ApiInterface {
         @Field("gender") gender: String,
         @Field("mob_phone") mobphone: String,
     ): Response<Customer>
+    @FormUrlEncoded
+    @PUT("customers")
+    suspend fun updateInformation(
+        @Field("name") name: String,
+        @Field("address") address: String,
+        @Field("mob_phone") mobphone: String,
+    ): Response<Customer>
+
+    @FormUrlEncoded
+    @POST("orders")
+    suspend fun createOrder(
+        @Field("cart_id") cart_id : String,
+        @Field("shipping_id") shipping_id : Int,
+        @Field("address") address: String,
+        @Field("receiver_name") receiver_name : String,
+        @Field("receiver_phone") receiver_phone : String,
+    ): Response<Messeage>
 
     @FormUrlEncoded
     @POST("customers/changePass")
@@ -141,6 +158,9 @@ interface ApiInterface {
     @DELETE("wishlist/remove/{product_id}")
     suspend fun removeItemInWishList(@Path("product_id") productId: Int): Response<Messeage>
 
+    @GET("wishlist")
+    suspend fun getWishlist() : Response<WishlistList>
+
     @GET("shoppingCart")
     suspend fun getCart(): Response<CartList>
 
@@ -150,4 +170,6 @@ interface ApiInterface {
     @FormUrlEncoded
     @POST("shoppingCart/update")
     suspend fun updateQuantity(@Field("item_id") itemId: Int, @Field("quantity") quantity : Int) : Response<Messeage>
+
+
 }
