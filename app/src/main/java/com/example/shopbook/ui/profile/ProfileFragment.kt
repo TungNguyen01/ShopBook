@@ -74,7 +74,7 @@ class ProfileFragment : Fragment() {
                 Toast.makeText(context, "CLEAR SUCCESSFUL", Toast.LENGTH_SHORT).show()
             }
             textLogout.setOnClickListener {
-                MySharedPreferences.clearAccessToken()
+                MySharedPreferences.clearPreferences()
                 val fragmentSignin = ProfileSigninFragment()
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.frame_layout, fragmentSignin)

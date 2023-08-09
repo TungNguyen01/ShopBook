@@ -57,4 +57,10 @@ object MySharedPreferences {
         editor.remove(ACCESS_TOKEN)
         editor.apply()
     }
+
+    fun clearPreferences(){
+        val editor= sharedPreferences.edit()
+        editor.clear()
+        editor.apply()
+    }
 }

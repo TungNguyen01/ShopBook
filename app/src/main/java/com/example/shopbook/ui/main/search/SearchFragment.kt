@@ -15,11 +15,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shopbook.R
 import com.example.shopbook.data.model.Product
 import com.example.shopbook.databinding.FragmentSearchBinding
 import com.example.shopbook.ui.adapter.BookAdapter
+import com.example.shopbook.ui.adapter.HistorySeachAdapter
 import com.example.shopbook.utils.ItemSpacingDecoration
 import com.example.shopbook.ui.adapter.OnItemClickListener
 import com.example.shopbook.ui.productdetail.ProductdetailFragment
@@ -82,10 +84,18 @@ class SearchFragment : Fragment() {
             requireActivity().findViewById<BottomNavigationView>(R.id.navigation)
         bottomNavigationView.visibility = View.VISIBLE
         binding?.apply {
+            val adapterHistory = HistorySeachAdapter()
             editSearch.setOnFocusChangeListener { v, hasFocus ->
                 if (hasFocus) {
                     groupHistorySearch.visibility = View.VISIBLE
                     groupSearch.visibility = View.INVISIBLE
+                    viewModel.getSearchHistory()
+                    viewModel.productHistoryList.observe(viewLifecycleOwner, Observer {
+                        adapterHistory.setData(it)
+                        recyclerHistorySearch.layoutManager=LinearLayoutManager(context)
+                        recyclerHistorySearch.adapter=adapterHistory
+                    })
+
 //                    val historyList = viewModel.getProducts()
 //                    val adapterHistory = HistorySeachAdapter(historyList)
 //                    recyclerHistorySearch.layoutManager = LinearLayoutManager(context)
@@ -109,14 +119,26 @@ class SearchFragment : Fragment() {
 
                 override fun afterTextChanged(editable: Editable) {
                     val layoutParams = textTitleSearch.layoutParams
-                    if (editSearch.text.isEmpty()) {
+                    val queryString=editSearch.text.toString()
+                    if (queryString.isEmpty()) {
                         textTitleSearch.visibility = View.VISIBLE
                         layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
                         textTitleSearch.layoutParams = layoutParams
+                        //7/8
+                        groupHistorySearch.visibility = View.VISIBLE
+                        groupSearch.visibility = View.INVISIBLE
                     } else {
                         textTitleSearch.visibility = View.INVISIBLE
                         layoutParams.height = 0
                         textTitleSearch.layoutParams = layoutParams
+                    }
+                    //7/8
+                    imageSeach.setOnClickListener {
+                        Toast.makeText(context, queryString, Toast.LENGTH_SHORT).show()
+                        viewModel.getSearchProducts(10, currentPage, 100, queryString, 0, "asc")
+                        loadData(0, queryString, "asc", 0)
+                        groupHistorySearch.visibility = View.INVISIBLE
+                        groupSearch.visibility = View.VISIBLE
                     }
                 }
             })

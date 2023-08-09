@@ -18,7 +18,8 @@ import java.util.*
 
 class SearchViewModel() : ViewModel() {
     private var bookList = mutableListOf<Product>()
-    private val historyList = mutableListOf<Product>()
+    private val _productHistoryList = MutableLiveData<List<Product>>()
+    val productHistoryList: LiveData<List<Product>> get() = _productHistoryList
     private val _productList = MutableLiveData<List<Product>>()
     val productList: LiveData<List<Product>> get() = _productList
     private val _productNewList = MutableLiveData<List<ProductNew>>()
@@ -43,12 +44,12 @@ class SearchViewModel() : ViewModel() {
         }
     }
 
-    fun getSearchNewProduct() {
+    fun getSearchHistory() {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = searchRepository?.getSearchNewProduct()
+            val response = searchRepository?.getSearchProducts(10, 1, 100,"", 0, "asc")
             if (response?.isSuccessful == true) {
-                _productNewList.postValue(response.body()?.productsNew)
-                Log.d("PRODUCTLIST", response.body()?.productsNew.toString())
+                _productHistoryList.postValue(response.body()?.products)
+                Log.d("PRODUCTLIST", response.body()?.products.toString())
             } else {
                 Log.d("NULL", "NULL")
             }
