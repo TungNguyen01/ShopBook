@@ -58,6 +58,11 @@ class SignInFragment : Fragment() {
                 RetrofitClient.updateAccessToken(it)
             }
         })
+        viewModel.idCustomer.observe(viewLifecycleOwner){
+            it.let {
+                MySharedPreferences.putInt("idCustomer", it)
+            }
+        }
         loginButton.setOnClickListener {
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()

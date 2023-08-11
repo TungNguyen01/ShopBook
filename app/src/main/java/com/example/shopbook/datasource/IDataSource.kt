@@ -15,11 +15,11 @@ interface IDataSource {
 
     suspend fun getAllAuthor(): Response<AuthorList>?
 
-    suspend fun getCart() : Response<CartList>?
+    suspend fun getCart(): Response<CartList>?
 
-    suspend fun removeProduct(itemId : Int) : Response<Messeage>?
+    suspend fun removeProduct(itemId: Int): Response<Messeage>?
 
-    suspend fun updateQuantity(itemId : Int, quantity : Int) : Response<Messeage>?
+    suspend fun updateQuantity(itemId: Int, quantity: Int): Response<Messeage>?
 
     suspend fun getSearchProducts(
         limit: Int,
@@ -30,12 +30,24 @@ interface IDataSource {
         price_sort_order: String,
     ): Response<ProductList>?
 
+    suspend fun getSearchHistory(
+        query_string: String,
+    ): Response<ProductList>
+
     suspend fun getSearchAuthorProducts(
         authorId: Int,
         limit: Int,
         page: Int,
         description_length: Int,
         query_string: String,
+    ): Response<ProductList>?
+
+    suspend fun getSearchCategoryProducts(
+        limit: Int,
+        page: Int,
+        description_length: Int,
+        query_string: String,
+        categoryId: Int,
     ): Response<ProductList>?
 
     suspend fun getProductInfo(id: Int): Response<ProductInfoList>?
@@ -45,12 +57,14 @@ interface IDataSource {
         page: Int,
         description_length: Int,
     ): Response<ProductsByAuthor>?
+
     suspend fun getProductsByCategory(
         id: Int,
         limit: Int,
         page: Int,
         description_length: Int,
     ): Response<ProductList>?
+
     suspend fun getAuthor(authorId: Int): Response<AuthorResult>?
     suspend fun getSearchNewProduct(): Response<ProductNewList>?
     suspend fun getCustomer(): Response<Customer>?

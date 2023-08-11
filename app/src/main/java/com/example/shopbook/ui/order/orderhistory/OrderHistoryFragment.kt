@@ -53,16 +53,14 @@ class OrderHistoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         adapter= OrderHistoryAdapter()
         binding?.loadingLayout?.root?.visibility = View.VISIBLE
-        viewModel.getOrderHistory()
         val list = mutableListOf<OrderHistory>()
         val currentDate = formatDate.formatDate(LocalDateTime.now().toString())
         val mapOrder: MutableMap<String, MutableList<Order>> = mutableMapOf()
-        Log.d("ADAPTER0", adapter.toString())
         viewModel.orderHistory.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 mapOrder.clear()
                 for (order in it) {
-                    var date = formatDate.formatDate(order.createdOn)
+                    val date = formatDate.formatDate(order.createdOn)
                     if (date == currentDate) {
                         mapOrder.computeIfAbsent("Hôm nay") { mutableListOf() }.add(order)
                     } else {
@@ -81,6 +79,7 @@ class OrderHistoryFragment : Fragment() {
                 binding?.loadingLayout?.root?.visibility = View.INVISIBLE
             }
         })
+        viewModel.getOrderHistory()
         binding?.recyclerOrderHistory?.layoutManager = LinearLayoutManager(context)
         binding?.recyclerOrderHistory?.adapter = adapter
         binding?.apply {

@@ -1,8 +1,6 @@
 package com.example.shopbook.ui.profile
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +19,6 @@ import com.example.shopbook.ui.profile.profilesignin.ProfileSigninFragment
 import com.example.shopbook.ui.profile.updateprofile.UpdateProfileFragment
 import com.example.shopbook.utils.MySharedPreferences
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import java.io.File
 
 class ProfileFragment : Fragment() {
     private var binding: FragmentProfileBinding? = null
@@ -51,7 +48,6 @@ class ProfileFragment : Fragment() {
         val bottomNavigationView =
             requireActivity().findViewById<BottomNavigationView>(R.id.navigation)
         bottomNavigationView.visibility = View.GONE
-        viewModel.getCustomer()
         var email = ""
         activity?.let { MySharedPreferences.init(it.applicationContext) }
 //        var passw
@@ -59,6 +55,7 @@ class ProfileFragment : Fragment() {
             bindData(it)
             email = it.email.toString()
         })
+        viewModel.getCustomer()
         binding?.apply {
             imageLeft.setOnClickListener {
                 parentFragmentManager.popBackStack()
@@ -71,13 +68,14 @@ class ProfileFragment : Fragment() {
                     .commit()
             }
             textClear.setOnClickListener {
+                MySharedPreferences.clearDataCache()
+
                 Toast.makeText(context, "CLEAR SUCCESSFUL", Toast.LENGTH_SHORT).show()
             }
             textLogout.setOnClickListener {
                 MySharedPreferences.clearPreferences()
-                val fragmentSignin = ProfileSigninFragment()
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.frame_layout, fragmentSignin)
+                    .replace(R.id.frame_layout, ProfileSigninFragment())
                     .addToBackStack("profile")
                     .commit()
             }
@@ -107,16 +105,14 @@ class ProfileFragment : Fragment() {
 
     private fun bindData(profile: Customer) {
         val imgAvatar = MySharedPreferences.getString("imageAvatar", "")
-        val name = MySharedPreferences.getString("name", "")
-        val email = MySharedPreferences.getString("email", "")
-        if (imgAvatar != "" && name != "" && email != "") {
+//        val name = MySharedPreferences.getString("name", "")
+//        val email = MySharedPreferences.getString("email", "")
+        if (imgAvatar != "") {
             binding?.apply {
                 Glide.with(root)
                     .load(imgAvatar)
                     .centerCrop()
                     .into(imageAvatar)
-                textName.text = name
-                textMail.text = email
             }
         } else {
             binding?.apply {
@@ -124,13 +120,11 @@ class ProfileFragment : Fragment() {
                     .load(profile.avatar)
                     .centerCrop()
                     .into(imageAvatar)
-                textName.text = profile.name
-                textMail.text = profile.email
             }
             MySharedPreferences.putString("imageAvatar", profile.avatar.toString())
-            MySharedPreferences.putString("name", profile.name.toString())
-            MySharedPreferences.putString("email", profile.email.toString())
         }
+        binding?.textName?.text = profile.name
+        binding?.textMail?.text = profile.email
         binding?.layoutLoading?.root?.visibility = View.INVISIBLE
     }
 }

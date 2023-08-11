@@ -13,8 +13,6 @@ import com.example.shopbook.utils.FormatMoney
 
 class OrderHistoryAdapter :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    //    private val HEADER_VIEW_TYPE = 0
-//    private val ITEM_VIEW_TYPE = 1
     private var orderHistoryList: MutableList<OrderHistory> = mutableListOf()
     private val formatMoney = FormatMoney()
 
@@ -31,7 +29,8 @@ class OrderHistoryAdapter :
 
     @SuppressLint("NotifyDataSetChanged")
     fun setData(orderHistories: List<OrderHistory>) {
-        orderHistoryList = orderHistories as MutableList<OrderHistory>
+        orderHistoryList.clear()
+        orderHistoryList.addAll(orderHistories)
         notifyDataSetChanged()
     }
 
@@ -85,5 +84,4 @@ class OrderHistoryAdapter :
             }
         }
     }
-
 }

@@ -23,7 +23,8 @@ class CategoryIndexAdapter() :
 
     @SuppressLint("NotifyDataSetChanged")
     fun setData(categories: List<Category>) {
-        categoryList = categories as MutableList<Category>
+        categoryList.clear()
+        categoryList.addAll(categories)
         notifyDataSetChanged()
     }
 

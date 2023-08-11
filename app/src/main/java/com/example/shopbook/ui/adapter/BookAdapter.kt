@@ -42,7 +42,8 @@ class BookAdapter :
 
     @SuppressLint("NotifyDataSetChanged")
     fun setData(products: List<Product>) {
-        productList = products as MutableList<Product>
+        productList.clear()
+        productList.addAll(products)
         notifyDataSetChanged()
     }
 

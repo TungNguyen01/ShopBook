@@ -2,10 +2,12 @@ package com.example.shopbook.ui.category.categoryindex
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import androidx.lifecycle.GeneratedAdapter
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -21,6 +23,7 @@ class CategoryIndexFragment : Fragment() {
 
     private lateinit var binding: FragmentCategoryIndexBinding
     private lateinit var adapter: CategoryIndexAdapter
+//    private var widthRecycler = 0
 
     companion object {
         fun newInstance() = CategoryIndexFragment()
@@ -30,7 +33,7 @@ class CategoryIndexFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(CategoryIndexViewModel::class.java)
+        viewModel = ViewModelProvider(this)[CategoryIndexViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -46,16 +49,26 @@ class CategoryIndexFragment : Fragment() {
         val bottomNavigationView =
             requireActivity().findViewById<BottomNavigationView>(R.id.navigation)
         bottomNavigationView.visibility = View.GONE
-        adapter= CategoryIndexAdapter()
-        viewModel.getAllCategory()
+        adapter = CategoryIndexAdapter()
         val layoutManager = GridLayoutManager(context, 2)
         viewModel.categoryList.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 adapter.setData(it)
             }
-            binding.loadingLayout.root.visibility=View.INVISIBLE
+            binding.loadingLayout.root.visibility = View.INVISIBLE
         })
+        viewModel.getAllCategory()
         navToProductInCategory()
+//        binding.recyclerCategory.viewTreeObserver.addOnGlobalLayoutListener(object :
+//            ViewTreeObserver.OnGlobalLayoutListener {
+//            override fun onGlobalLayout() {
+//                widthRecycler = binding.recyclerCategory.width
+//                Log.d("WIDTHH", widthRecycler.toString())
+//                binding.recyclerCategory.viewTreeObserver.removeOnGlobalLayoutListener(this)
+//            }
+//        })
+        val widthRecycler=binding.recyclerCategory.width
+        Log.d("WIDTH", widthRecycler.toString())
         layoutManager.spanSizeLookup = MySpanLookSize(adapter, 1, 2)
         binding.recyclerCategory.adapter = adapter
         binding.recyclerCategory.layoutManager = layoutManager

@@ -27,6 +27,10 @@ class RemoteDataSource() : IDataSource {
         )
     }
 
+    override suspend fun getSearchHistory(query_string: String): Response<ProductList> {
+        return RetrofitClient.apiService.getSearchHistory(query_string)
+    }
+
     override suspend fun getSearchAuthorProducts(
         authorId: Int,
         limit: Int,
@@ -40,6 +44,22 @@ class RemoteDataSource() : IDataSource {
             page,
             description_length,
             query_string,
+        )
+    }
+
+    override suspend fun getSearchCategoryProducts(
+        limit: Int,
+        page: Int,
+        description_length: Int,
+        query_string: String,
+        categoryId: Int,
+    ): Response<ProductList>? {
+        return RetrofitClient.apiService.getSearchCategoryProducts(
+            limit,
+            page,
+            description_length,
+            query_string,
+            categoryId,
         )
     }
 
@@ -60,10 +80,11 @@ class RemoteDataSource() : IDataSource {
         id: Int,
         limit: Int,
         page: Int,
-        description_length: Int
+        description_length: Int,
     ): Response<ProductList> {
         return RetrofitClient.apiService.getProductsByCategory(id, limit, page, description_length)
     }
+
     override suspend fun getAuthor(authorId: Int): Response<AuthorResult>? {
         return RetrofitClient.apiService.getAuthor(authorId)
     }
@@ -148,11 +169,12 @@ class RemoteDataSource() : IDataSource {
     override suspend fun getWishlist(): Response<WishlistList>? {
         return RetrofitClient.apiService.getWishlist()
     }
+
     override suspend fun removeProduct(itemId: Int): Response<Messeage>? {
         return RetrofitClient.apiService.removeProduct(itemId)
     }
 
-    override suspend fun updateQuantity(itemId: Int, quantity : Int): Response<Messeage>? {
+    override suspend fun updateQuantity(itemId: Int, quantity: Int): Response<Messeage>? {
         return RetrofitClient.apiService.updateQuantity(itemId, quantity)
     }
 

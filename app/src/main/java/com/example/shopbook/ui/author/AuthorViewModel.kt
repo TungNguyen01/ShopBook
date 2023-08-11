@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.shopbook.data.model.Author
 import com.example.shopbook.data.model.AuthorResult
 import com.example.shopbook.data.model.Product
+import com.example.shopbook.data.model.ProductState
 import com.example.shopbook.data.repository.author.AuthorRepository
 import com.example.shopbook.data.repository.author.AuthorRepositoryImp
 import com.example.shopbook.data.repository.cart.CartRepository
@@ -20,10 +21,11 @@ import com.example.shopbook.datasource.remote.RemoteDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+
 class AuthorViewModel : ViewModel() {
     // TODO: Implement the ViewModel
-    private val _productList = MutableLiveData<List<Product>>()
-    val productList: LiveData<List<Product>> get() = _productList
+    private val _productList = MutableLiveData<ProductState>()
+    val productList: LiveData<ProductState> get() = _productList
     private val _author = MutableLiveData<AuthorResult>()
     val author: LiveData<AuthorResult> get() = _author
 
@@ -35,7 +37,7 @@ class AuthorViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             val response = productRepository?.getProductsByAuthor(authorId, limit, page, desLength)
             if (response?.isSuccessful == true) {
-                _productList.postValue(response.body()?.products)
+                _productList.postValue(ProductState(response.body()?.products, true))
             } else {
                 Log.d("NNULLL", "NULLLL")
             }
@@ -53,9 +55,9 @@ class AuthorViewModel : ViewModel() {
                     queryString
                 )
             if (response?.isSuccessful == true) {
-                _productList.postValue(response.body()?.products)
+                _productList.postValue(ProductState(response.body()?.products, false))
             } else {
-                Log.d("NNULLL", "NULLLL")
+                Log.d("searchAuthor", "NULLLL")
             }
         }
     }

@@ -15,12 +15,23 @@ interface SearchRepository {
         priceSortOrder: String,
     ): Response<ProductList>?
 
+    suspend fun getSearchHistory(
+        queryString: String,
+    ): Response<ProductList>
+
     suspend fun getSearchAuthorProducts(
         authorId: Int,
         limit: Int,
         page: Int,
         descriptionLength: Int,
         queryString: String,
+    ): Response<ProductList>?
+
+    suspend fun getSearchCategoryProducts(
+        limit: Int,
+        page: Int,
+        descriptionLength: Int,
+        queryString: String, categroryId: Int,
     ): Response<ProductList>?
 
     suspend fun getSearchNewProduct(): Response<ProductNewList>?

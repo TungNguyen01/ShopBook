@@ -24,7 +24,7 @@ class ProfileViewModel : ViewModel() {
             if (response?.isSuccessful == true) {
                 _profile.postValue(response.body())
             } else {
-                Log.d("NNULLL", "NULLLL")
+                Log.d("getProfile", "NULLLL")
             }
         }
     }

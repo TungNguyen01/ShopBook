@@ -1,12 +1,20 @@
 package com.example.shopbook.ui.category
 
+import android.annotation.SuppressLint
+import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.util.TypedValue
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -18,6 +26,7 @@ import com.example.shopbook.ui.adapter.BookAdapter
 import com.example.shopbook.ui.adapter.OnItemClickListener
 import com.example.shopbook.ui.productdetail.ProductdetailFragment
 import com.example.shopbook.utils.ItemSpacingDecoration
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class CategoryBookFragment : Fragment() {
 
@@ -35,6 +44,7 @@ class CategoryBookFragment : Fragment() {
     private var totalPosition = 0
     private var currentPosition = 0
     private var pastPage = -1
+    private val searchHandler = Handler(Looper.getMainLooper())
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this).get(CategoryBookViewModel::class.java)
@@ -48,13 +58,16 @@ class CategoryBookFragment : Fragment() {
         return binding?.root
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val bottomNavigationView =
+            requireActivity().findViewById<BottomNavigationView>(R.id.navigation)
+        bottomNavigationView.visibility = View.GONE
         adapter = BookAdapter()
+        initViewModel()
         val categoryId = arguments?.getString("categoryId")?.toInt()
-        observeProducts()
         categoryId?.let {
-            loadData(categoryId)
             viewModel.getProductsInCategory(it, 10, currentPage, 100)
         }
         val horizontalSpacing =
@@ -62,6 +75,39 @@ class CategoryBookFragment : Fragment() {
         val verticalSpacing =
             resources.getDimensionPixelSize(R.dimen.vertical_spacing)
         binding?.apply {
+            searchProduct.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String): Boolean {
+                    // task HERE
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String): Boolean {
+                    if (newText.isEmpty()) {
+                        currentPage = 1
+                        categoryId?.let { categoryId ->
+                            viewModel.getProductsInCategory(categoryId, 10, 1, 100)
+                        }
+                        loadingLayout.root.visibility = View.VISIBLE
+                    } else {
+                        val delayMillis = 300L
+                        searchHandler.removeCallbacksAndMessages(null)
+                        searchHandler.postDelayed({
+                            categoryId?.let {
+                                viewModel.getSearchCategoryProducts(it, 1, newText)
+                            }
+                        }, delayMillis)
+                    }
+                    return false;
+                }
+            })
+            layoutCategory.setOnTouchListener { view, motionEvent ->
+                if (motionEvent.action == MotionEvent.ACTION_DOWN) {
+                    val event =
+                        requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    event.hideSoftInputFromWindow(requireView().windowToken, 0)
+                }
+                false
+            }
             recyclerCategory.addItemDecoration(
                 ItemSpacingDecoration(
                     horizontalSpacing,
@@ -74,6 +120,25 @@ class CategoryBookFragment : Fragment() {
             imageLeft.setOnClickListener {
                 parentFragmentManager.popBackStack()
             }
+        }
+        binding?.apply {
+            recyclerCategory.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    lastPosition =
+                        (recyclerCategory.layoutManager as GridLayoutManager).findLastVisibleItemPosition()
+                    totalPosition = adapter.itemCount
+                    Log.d("CURRENT", currentPage.toString())
+                    Log.d("PastPage", pastPage.toString())
+                    if (lastPosition != currentPosition && ((lastPosition == totalPosition - 3 && totalPosition % 2 == 0) || (lastPosition == totalPosition - 2 && totalPosition % 2 != 0))) {
+                        currentPage++
+                        if (categoryId != null) {
+                            viewModel.getProductsInCategory(categoryId, 10, currentPage, 100)
+                        }
+                        currentPosition = lastPosition
+                    }
+                }
+            })
         }
     }
 
@@ -103,11 +168,19 @@ class CategoryBookFragment : Fragment() {
         })
     }
 
-    private fun observeProducts() {
-        viewModel.producList.observe(viewLifecycleOwner, Observer { productList ->
-            if (productList != null) {
-                if (pastPage != currentPage) {
-                    bookList.addAll(productList)
+    private fun initViewModel() {
+        viewModel.producList.observe(viewLifecycleOwner, Observer { state ->
+            val isDefaultState = state.isDefaultState
+            state.products?.let {
+                if (pastPage != currentPage && isDefaultState) {
+                    if (currentPage > 1) {
+                        bookList.addAll(it)
+                    } else {
+                        bookList.clear()
+                        bookList.addAll(it)
+                    }
+                } else if (!isDefaultState) {
+                    bookList = it as MutableList<Product>
                 }
                 adapter.setData(bookList)
                 navToProductDetail()
@@ -115,28 +188,5 @@ class CategoryBookFragment : Fragment() {
                 binding?.loadingLayout?.root?.visibility = View.INVISIBLE
             }
         })
-    }
-
-    private fun loadData(categoryId: Int) {
-        binding?.apply {
-            recyclerCategory.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-                    lastPosition =
-                        (recyclerCategory.layoutManager as GridLayoutManager).findLastVisibleItemPosition()
-                    totalPosition = adapter.itemCount
-
-                    if (lastPosition != currentPosition && ((lastPosition == totalPosition - 3 && totalPosition % 2 == 0) || (lastPosition == totalPosition - 2 && totalPosition % 2 != 0))) {
-                        currentPage++
-                        viewModel.getProductsInCategory(categoryId, 10, currentPage, 100)
-                        currentPosition = lastPosition
-//                        observeProducts()
-                    }
-//                    val visibleItemCount = layoutManager.childCount
-//                    val totalItemCount = layoutManager.itemCount;
-//                    val pastVisiblesItems = layoutManager.findFirstVisibleItemPosition()
-                }
-            })
-        }
     }
 }

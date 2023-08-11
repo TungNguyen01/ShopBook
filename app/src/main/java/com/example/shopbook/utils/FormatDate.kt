@@ -11,4 +11,28 @@ class FormatDate {
         val str_new = LocalDate.parse(str?.substring(0, 10))
         return str_new.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun formatDateOfBirth(inputDate: String): String {
+        val inputFormatter = DateTimeFormatter.ofPattern("d/M/yyyy")
+        val outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val date = LocalDate.parse(inputDate, inputFormatter)
+        return outputFormatter.format(date)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun formatDateOfBirthView(inputDate: String): String {
+        val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val date = LocalDate.parse(inputDate, inputFormatter)
+        return outputFormatter.format(date)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun formatDateReverse(inputDate: String): String {
+        val inputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val date = LocalDate.parse(inputDate, inputFormatter)
+        return outputFormatter.format(date)
+    }
 }

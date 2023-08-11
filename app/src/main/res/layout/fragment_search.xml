@@ -7,6 +7,7 @@
     android:background="@color/background"
     android:paddingLeft="@dimen/dp_24"
     android:paddingTop="22dp"
+    android:id="@+id/layoutSearch"
     android:paddingRight="@dimen/dp_24">
 
     <EditText

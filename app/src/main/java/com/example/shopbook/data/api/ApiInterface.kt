@@ -55,6 +55,11 @@ interface ApiInterface {
         @Query("price_sort_order") priceSortOrder: String,
     ): Response<ProductList>
 
+    @GET("products/search")
+    suspend fun getSearchHistory(
+        @Query("query_string") queryString: String,
+    ): Response<ProductList>
+
     @GET("products/author/search")
     suspend fun getSearchAuthorProducts(
         @Query("author_id") authorId: Int,
@@ -64,7 +69,15 @@ interface ApiInterface {
         @Query("query_string") queryString: String,
     ): Response<ProductList>
 
-    
+    @GET("products/category/search")
+    suspend fun getSearchCategoryProducts(
+        @Query("limit") limit: Int,
+        @Query("page") page: Int,
+        @Query("description_length") descriptionLength: Int,
+        @Query("query_string") queryString: String,
+        @Query("category_id") categoryId: Int,
+    ): Response<ProductList>
+
     @GET("products/{product_id}")
     suspend fun getProductInfo(@Path("product_id") product_id: Int): Response<ProductInfoList>
 
@@ -94,7 +107,7 @@ interface ApiInterface {
     suspend fun getCustomer(): Response<Customer>
 
     @FormUrlEncoded
-    
+
     @PUT("customers")
     suspend fun updateCustomer(
         @Field("name") name: String,
@@ -130,22 +143,22 @@ interface ApiInterface {
     ): Response<Customer>
 
     @Multipart
-    
+
     @POST("customers/update/avatar")
     suspend fun changeAvatar(
         @Part image: MultipartBody.Part,
     ): Response<Customer>
 
-    
+
     @GET("orders")
     suspend fun getOrderHistory(): Response<OrderList>
 
-    
+
     @GET("orders/{orderId}")
     suspend fun getOrderDetail(@Path("orderId") orderId: Int): Response<OrderDetail>
 
     @FormUrlEncoded
-    
+
     @POST("shoppingCart/add")
     suspend fun addProduct2Cart(@Field("product_id") productId: Int): Response<List<CartItem>>
 
@@ -153,7 +166,7 @@ interface ApiInterface {
     @POST("wishlist/add")
     suspend fun addItemToWishList(@Field("product_id") productId: Int): Response<Messeage>
 
-    
+
     @DELETE("wishlist/remove/{product_id}")
     suspend fun removeItemInWishList(@Path("product_id") productId: Int): Response<Messeage>
 
@@ -168,7 +181,10 @@ interface ApiInterface {
 
     @FormUrlEncoded
     @POST("shoppingCart/update")
-    suspend fun updateQuantity(@Field("item_id") itemId: Int, @Field("quantity") quantity : Int) : Response<Messeage>
+    suspend fun updateQuantity(
+        @Field("item_id") itemId: Int,
+        @Field("quantity") quantity: Int,
+    ): Response<Messeage>
 
 
 }

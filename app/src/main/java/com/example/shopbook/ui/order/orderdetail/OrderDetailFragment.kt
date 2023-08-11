@@ -48,11 +48,11 @@ class OrderDetailFragment : Fragment() {
         val orderId = arguments?.getString("orderId")?.toInt()
         val orderStatus = arguments?.getString("orderStatus")
         orderId?.let { orderId ->
-            viewModel.getOrderDetails(orderId)
             viewModel.orderDetailList.observe(viewLifecycleOwner, Observer {
                 adapter.setData(it.products)
                 bindData(it, orderStatus.toString())
             })
+            viewModel.getOrderDetails(orderId)
         }
         binding?.recyclerOrderDetail?.layoutManager = LinearLayoutManager(context)
         binding?.recyclerOrderDetail?.adapter = adapter

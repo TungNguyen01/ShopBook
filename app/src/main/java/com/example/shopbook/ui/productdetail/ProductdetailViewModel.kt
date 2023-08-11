@@ -1,6 +1,7 @@
 package com.example.shopbook.ui.productdetail
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,11 +17,11 @@ import kotlinx.coroutines.launch
 class ProductdetailViewModel : ViewModel() {
     // TODO: Implement the ViewModel
     private val _productListInfo = MutableLiveData<ProductInfoList?>()
-    val productInfo: MutableLiveData<ProductInfoList?> get() = _productListInfo
+    val productInfo:LiveData<ProductInfoList?> get() = _productListInfo
     private val _messageAdd = MutableLiveData<Messeage>()
-    val messeageAdd: MutableLiveData<Messeage> get() = _messageAdd
+    val messeageAdd: LiveData<Messeage> get() = _messageAdd
     private val _messageRemove = MutableLiveData<Messeage>()
-    val messeageRemove: MutableLiveData<Messeage> get() = _messageRemove
+    val messeageRemove: LiveData<Messeage> get() = _messageRemove
 
     private var productRepository: ProductRepository? = ProductRepositoryImp(RemoteDataSource())
     private var cartRepository: CartRepositoryImp? = CartRepositoryImp(RemoteDataSource())

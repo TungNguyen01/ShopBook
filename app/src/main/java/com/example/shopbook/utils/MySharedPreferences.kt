@@ -58,9 +58,25 @@ object MySharedPreferences {
         editor.apply()
     }
 
-    fun clearPreferences(){
-        val editor= sharedPreferences.edit()
-        editor.clear()
+    fun clearPreferences() {
+        val editor = sharedPreferences.edit()
+        val allEntries: Map<String, *> = sharedPreferences.all
+        for ((key, _) in allEntries) {
+            if (key != "firstLaunch") {
+                editor.remove(key)
+            }
+        }
+        editor.apply()
+    }
+
+    fun clearDataCache() {
+        val editor = sharedPreferences.edit()
+        val allEntries: Map<String, *> = sharedPreferences.all
+        for ((key, _) in allEntries) {
+            if (key != "firstLaunch" && key != ACCESS_TOKEN) {
+                editor.remove(key)
+            }
+        }
         editor.apply()
     }
 }

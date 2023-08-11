@@ -30,8 +30,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class ProductdetailFragment : Fragment() {
     private var binding: FragmentProductDetailBinding? = null
     private lateinit var viewModel: ProductdetailViewModel
-    private var wishlist:Int = 0
+    private var wishlist: Int = 0
     private val formatMoney = FormatMoney()
+    private var authorId = 0
+    private var publisherId = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -50,23 +52,11 @@ class ProductdetailFragment : Fragment() {
         val bottomNavigationView =
             requireActivity().findViewById<BottomNavigationView>(R.id.navigation)
         bottomNavigationView.visibility = View.GONE
+        initViewModel()
         binding?.loadingLayout?.root?.visibility = View.VISIBLE
         val productId = arguments?.getString("bookId")?.toInt()
-        var authorId = 0
-        var wishlist = 0
-        var publisherId = 0
         productId?.let {
             viewModel.getProductInfo(it)
-            viewModel.productInfo.observe(viewLifecycleOwner, Observer { productInfoList ->
-                if (productInfoList != null) {
-                    bindData(productInfoList)
-                    authorId = productInfoList.author.authorId
-                    wishlist = productInfoList.product.wishlist
-                    publisherId = productInfoList.supplier.supplier_id
-                } else {
-                    Log.d("NULLLL", "HEllo")
-                }
-            })
         }
 
         readmoreInfo()
@@ -112,24 +102,40 @@ class ProductdetailFragment : Fragment() {
         }
     }
 
+    private fun initViewModel() {
+        viewModel.productInfo.observe(viewLifecycleOwner) { productInfoList ->
+            if (productInfoList != null) {
+                bindData(productInfoList)
+                authorId = productInfoList.author.authorId
+                wishlist = productInfoList.product.wishlist
+                publisherId = productInfoList.supplier.supplier_id
+            } else {
+                Log.d("NULLLL", "HEllo")
+            }
+        }
+
+        viewModel.messeageAdd.observe(viewLifecycleOwner) {
+//            Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+        }
+
+        viewModel.messeageRemove.observe(viewLifecycleOwner, Observer {
+//            Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+        })
+    }
+
     private fun itemWishList(productId: Int) {
         MySharedPreferences.putInt("productId", productId)
         if (wishlist == 0) {
             viewModel.addItemToWishList(productId)
-            Log.d("ADD", "ADD")
-            viewModel.messeageAdd.observe(viewLifecycleOwner, Observer {
-                Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
-            })
-            wishlist=1
+            wishlist = 1
+            Toast.makeText(context, "Đã thêm vào wishlist của bạn!", Toast.LENGTH_SHORT).show()
             MySharedPreferences.putInt("wishlist", 1)
             binding?.imageFavorite?.setImageResource(R.drawable.ic_favorite)
             binding?.imageFavorite?.setBackgroundResource(R.drawable.bg_ellipse_favor)
         } else {
             viewModel.removeItemInWishList(productId)
-            viewModel.messeageRemove.observe(viewLifecycleOwner, Observer {
-                Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
-            })
-            wishlist=0
+            wishlist = 0
+            Toast.makeText(context, "Đã xóa khỏi wishlist của bạn!", Toast.LENGTH_SHORT).show()
             MySharedPreferences.putInt("wishlist", 0)
             binding?.imageFavorite?.setImageResource(R.drawable.favor_white)
             binding?.imageFavorite?.setBackgroundResource(R.drawable.bg_ellipse)
@@ -159,9 +165,9 @@ class ProductdetailFragment : Fragment() {
             readmore.text = resources.getString(R.string.readmore)
             textPublish.text = productInfoList.supplier.supplier_name
             textPriceName.text = resources.getString(R.string.price)
-            val wishListPre=MySharedPreferences.getInt("wishlist", -1)
-            val productIdPre=MySharedPreferences.getInt("productId", -1)
-            if (wishListPre!=-1 && productIdPre==productInfoList.product.productId) {
+            val wishListPre = MySharedPreferences.getInt("wishlist", -1)
+            val productIdPre = MySharedPreferences.getInt("productId", -1)
+            if (wishListPre != -1 && productIdPre == productInfoList.product.productId) {
                 if (MySharedPreferences.getInt("wishlist", -1) == 1) {
                     imageFavorite.setBackgroundResource(R.drawable.bg_ellipse_favor)
                     imageFavorite.setImageResource(R.drawable.ic_favorite)

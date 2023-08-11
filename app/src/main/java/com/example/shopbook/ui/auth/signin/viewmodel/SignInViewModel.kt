@@ -21,6 +21,8 @@ class SignInViewModel : ViewModel() {
     val loginSuccess: LiveData<Boolean> get() = _loginSuccess
     private val _accessToken = MutableLiveData<String>()
     val accessToken: LiveData<String>get() = _accessToken
+    private val _idCustomer = MutableLiveData<Int>()
+    val idCustomer: LiveData<Int>get() = _idCustomer
     fun performLogin(email: String, password: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -31,6 +33,9 @@ class SignInViewModel : ViewModel() {
                     if (response != null) {
                         _loginSuccess.postValue(true)
                         _accessToken.postValue(response.accessToken)
+                        response.customer.customer_id?.let {
+                            _idCustomer.postValue(it)
+                        }
                     } else {
                     }
                 }
