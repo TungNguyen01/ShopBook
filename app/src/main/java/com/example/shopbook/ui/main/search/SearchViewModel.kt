@@ -21,7 +21,7 @@ class SearchViewModel(application: Application) : ViewModel() {
     private val _historyList = MutableLiveData<List<String>>()
     val historyList: LiveData<List<String>> get() = _historyList
 
-        private val _productNameList = MutableLiveData<List<Product>>()
+    private val _productNameList = MutableLiveData<List<Product>>()
     val productNameList: LiveData<List<Product>> get() = _productNameList
 //    private var productNameList = mutableListOf<String>()
 
@@ -71,7 +71,7 @@ class SearchViewModel(application: Application) : ViewModel() {
     }
 
     var job: Job? = null
-    fun getAllHistorySearch(idCustomer: Int) {
+    fun getHistorySearchLocal(idCustomer: Int) {
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
             val response = historySearchRepository.getAllProducts(idCustomer)
@@ -79,12 +79,23 @@ class SearchViewModel(application: Application) : ViewModel() {
         }
     }
 
-    fun insertHistorySearch(product: ProductDb) {
+    fun insertHistorySearchLocal(product: ProductDb) {
         viewModelScope.launch(Dispatchers.IO) {
             historySearchRepository.insertProduct(product)
         }
     }
-    //
+
+    fun deleteHistorySearchLocal() {
+        viewModelScope.launch(Dispatchers.IO) {
+            historySearchRepository.deleteAllProducts()
+        }
+    }
+
+    fun removeItemHistorySearchLocal(productName: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            historySearchRepository.deleteColName(productName)
+        }
+    }
 
     fun getSearchHistory(queryString: String) {
         job?.cancel()
@@ -92,15 +103,6 @@ class SearchViewModel(application: Application) : ViewModel() {
             val response = searchRepository?.getSearchHistory(queryString)
             if (response?.isSuccessful == true) {
                 _productNameList.postValue(response.body()?.products)
-//                productNameList.clear()
-//                products?.let {
-//                    if (queryString.isNotEmpty()) {
-//                        for (product in products) {
-//                            productNameList.add(product.name.toString())
-//                        }
-//                    }
-//                }
-//                _historyList.postValue(HistoryState(productNameList, false))
             } else {
                 Log.d("SearchHistory", "NULL")
             }

@@ -46,9 +46,6 @@ class CheckOutFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val bottomNavigationView =
-            requireActivity().findViewById<BottomNavigationView>(R.id.navigation)
-        bottomNavigationView.visibility = View.GONE
 
         val info = viewModel.profile.value
         viewModel.getCustomer()
@@ -72,7 +69,7 @@ class CheckOutFragment : Fragment() {
             textviewUpdate.setOnClickListener {
                 val orderinfoFragment = OrderInfoFragment()
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.frame_layout, orderinfoFragment)
+                    .replace(R.id.container, orderinfoFragment)
                     .addToBackStack("HomeFragment")
                     .commit()
             }

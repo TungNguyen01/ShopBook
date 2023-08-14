@@ -29,13 +29,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class HomeFragment : Fragment() {
-    private lateinit var adapter: BookAdapter
-    private var binding: FragmentHomeBinding? = null
     private lateinit var viewModel: HomeViewModel
-    private var bookList = mutableListOf<HotBook>()
-    private var categoryList = mutableListOf<Category>()
-    private var newbookList = mutableListOf<NewArrival>()
-    private var author = mutableListOf<Author>()
     private lateinit var hotBooksAdapter: BookAdapter
     private lateinit var categoriesAdapter: CategoryAdapter
     private lateinit var newBooksAdapter: NewArrivalAdapter
@@ -45,11 +39,8 @@ class HomeFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
-        val bottomNavigationView =
-            requireActivity().findViewById<BottomNavigationView>(R.id.navigation)
-        bottomNavigationView.visibility = View.VISIBLE
         val binding = FragmentHomeBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
@@ -87,11 +78,11 @@ class HomeFragment : Fragment() {
         })
         binding?.apply {
             imageProfile.setOnClickListener {
-            val profileFragment = ProfileFragment()
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.frame_layout, profileFragment)
-                .addToBackStack("HomeFragment")
-                .commit()
+                val profileFragment = ProfileFragment()
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.container, profileFragment)
+                    .addToBackStack("HomeFragment")
+                    .commit()
             }
         }
         binding.recyclerviewHotbook.apply {
@@ -104,7 +95,7 @@ class HomeFragment : Fragment() {
                     bundle.putString("bookId", product.product_id.toString())
                     parentFragmentManager.beginTransaction()
                         .replace(
-                            R.id.frame_layout,
+                            R.id.container,
                             ProductdetailFragment().apply { arguments = bundle })
                         .addToBackStack("HomeFragment")
                         .commit()
@@ -114,15 +105,18 @@ class HomeFragment : Fragment() {
         }
 
         binding.recyclerviewCategory.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = categoriesAdapter
             categoriesAdapter.setOnItemClickListener(object : OnItemClickListener {
                 override fun onItemClick(position: Int) {
                     val bundle = Bundle()
                     val categoryId = categoriesAdapter.getCategory(position).categoryId
+                    val categoryName = categoriesAdapter.getCategory(position).name
                     bundle.putString("categoryId", categoryId.toString())
+                    bundle.putString("categoryName", categoryName)
                     parentFragmentManager.beginTransaction()
-                        .replace(R.id.frame_layout, CategoryBookFragment()
+                        .replace(R.id.container, CategoryBookFragment()
                             .apply { arguments = bundle })
                         .addToBackStack("CategoryIndex")
                         .commit()
@@ -131,7 +125,8 @@ class HomeFragment : Fragment() {
         }
 
         binding.recyclerviewNewarrival.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = newBooksAdapter
             newBooksAdapter.setOnItemClickListener(object : OnItemClickListener {
                 override fun onItemClick(position: Int) {
@@ -140,7 +135,7 @@ class HomeFragment : Fragment() {
                     bundle.putString("bookId", product.product_id.toString())
                     parentFragmentManager.beginTransaction()
                         .replace(
-                            R.id.frame_layout,
+                            R.id.container,
                             ProductdetailFragment().apply { arguments = bundle })
                         .addToBackStack("HomeFragment")
                         .commit()
@@ -150,12 +145,13 @@ class HomeFragment : Fragment() {
         }
 
         binding.recyclerviewDiscoverstore.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = authorsAdapter
         }
         binding.img1.setOnClickListener {
             parentFragmentManager.beginTransaction()
-                .replace(R.id.frame_layout, CategoryIndexFragment())
+                .replace(R.id.container, CategoryIndexFragment())
                 .addToBackStack("HomeFragment")
                 .commit()
         }

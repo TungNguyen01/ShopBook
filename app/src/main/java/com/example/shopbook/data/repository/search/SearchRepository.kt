@@ -1,6 +1,5 @@
 package com.example.shopbook.data.repository.search
 
-import com.example.shopbook.data.model.Product
 import com.example.shopbook.data.model.ProductList
 import com.example.shopbook.data.model.ProductNewList
 import retrofit2.Response

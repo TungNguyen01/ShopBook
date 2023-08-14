@@ -61,6 +61,7 @@ class OrderDetailFragment : Fragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
     fun bindData(it: OrderDetail, orderStatus: String) {
         binding?.apply {

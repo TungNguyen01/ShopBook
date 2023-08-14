@@ -32,9 +32,6 @@ class WishlistFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val bottomNavigationView =
-            requireActivity().findViewById<BottomNavigationView>(R.id.navigation)
-        bottomNavigationView.visibility = View.VISIBLE
         viewModel = ViewModelProvider(this).get(WishlistViewModel::class.java)
         val binding = FragmentWishlistBinding.inflate(inflater, container, false)
        // viewModel.removeItemInWishList(productId)
@@ -47,7 +44,7 @@ class WishlistFragment : Fragment() {
             imageProfile.setOnClickListener {
                 val profileFragment = ProfileFragment()
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.frame_layout, profileFragment)
+                    .replace(R.id.container, profileFragment)
                     .addToBackStack("WishlistFragment")
                     .commit()
             }

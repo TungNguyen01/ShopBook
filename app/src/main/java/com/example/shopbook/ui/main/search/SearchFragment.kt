@@ -31,6 +31,8 @@ import com.example.shopbook.ui.adapter.OnItemClickListener
 import com.example.shopbook.ui.productdetail.ProductdetailFragment
 import com.example.shopbook.utils.MySharedPreferences
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import okhttp3.internal.notify
+import kotlin.math.min
 
 class SearchFragment : Fragment() {
     private var binding: FragmentSearchBinding? = null
@@ -40,6 +42,7 @@ class SearchFragment : Fragment() {
     private var bookList = mutableListOf<Product>()
     private var list = mutableListOf<HistorySearch>()
     private var currentPage = 1
+    private var idCustomer = 0
     private var lastPosition = 0
     private var totalPosition = 0
     private var currentPosition = 0
@@ -74,7 +77,7 @@ class SearchFragment : Fragment() {
         adapter.clearData()
         initViewModel()
 
-        val idCustomer = MySharedPreferences.getInt("idCustomer", 0)
+        idCustomer = MySharedPreferences.getInt("idCustomer", 0)
         viewModel.getSearchProducts(10, currentPage, 100, queryString, filterType, priceSort)
         when (filterType) {
             1 -> binding?.textProductNew?.let { setTextColor(it, "blue") }
@@ -88,15 +91,13 @@ class SearchFragment : Fragment() {
         }
         val horizontalSpacing = resources.getDimensionPixelSize(R.dimen.horizontal_spacing)
         val verticalSpacing = resources.getDimensionPixelSize(R.dimen.vertical_spacing)
-        val bottomNavigationView =
-            requireActivity().findViewById<BottomNavigationView>(R.id.navigation)
-        bottomNavigationView.visibility = View.VISIBLE
         binding?.apply {
             editSearch.setOnFocusChangeListener { v, hasFocus ->
                 if (hasFocus) {
                     groupHistorySearch.visibility = View.VISIBLE
                     groupSearch.visibility = View.INVISIBLE
-                    viewModel.getAllHistorySearch(idCustomer)
+                    viewModel.getHistorySearchLocal(idCustomer)
+                    textRemoveAll.visibility = View.INVISIBLE
                 } else {
                 }
             }
@@ -118,13 +119,10 @@ class SearchFragment : Fragment() {
                     val layoutParams = textTitleSearch.layoutParams
                     val newText = editSearch.text.toString()
                     if (newText.isEmpty()) {
-                        viewModel.getAllHistorySearch(idCustomer)
+                        viewModel.getHistorySearchLocal(idCustomer)
                         textTitleSearch.visibility = View.VISIBLE
                         layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
                         textTitleSearch.layoutParams = layoutParams
-                        //7/8
-//                        groupHistorySearch.visibility = View.VISIBLE
-//                        groupSearch.visibility = View.INVISIBLE
                     } else {
                         viewModel.getSearchHistory(newText)
                         textTitleSearch.visibility = View.INVISIBLE
@@ -136,7 +134,7 @@ class SearchFragment : Fragment() {
             imageSeach.setOnClickListener {
                 val query = editSearch.text.toString()
                 if (!query.isEmpty()) {
-                    viewModel.insertHistorySearch(
+                    viewModel.insertHistorySearchLocal(
                         ProductDb(
                             idCustomer = idCustomer,
                             productName = query
@@ -152,6 +150,12 @@ class SearchFragment : Fragment() {
                 editSearch.clearFocus()
                 groupHistorySearch.visibility = View.INVISIBLE
                 groupSearch.visibility = View.VISIBLE
+            }
+            textRemoveAll.setOnClickListener {
+                viewModel.deleteHistorySearchLocal()
+                list.clear()
+                adapterHistory.clearData()
+                textRemoveAll.visibility = View.INVISIBLE
             }
             textProductNew.setOnClickListener {
                 adapter.clearData()
@@ -217,6 +221,10 @@ class SearchFragment : Fragment() {
                 }
                 false
             }
+            floatButton.setOnClickListener {
+                recyclerProduct.scrollToPosition(0)
+                floatButton.visibility=View.INVISIBLE
+            }
         }
         binding?.apply {
             recyclerProduct.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -225,6 +233,11 @@ class SearchFragment : Fragment() {
                     lastPosition =
                         (recyclerProduct.layoutManager as GridLayoutManager).findLastVisibleItemPosition()
                     totalPosition = adapter.itemCount
+                    if (lastPosition > 20) {
+                        floatButton.visibility=View.VISIBLE
+                    }else{
+                        floatButton.visibility=View.INVISIBLE
+                    }
                     if (currentPage != lastPosition && lastPosition == totalPosition - 3) {
                         currentPage++
                         viewModel.getSearchProducts(
@@ -277,8 +290,12 @@ class SearchFragment : Fragment() {
             for (historyLocal in it.reversed()) {
                 list.add(HistorySearch(historyLocal, null))
             }
+            if (list.size > 0) {
+                binding?.textRemoveAll?.visibility = View.VISIBLE
+            }
             adapterHistory.setData(list)
             searchLocalProduct()
+            clickRemoveHistory()
         }
         viewModel.productNameList.observe(viewLifecycleOwner) {
             list.clear()
@@ -286,6 +303,7 @@ class SearchFragment : Fragment() {
                 list.add(HistorySearch(null, product))
             }
             adapterHistory.setData(list)
+            binding?.textRemoveAll?.visibility = View.INVISIBLE
             searchSuggestProduct()
         }
     }
@@ -309,7 +327,7 @@ class SearchFragment : Fragment() {
                 val product = adapter.getBook(position)
                 val bundle = Bundle()
                 bundle.putString("bookId", product.product_id.toString())
-                parentFragmentManager.beginTransaction().replace(R.id.frame_layout,
+                parentFragmentManager.beginTransaction().replace(R.id.container,
                     ProductdetailFragment().apply { arguments = bundle })
                     .addToBackStack("SearchFragment").commit()
                 pastPage = currentPage
@@ -321,9 +339,15 @@ class SearchFragment : Fragment() {
         adapterHistory.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(position: Int) {
                 val product = adapterHistory.getBook(position)
+                viewModel.insertHistorySearchLocal(
+                    ProductDb(
+                        idCustomer = idCustomer,
+                        productName = product?.name.toString()
+                    )
+                )
                 val bundle = Bundle()
                 bundle.putString("bookId", product?.product_id.toString())
-                parentFragmentManager.beginTransaction().replace(R.id.frame_layout,
+                parentFragmentManager.beginTransaction().replace(R.id.container,
                     ProductdetailFragment().apply { arguments = bundle })
                     .addToBackStack("SearchFragment").commit()
             }
@@ -337,8 +361,10 @@ class SearchFragment : Fragment() {
                 currentPage = 1
                 pastPage = -1
                 productName?.let {
-                    viewModel.getSearchProducts(10, 1, 100,
-                        it, filterType, priceSort)
+                    viewModel.getSearchProducts(
+                        10, 1, 100,
+                        it, filterType, priceSort
+                    )
                 }
                 val inputMethodManager =
                     requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -348,6 +374,21 @@ class SearchFragment : Fragment() {
                     editSearch.clearFocus()
                     groupHistorySearch.visibility = View.INVISIBLE
                     groupSearch.visibility = View.VISIBLE
+                }
+            }
+        })
+    }
+
+    private fun clickRemoveHistory() {
+        adapterHistory.clickRemoveItem(object : OnItemClickListener {
+            @SuppressLint("NotifyDataSetChanged")
+            override fun onItemClick(position: Int) {
+                val productName = adapterHistory.getProductNameLocal(position)
+                productName?.let { viewModel.removeItemHistorySearchLocal(it) }
+                list.removeAt(position)
+                adapterHistory.removeData(position)
+                if (list.size == 0) {
+                    binding?.textRemoveAll?.visibility = View.INVISIBLE
                 }
             }
         })

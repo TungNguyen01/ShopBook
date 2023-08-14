@@ -240,7 +240,7 @@
                 android:id="@+id/edit_email"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:enabled="false"
+
                 android:inputType="textEmailAddress"
                 android:textColor="@color/black"
                 android:textSize="20dp"

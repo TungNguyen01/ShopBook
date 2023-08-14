@@ -94,10 +94,8 @@ class UpdateProfileFragment : Fragment() {
             var month = myCalendar.get(Calendar.MONTH)
             var dayOfMonth = myCalendar.get(Calendar.DAY_OF_MONTH)
             editDob.setOnClickListener {
-                Log.d("DATE1", editDob.text.toString())
                 if (editDob.text.toString() != "") {
                     val date = editDob.text.toString().split("/")
-                    Log.d("DATE", date.toString())
                     year = date[2].toInt()
                     month = date[1].toInt() - 1
                     dayOfMonth = date[0].toInt()
@@ -190,7 +188,7 @@ class UpdateProfileFragment : Fragment() {
                     .centerCrop()
                     .into(imageAvatar)
             }
-            MySharedPreferences.putString("imageAvatar", profile.avatar.toString())
+//            MySharedPreferences.putString("imageAvatar", profile.avatar.toString())
         }
         binding?.apply {
             editFullname.setText(profile.name)

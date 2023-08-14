@@ -1,21 +1,18 @@
 package com.example.shopbook.ui.productdetail
 
 import android.annotation.SuppressLint
-import android.content.res.Resources
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.text.style.UnderlineSpan
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.example.shopbook.R
 import com.example.shopbook.data.model.ProductInfoList
@@ -25,7 +22,6 @@ import com.example.shopbook.ui.profile.ProfileFragment
 import com.example.shopbook.ui.publisher.PublisherFragment
 import com.example.shopbook.utils.FormatMoney
 import com.example.shopbook.utils.MySharedPreferences
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class ProductdetailFragment : Fragment() {
     private var binding: FragmentProductDetailBinding? = null
@@ -49,9 +45,6 @@ class ProductdetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val bottomNavigationView =
-            requireActivity().findViewById<BottomNavigationView>(R.id.navigation)
-        bottomNavigationView.visibility = View.GONE
         initViewModel()
         binding?.loadingLayout?.root?.visibility = View.VISIBLE
         val productId = arguments?.getString("bookId")?.toInt()
@@ -68,7 +61,7 @@ class ProductdetailFragment : Fragment() {
             imageAccount.setOnClickListener {
                 val profileFragment = ProfileFragment()
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.frame_layout, profileFragment)
+                    .replace(R.id.container, profileFragment)
                     .addToBackStack("productFragment")
                     .commit()
             }
@@ -77,7 +70,7 @@ class ProductdetailFragment : Fragment() {
                 val bundle = Bundle()
                 bundle.putString("authorId", authorId.toString())
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.frame_layout, authorFragment.apply { arguments = bundle })
+                    .replace(R.id.container, authorFragment.apply { arguments = bundle })
                     .addToBackStack("productFragment")
                     .commit()
             }
@@ -95,7 +88,7 @@ class ProductdetailFragment : Fragment() {
                 val bundle = Bundle()
                 bundle.putString("publisherId", publisherId.toString())
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.frame_layout, PublisherFragment().apply { arguments = bundle })
+                    .replace(R.id.container, PublisherFragment().apply { arguments = bundle })
                     .addToBackStack("ProductDetail")
                     .commit()
             }
@@ -104,23 +97,13 @@ class ProductdetailFragment : Fragment() {
 
     private fun initViewModel() {
         viewModel.productInfo.observe(viewLifecycleOwner) { productInfoList ->
-            if (productInfoList != null) {
-                bindData(productInfoList)
-                authorId = productInfoList.author.authorId
-                wishlist = productInfoList.product.wishlist
-                publisherId = productInfoList.supplier.supplier_id
-            } else {
-                Log.d("NULLLL", "HEllo")
+            productInfoList?.let {
+                bindData(it)
+                authorId = it.author.authorId
+                wishlist = it.product.wishlist
+                publisherId = it.supplier.supplier_id
             }
         }
-
-        viewModel.messeageAdd.observe(viewLifecycleOwner) {
-//            Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
-        }
-
-        viewModel.messeageRemove.observe(viewLifecycleOwner, Observer {
-//            Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
-        })
     }
 
     private fun itemWishList(productId: Int) {
@@ -137,7 +120,7 @@ class ProductdetailFragment : Fragment() {
             wishlist = 0
             Toast.makeText(context, "Đã xóa khỏi wishlist của bạn!", Toast.LENGTH_SHORT).show()
             MySharedPreferences.putInt("wishlist", 0)
-            binding?.imageFavorite?.setImageResource(R.drawable.favor_white)
+            binding?.imageFavorite?.setImageResource(R.drawable.ic_favor_white)
             binding?.imageFavorite?.setBackgroundResource(R.drawable.bg_ellipse)
         }
     }
@@ -172,7 +155,7 @@ class ProductdetailFragment : Fragment() {
                     imageFavorite.setBackgroundResource(R.drawable.bg_ellipse_favor)
                     imageFavorite.setImageResource(R.drawable.ic_favorite)
                 } else {
-                    binding?.imageFavorite?.setImageResource(R.drawable.favor_white)
+                    binding?.imageFavorite?.setImageResource(R.drawable.ic_favor_white)
                     binding?.imageFavorite?.setBackgroundResource(R.drawable.bg_ellipse)
                 }
             } else {
@@ -180,7 +163,7 @@ class ProductdetailFragment : Fragment() {
                     imageFavorite.setBackgroundResource(R.drawable.bg_ellipse_favor)
                     imageFavorite.setImageResource(R.drawable.ic_favorite)
                 } else {
-                    binding?.imageFavorite?.setImageResource(R.drawable.favor_white)
+                    binding?.imageFavorite?.setImageResource(R.drawable.ic_favor_white)
                     binding?.imageFavorite?.setBackgroundResource(R.drawable.bg_ellipse)
                 }
             }

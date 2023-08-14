@@ -98,7 +98,7 @@ class OrderHistoryFragment : Fragment() {
                 bundle.putString("orderId", orderId.toString())
                 bundle.putString("orderStatus", orderStatus)
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.frame_layout, OrderDetailFragment().apply { arguments = bundle })
+                    .replace(R.id.container, OrderDetailFragment().apply { arguments = bundle })
                     .addToBackStack("Orderhistory")
                     .commit()
             }

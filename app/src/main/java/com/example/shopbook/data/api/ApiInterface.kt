@@ -107,7 +107,6 @@ interface ApiInterface {
     suspend fun getCustomer(): Response<Customer>
 
     @FormUrlEncoded
-
     @PUT("customers")
     suspend fun updateCustomer(
         @Field("name") name: String,
@@ -185,6 +184,5 @@ interface ApiInterface {
         @Field("item_id") itemId: Int,
         @Field("quantity") quantity: Int,
     ): Response<Messeage>
-
 
 }

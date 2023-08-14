@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.shopbook.R
 import com.example.shopbook.data.model.OrderDetailProduct
-import com.example.shopbook.data.model.Product
 import com.example.shopbook.databinding.ItemOrderDetailBinding
 import com.example.shopbook.utils.FormatMoney
 
@@ -50,7 +49,7 @@ class OrderDetailAdapter :
             binding.textNumber.text = "x" + orderDetailProduct.quantity.toString()
             if (orderDetailProduct.wishlist == 0) {
                 binding.imageFavorite.setBackgroundResource(R.drawable.bg_ellipse)
-                binding.imageFavorite.setImageResource(R.drawable.favor_white)
+                binding.imageFavorite.setImageResource(R.drawable.ic_favor_white)
             }
         }
     }

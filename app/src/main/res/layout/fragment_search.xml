@@ -60,12 +60,24 @@
         app:layout_constraintEnd_toEndOf="@id/text_title_search"
         app:layout_constraintStart_toStartOf="@id/text_title_search"
         app:layout_constraintTop_toBottomOf="@id/text_title_search" />
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_removeAll"
+        android:text="@string/deleteHistory"
+        android:gravity="center"
+        android:textStyle="italic"
+        android:textSize="15dp"
+        android:textColor="@color/primary"
+        app:layout_constraintTop_toBottomOf="@id/recycler_history_search"
+        app:layout_constraintStart_toStartOf="@id/recycler_history_search"
+        app:layout_constraintEnd_toEndOf="@id/recycler_history_search"/>
     <androidx.constraintlayout.widget.Group
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/group_history_search"
         android:visibility="invisible"
-        app:constraint_referenced_ids="recycler_history_search, text_title_search"/>
+        app:constraint_referenced_ids="recycler_history_search, text_title_search, text_removeAll"/>
     <androidx.constraintlayout.widget.Group
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -159,4 +171,16 @@
         app:layout_constraintEnd_toEndOf="@id/constraint_filter"
         app:layout_constraintStart_toStartOf="@+id/constraint_filter"
         app:layout_constraintTop_toBottomOf="@+id/constraint_filter" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/float_button"
+        app:backgroundTint="@color/white"
+        android:src="@drawable/ic_arrow_up"
+        android:visibility="invisible"
+        android:layout_marginBottom="25dp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

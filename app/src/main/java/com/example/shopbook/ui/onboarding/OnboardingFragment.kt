@@ -1,7 +1,5 @@
 package com.example.shopbook.ui.onboarding
 
-import android.content.Intent
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,8 +8,6 @@ import android.view.ViewGroup
 import com.example.shopbook.R
 import com.example.shopbook.databinding.FragmentOnboardingBinding
 import com.example.shopbook.ui.auth.signin.SignInFragment
-import com.example.shopbook.ui.main.MainMenuFragment
-
 class OnboardingFragment : Fragment() {
 
     companion object {
@@ -19,7 +15,6 @@ class OnboardingFragment : Fragment() {
     }
 
     private var binding: FragmentOnboardingBinding? = null
-    private var accessToken: String? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,

@@ -61,12 +61,10 @@ class CategoryBookFragment : Fragment() {
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val bottomNavigationView =
-            requireActivity().findViewById<BottomNavigationView>(R.id.navigation)
-        bottomNavigationView.visibility = View.GONE
         adapter = BookAdapter()
         initViewModel()
         val categoryId = arguments?.getString("categoryId")?.toInt()
+        val categoryName=arguments?.getString("categoryName")
         categoryId?.let {
             viewModel.getProductsInCategory(it, 10, currentPage, 100)
         }
@@ -75,6 +73,7 @@ class CategoryBookFragment : Fragment() {
         val verticalSpacing =
             resources.getDimensionPixelSize(R.dimen.vertical_spacing)
         binding?.apply {
+            textCategory.text = categoryName
             searchProduct.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
                     // task HERE
@@ -128,8 +127,6 @@ class CategoryBookFragment : Fragment() {
                     lastPosition =
                         (recyclerCategory.layoutManager as GridLayoutManager).findLastVisibleItemPosition()
                     totalPosition = adapter.itemCount
-                    Log.d("CURRENT", currentPage.toString())
-                    Log.d("PastPage", pastPage.toString())
                     if (lastPosition != currentPosition && ((lastPosition == totalPosition - 3 && totalPosition % 2 == 0) || (lastPosition == totalPosition - 2 && totalPosition % 2 != 0))) {
                         currentPage++
                         if (categoryId != null) {
@@ -150,7 +147,7 @@ class CategoryBookFragment : Fragment() {
                 val bundle = Bundle()
                 bundle.putString("bookId", product.product_id.toString())
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.frame_layout, productFragment.apply { arguments = bundle })
+                    .replace(R.id.container, productFragment.apply { arguments = bundle })
                     .addToBackStack("CategoryBookFragment")
                     .commit()
                 pastPage = currentPage

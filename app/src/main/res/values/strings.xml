@@ -62,4 +62,5 @@
     <string name="price">Price</string>
     <string name="th_ng_tin_s_n_ph_m">Thông tin sản phẩm</string>
     <string name="wishlist">WishList</string>
+    <string name="deleteHistory">Xóa lịch sử tìm kiếm</string>
 </resources>

@@ -73,7 +73,7 @@ object MySharedPreferences {
         val editor = sharedPreferences.edit()
         val allEntries: Map<String, *> = sharedPreferences.all
         for ((key, _) in allEntries) {
-            if (key != "firstLaunch" && key != ACCESS_TOKEN) {
+            if (key != "firstLaunch" && key != ACCESS_TOKEN && key != "idCustomer") {
                 editor.remove(key)
             }
         }

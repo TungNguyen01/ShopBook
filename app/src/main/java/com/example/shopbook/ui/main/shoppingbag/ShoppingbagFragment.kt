@@ -36,9 +36,6 @@ class ShoppingbagFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val bottomNavigationView =
-            requireActivity().findViewById<BottomNavigationView>(R.id.navigation)
-        bottomNavigationView.visibility = View.VISIBLE
         viewModel = ViewModelProvider(this).get(ShoppingbagViewModel::class.java)
         val binding = FragmentShoppingBagBinding.inflate(inflater, container, false)
 
@@ -53,14 +50,14 @@ class ShoppingbagFragment : Fragment() {
             imageProfile.setOnClickListener {
                 val profileFragment = ProfileFragment()
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.frame_layout, profileFragment)
+                    .replace(R.id.container, profileFragment)
                     .addToBackStack("HomeFragment")
                     .commit()
             }
             textCheckout.setOnClickListener {
                 val checkoutFragment = CheckOutFragment()
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.frame_layout, checkoutFragment)
+                    .replace(R.id.container, checkoutFragment)
                     .addToBackStack("HomeFragment")
                     .commit()
             }

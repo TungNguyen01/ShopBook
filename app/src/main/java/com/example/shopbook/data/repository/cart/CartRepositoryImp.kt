@@ -9,9 +9,10 @@ import retrofit2.Call
 import retrofit2.Response
 
 
-class CartRepositoryImp(private val dataSource: IDataSource) :CartRepository {
+class CartRepositoryImp(private val dataSource: IDataSource) : CartRepository {
     override suspend fun addCartItem(productId: Int): Response<List<CartItem>>? {
-        return dataSource.addCartItem(productId)    }
+        return dataSource.addCartItem(productId)
+    }
 
     override suspend fun getCart(): Response<CartList>? {
         return dataSource.getCart()

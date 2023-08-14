@@ -197,7 +197,7 @@ class AuthorFragment : Fragment() {
                 val bundle = Bundle()
                 bundle.putString("bookId", product.product_id.toString())
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.frame_layout, productFragment.apply { arguments = bundle })
+                    .replace(R.id.container, productFragment.apply { arguments = bundle })
                     .addToBackStack("AuthorFragment")
                     .commit()
                 pastPage = currentPage
