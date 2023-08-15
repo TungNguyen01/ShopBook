@@ -7,8 +7,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
-import androidx.lifecycle.GeneratedAdapter
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.shopbook.R
@@ -17,12 +15,12 @@ import com.example.shopbook.ui.adapter.CategoryIndexAdapter
 import com.example.shopbook.ui.adapter.OnItemClickListener
 import com.example.shopbook.ui.category.CategoryBookFragment
 import com.example.shopbook.utils.MySpanLookSize
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class CategoryIndexFragment : Fragment() {
 
     private lateinit var binding: FragmentCategoryIndexBinding
     private lateinit var adapter: CategoryIndexAdapter
+    private lateinit var adapterSpan: CategoryIndexAdapter
 //    private var widthRecycler = 0
 
     companion object {
@@ -66,7 +64,7 @@ class CategoryIndexFragment : Fragment() {
 //        })
         val widthRecycler = binding.recyclerCategory.width
         Log.d("WIDTH", widthRecycler.toString())
-        layoutManager.spanSizeLookup = MySpanLookSize(adapter, 1, 2)
+        layoutManager.spanSizeLookup = MySpanLookSize(adapter, 1, 2, 3, 4)
         binding.recyclerCategory.adapter = adapter
         binding.recyclerCategory.layoutManager = layoutManager
         binding.imageLeft.setOnClickListener {

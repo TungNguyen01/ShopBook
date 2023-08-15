@@ -20,7 +20,7 @@ class ChangePassViewModel : ViewModel() {
             if(response?.isSuccessful==true){
                 message.postValue("UPDATE PASSWORD SUCCESSFUL")
             }else{
-                message.postValue("PASSWORD IS INVALID.")
+                message.postValue("CURRENT PASSWORD IS INVALID.")
             }
         }
     }

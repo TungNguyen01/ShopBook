@@ -36,6 +36,10 @@ class CategoryIndexAdapter() :
         onItemClickListener = listener
     }
 
+    fun getAllCategory(): List<Category> {
+        return categoryList
+    }
+
     fun getCategory(position: Int): Category {
         return categoryList[position]
     }
