@@ -19,13 +19,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shopbook.R
 import com.example.shopbook.data.model.Product
-import com.example.shopbook.databinding.FragmentCategoryBookBinding
 import com.example.shopbook.databinding.FragmentPublisherBinding
 import com.example.shopbook.ui.adapter.BookAdapter
 import com.example.shopbook.ui.adapter.OnItemClickListener
-import com.example.shopbook.ui.category.CategoryBookFragment
-import com.example.shopbook.ui.category.CategoryBookViewModel
-import com.example.shopbook.ui.main.adapter.NXBAdapter
 import com.example.shopbook.ui.productdetail.ProductdetailFragment
 import com.example.shopbook.utils.ItemSpacingDecoration
 

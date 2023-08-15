@@ -9,8 +9,6 @@ import com.example.shopbook.data.model.ProductState
 import com.example.shopbook.data.model.Supply
 import com.example.shopbook.data.repository.cart.CartRepository
 import com.example.shopbook.data.repository.cart.CartRepositoryImp
-import com.example.shopbook.data.repository.product.ProductRepository
-import com.example.shopbook.data.repository.product.ProductRepositoryImp
 import com.example.shopbook.data.repository.supply.SupplyRepositoryImp
 import com.example.shopbook.datasource.remote.RemoteDataSource
 import kotlinx.coroutines.Dispatchers

@@ -1,5 +1,9 @@
 package com.example.shopbook.ui.main.adapter
 
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.RelativeSizeSpan
+import android.text.style.StrikethroughSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,10 +54,9 @@ class BookAdapter : RecyclerView.Adapter<BookAdapter.BookViewHolder>() {
         private val cardView : CardView = itemView.findViewById(R.id.img_book)
         val formatMoney = FormatMoney()
         fun bind(book: HotBook) {
-
             bookName.text = book.name
             bookPrice.text = book.discounted_price.toDouble()?.let { formatMoney.formatMoney(it.toLong()) }.toString()
-            bookSPrice.text = book.price.toDouble()?.let { formatMoney.formatMoney(it.toLong()) }.toString()
+            bookSPrice.text =setPrice( book.price.toDouble()?.let { formatMoney.formatMoney(it.toLong()) }.toString())
             Glide.with(itemView.context)
                 .load(book.thumbnail)
                 .into(imgBook)
@@ -65,5 +68,23 @@ class BookAdapter : RecyclerView.Adapter<BookAdapter.BookViewHolder>() {
                 }
             }
         }
+
+        fun setPrice(price: String): SpannableString {
+            val content = SpannableString(price)
+            content.setSpan(
+                StrikethroughSpan(),
+                0,
+                price.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            content.setSpan(
+                RelativeSizeSpan(12 / 14f),
+                0,
+                price.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            return content
+        }
     }
+
 }

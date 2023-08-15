@@ -1,5 +1,9 @@
 package com.example.shopbook.ui.main.adapter
 
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.RelativeSizeSpan
+import android.text.style.StrikethroughSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,10 +54,26 @@ class NewArrivalAdapter() : RecyclerView.Adapter<NewArrivalAdapter.NewArrivalVie
         fun bind(newArrival: NewArrival) {
             nameBookTextView.text = newArrival.name
             priceTextView.text = newArrival.discounted_price.toDouble()?.let { formatMoney.formatMoney(it.toLong()) }.toString()
-            spriceTextView.text = newArrival.price.toDouble()?.let { formatMoney.formatMoney(it.toLong()) }.toString()
+            spriceTextView.text =setPrice(  newArrival.price.toDouble()?.let { formatMoney.formatMoney(it.toLong()) }.toString())
             Glide.with(itemView.context)
                 .load(newArrival.thumbnail)
                 .into(imgNewBook)
+        }
+        fun setPrice(price: String): SpannableString {
+            val content = SpannableString(price)
+            content.setSpan(
+                StrikethroughSpan(),
+                0,
+                price.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            content.setSpan(
+                RelativeSizeSpan(12 / 14f),
+                0,
+                price.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            return content
         }
     }
 }

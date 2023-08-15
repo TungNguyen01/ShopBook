@@ -73,8 +73,6 @@ class ShoppingbagFragment : Fragment() {
             adapter = bookAdapter
             addItem()
             reduceItem()
-            val dividerItemDecoration = DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
-            addItemDecoration(dividerItemDecoration)
             val swipeCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
                 override fun onMove(
                     recyclerView: RecyclerView,
