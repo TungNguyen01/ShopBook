@@ -119,7 +119,7 @@ class MainMenuFragment : Fragment() {
 
 //    private fun loadFragment(fragment: Fragment) {
 //        val transaction = parentFragmentManager.beginTransaction()
-//        transaction.replace(R.id.frame_layout, fragment)
+//        transaction.replace(R.id.container, fragment)
 //        transaction.commit()
 //    }
 }

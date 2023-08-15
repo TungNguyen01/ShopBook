@@ -102,6 +102,8 @@ class ProfileFragment : Fragment() {
 
     private fun bindData(profile: Customer) {
         val imgAvatar = MySharedPreferences.getString("imageAvatar", "")
+//        val name = MySharedPreferences.getString("name", "")
+//        val email = MySharedPreferences.getString("email", "")
         if (imgAvatar != "") {
             binding?.apply {
                 Glide.with(root)

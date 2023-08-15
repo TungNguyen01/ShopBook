@@ -77,7 +77,14 @@ interface ApiInterface {
         @Query("query_string") queryString: String,
         @Query("category_id") categoryId: Int,
     ): Response<ProductList>
-
+    @GET("products/supplier/search")
+    suspend fun getSearchSupply(
+        @Query("supplier_id") supplyId: Int,
+        @Query("limit") limit: Int,
+        @Query("page") page: Int,
+        @Query("description_length") descriptionLength: Int,
+        @Query("query_string") queryString: String,
+    ): Response<ProductList>
     @GET("products/{product_id}")
     suspend fun getProductInfo(@Path("product_id") product_id: Int): Response<ProductInfoList>
 
@@ -96,7 +103,13 @@ interface ApiInterface {
         @Query("page") page: Int,
         @Query("description_length") description_length: Int,
     ): Response<ProductList>
-
+    @GET("products/supplier")
+    suspend fun getSupply(
+        @Query("supplier_id") supplier_id: Int,
+        @Query("limit") limit: Int,
+        @Query("page") page: Int,
+        @Query("description_length") description_length: Int,
+    ) : Response<ProductList>
     @GET("author/{authorId}")
     suspend fun getAuthor(@Path("authorId") authorId: Int): Response<AuthorResult>
 
@@ -184,5 +197,9 @@ interface ApiInterface {
         @Field("item_id") itemId: Int,
         @Field("quantity") quantity: Int,
     ): Response<Messeage>
+
+    @POST("shoppingCart/add/wishlist")
+    suspend fun addAllWishList() : Response<Messeage>
+
 
 }

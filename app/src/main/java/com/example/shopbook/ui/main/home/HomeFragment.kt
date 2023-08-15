@@ -16,6 +16,7 @@ import com.example.shopbook.R
 import com.example.shopbook.data.model.*
 import com.example.shopbook.databinding.FragmentHomeBinding
 import com.example.shopbook.ui.adapter.OnItemClickListener
+import com.example.shopbook.ui.author.AuthorFragment
 import com.example.shopbook.ui.category.CategoryBookFragment
 import com.example.shopbook.ui.category.categoryindex.CategoryIndexFragment
 import com.example.shopbook.ui.main.adapter.BookAdapter
@@ -53,13 +54,6 @@ class HomeFragment : Fragment() {
         viewModel.getAllCategory()
         viewModel.getAllNewBook()
         viewModel.getAllAuthor()
-//        .setOnClickListener {
-//            val profileFragment = ProfileFragment()
-//            parentFragmentManager.beginTransaction()
-//                .replace(R.id.frame_layout, profileFragment)
-//                .addToBackStack("productFragment")
-//                .commit()
-//        }
 
         viewModel.hotBookList.observe(viewLifecycleOwner, { hotBooks ->
             hotBooksAdapter.updateData(hotBooks)
@@ -148,6 +142,19 @@ class HomeFragment : Fragment() {
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = authorsAdapter
+            authorsAdapter.setOnItemClickListener(object :OnItemClickListener{
+                override fun onItemClick(position: Int) {
+                    val author = authorsAdapter.getAuthor(position)
+                    val bundle = Bundle()
+                    bundle.putString("authorId", author.authorId.toString())
+                    parentFragmentManager.beginTransaction().replace(
+                        R.id.container,
+                        AuthorFragment().apply {arguments = bundle })
+                        .addToBackStack("HomeFragment")
+                        .commit()
+                    pastPage = currentPage
+                }
+            })
         }
         binding.img1.setOnClickListener {
             parentFragmentManager.beginTransaction()

@@ -11,6 +11,7 @@ import com.example.shopbook.R
 import com.example.shopbook.data.model.CartItemBag
 import com.example.shopbook.ui.adapter.OnItemClickListener
 import com.example.shopbook.ui.order.checkout.CheckOutViewModel
+import com.example.shopbook.utils.FormatMoney
 
 class CheckoutAdapter : RecyclerView.Adapter<CheckoutAdapter.CheckOutViewHolder>() {
     private var cartList: MutableList<CartItemBag> = mutableListOf()
@@ -44,13 +45,13 @@ class CheckoutAdapter : RecyclerView.Adapter<CheckoutAdapter.CheckOutViewHolder>
         val textName: TextView = itemView.findViewById(R.id.textview_name)
         val textPrice: TextView = itemView.findViewById(R.id.textview_price)
         val textQuantity : TextView = itemView.findViewById(R.id.textview_quantity)
-
+        val formatMoney = FormatMoney()
         fun bind(cart: CartItemBag){
             Glide.with(itemView.context)
                 .load(cart.image)
                 .into(imageBook)
             textName.text = cart.name
-            textPrice.text = ((cart.price.toDouble())*(cart.quantity.toDouble())).toString()
+            textPrice.text = ((cart.price.toDouble())*(cart.quantity.toDouble()))?.let { formatMoney.formatMoney(it.toLong()) }.toString()
             textQuantity.text = cart.quantity.toString()
         }
     }

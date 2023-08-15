@@ -8,10 +8,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.shopbook.R
-import com.example.shopbook.data.model.CartItemBag
 import com.example.shopbook.data.model.Wishlist
 import com.example.shopbook.ui.adapter.OnItemClickListener
-import com.example.shopbook.ui.main.wishlist.viewmodel.WishlistViewModel
+import com.example.shopbook.utils.FormatMoney
 
 class WishListAdapter : RecyclerView.Adapter<WishListAdapter.WishListViewHolder>() {
     private var wishList: MutableList<Wishlist> = mutableListOf()
@@ -29,6 +28,10 @@ class WishListAdapter : RecyclerView.Adapter<WishListAdapter.WishListViewHolder>
         wishList.addAll(newData)
         notifyDataSetChanged()
     }
+    fun getPrice(position: Int) : String{
+        return wishList[position].discount
+    }
+
     fun setOnItemClickListener(listener: OnItemClickListener) {
         onItemClickListener = listener
     }
@@ -41,27 +44,19 @@ class WishListAdapter : RecyclerView.Adapter<WishListAdapter.WishListViewHolder>
         holder.imgAdd.setOnClickListener {
             onItemClickListener?.onItemClick(position)
         }
-//        holder.imgReduce.setOnClickListener {
-//            onItemClickListener2?.onItemClick(position)
-//        }
     }
     class WishListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-//        val imageBookBag: ImageView = itemView.findViewById(R.id.image_bookbag)
-//        val textName: TextView = itemView.findViewById(R.id.textview_name)
-//        val textPrice: TextView = itemView.findViewById(R.id.textview_price)
-       // val textQuantity : TextView = itemView.findViewById(R.id.textview_quantity)
         val imgWishList : ImageView = itemView.findViewById(R.id.image_bookbag)
         val textName : TextView = itemView.findViewById(R.id.textview_name)
         val textPrice : TextView = itemView.findViewById(R.id.textview_price)
         val imgAdd : ImageView = itemView.findViewById(R.id.image_add)
-//        val imgReduce : ImageView = itemView.findViewById(R.id.image_reduce)
+        val formatMoney = FormatMoney()
         fun bind(wishlist: Wishlist){
             Glide.with(itemView.context)
                 .load(wishlist.thumbnail)
                 .into(imgWishList)
             textName.text = wishlist.name
-            textPrice.text = wishlist.price
-            //textQuantity.text = cart.quantity.toString()
+            textPrice.text = wishlist.price.toDouble()?.let { formatMoney.formatMoney(it.toLong()) }.toString()
         }
     }
     override fun getItemCount(): Int {

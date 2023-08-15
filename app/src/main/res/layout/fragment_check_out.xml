@@ -40,6 +40,9 @@
         app:layout_constraintTop_toBottomOf="@+id/cst1"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_width="match_parent"
+        app:layout_constraintBottom_toTopOf="@id/layout_thanhtoan"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constrainedHeight="true"
         android:background="@color/background"
         android:layout_height="0dp">
         <TextView
@@ -116,13 +119,14 @@
             app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
+
             android:layout_width="match_parent"
             android:layout_height="200dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-
+        android:id="@+id/layout_thanhtoan"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_width="match_parent"
         android:background="@color/background"
@@ -166,7 +170,7 @@
             android:id="@+id/textview_ship"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_tong"
-            android:text="1000000"
+            android:text="50,000 VND"
             android:textColor="@color/black"
             android:textSize="14dp"
             android:layout_marginTop="10dp"

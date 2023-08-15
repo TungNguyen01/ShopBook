@@ -13,4 +13,5 @@ interface CartRepository {
     suspend fun removeProduct(itemId : Int) : Response<Messeage>?
 
     suspend fun updateQuantity(itemId: Int, quantity : Int) : Response<Messeage>?
+    suspend fun addAllWishList() : Response<Messeage>?
 }

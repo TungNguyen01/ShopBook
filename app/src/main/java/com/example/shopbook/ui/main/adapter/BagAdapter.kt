@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.example.shopbook.R
 import com.example.shopbook.data.model.CartItemBag
 import com.example.shopbook.ui.adapter.OnItemClickListener
+import com.example.shopbook.utils.FormatMoney
 
 
 class BagAdapter : RecyclerView.Adapter<BagAdapter.BagViewHolder>() {
@@ -51,13 +52,22 @@ class BagAdapter : RecyclerView.Adapter<BagAdapter.BagViewHolder>() {
         val textQuantity : TextView = itemView.findViewById(R.id.textview_quantity)
         val imgAdd :ImageView = itemView.findViewById(R.id.image_add)
         val imgReduce : ImageView = itemView.findViewById(R.id.image_reduce)
+        val imgFav : ImageView = itemView.findViewById(R.id.image_fav)
+        val formatMoney = FormatMoney()
         fun bind(cart: CartItemBag){
             Glide.with(itemView.context)
             .load(cart.image)
             .into(imageBookBag)
             textName.text = cart.name
-            textPrice.text = ((cart.price.toDouble())*(cart.quantity.toDouble())).toString()
+            textPrice.text = ((cart.price.toDouble())*(cart.quantity.toDouble()))?.let { formatMoney.formatMoney(it.toLong()) }.toString()
             textQuantity.text = cart.quantity.toString()
+            if(cart.wishlist == 0){
+                imgFav.setBackgroundResource(R.drawable.bg_ellipse)
+                imgFav.setImageResource(R.drawable.fav)
+            }else{
+                imgFav.setBackgroundResource(R.drawable.bg_ellipse_favor)
+                imgFav.setImageResource(R.drawable.ic_favor_white)
+            }
         }
     }
     override fun getItemCount(): Int {

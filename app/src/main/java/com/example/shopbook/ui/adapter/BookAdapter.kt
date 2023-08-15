@@ -27,7 +27,10 @@ class BookAdapter :
     private var onItemClickListener: OnItemClickListener? = null
     private var addItemToCart: OnItemClickListener? = null
     private val formatMoney = FormatMoney()
-
+    companion object {
+        private const val VIEW_TYPE_GRID = 0
+        private const val VIEW_TYPE_LIST = 1
+    }
     @SuppressLint("NotifyDataSetChanged")
     fun addData(products: List<Product>) {
         productList.addAll(products)

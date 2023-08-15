@@ -49,6 +49,13 @@ interface IDataSource {
         query_string: String,
         categoryId: Int,
     ): Response<ProductList>?
+    suspend fun getSearchSupply(
+        supplyId: Int,
+        limit: Int,
+        page: Int,
+        description_length: Int,
+        query_string: String,
+    ): Response<ProductList>?
 
     suspend fun getProductInfo(id: Int): Response<ProductInfoList>?
     suspend fun getProductsByAuthor(
@@ -93,6 +100,15 @@ interface IDataSource {
     suspend fun removeItemInWishList(productId: Int): Response<Messeage>
 
     suspend fun getWishlist() : Response<WishlistList>?
+
+    suspend fun addAllWishList() : Response<Messeage>?
+
+    suspend fun getSuppy(
+        id: Int,
+        limit: Int,
+        page: Int,
+        description_length: Int,
+    ) : Response<ProductList>?
 
     suspend fun createOrder(cart_id : String, shipping_id: Int, address : String, receiver_name : String, receiver_phone : String): Response<Messeage>?
 }

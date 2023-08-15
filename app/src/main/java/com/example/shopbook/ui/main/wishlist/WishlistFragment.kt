@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shopbook.R
+import com.example.shopbook.data.model.Wishlist
 
 import com.example.shopbook.databinding.FragmentWishlistBinding
 import com.example.shopbook.ui.adapter.OnItemClickListener
@@ -27,14 +28,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class WishlistFragment : Fragment() {
     private lateinit var viewModel: WishlistViewModel
     private lateinit var wishListAdapter: WishListAdapter
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         viewModel = ViewModelProvider(this).get(WishlistViewModel::class.java)
         val binding = FragmentWishlistBinding.inflate(inflater, container, false)
-       // viewModel.removeItemInWishList(productId)
+        var price = ""
         viewModel.getWishlist()
         wishListAdapter = WishListAdapter()
         viewModel.wishlist.observe(viewLifecycleOwner, {wishlist ->
@@ -48,10 +48,20 @@ class WishlistFragment : Fragment() {
                     .addToBackStack("WishlistFragment")
                     .commit()
             }
+            textCheckout.setOnClickListener {
+                viewModel.addAllWishList()
+                Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show()
+            }
+            swipeRefresh.setOnRefreshListener {
+                swipeRefresh.isRefreshing=false
+                viewModel.getWishlist()
+            }
+
         }
         binding.recyclerviewWishlist.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = wishListAdapter
+            var total = 0.00
             val dividerItemDecoration = DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
             addItemDecoration(dividerItemDecoration)
             addItemToBag()
@@ -66,8 +76,6 @@ class WishlistFragment : Fragment() {
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                     val position = viewHolder.adapterPosition
                     val deletedItem = viewModel.wishlist.value?.get(position)
-
-                    //Log.d("tungnguyen", deletedItem.toString())
                     deletedItem?.let {
                         viewModel.removeItemInWishList(it.product_id)
                         viewModel.getWishlist()
@@ -77,7 +85,9 @@ class WishlistFragment : Fragment() {
             }
             val itemTouchHelper = ItemTouchHelper(swipeCallback)
             itemTouchHelper.attachToRecyclerView(this)
+            price = total.toString()
         }
+        binding.textPrice.text = price + "VND"
         return binding.root
     }
 
@@ -94,5 +104,6 @@ class WishlistFragment : Fragment() {
             }
         })
     }
+
 
 }

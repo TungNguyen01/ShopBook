@@ -17,4 +17,6 @@ class WishListRepositoryImp(private val dataSource: IDataSource) : WishListRepos
     override suspend fun getWishlist(): Response<WishlistList>? {
         return dataSource.getWishlist()
     }
+
+
 }

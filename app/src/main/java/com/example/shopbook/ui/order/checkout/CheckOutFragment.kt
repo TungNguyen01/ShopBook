@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -24,6 +25,7 @@ import com.example.shopbook.ui.order.orderinfo.OrderInfoFragment
 import com.example.shopbook.ui.profile.updateprofile.UpdateProfileViewModel
 import com.example.shopbook.utils.MySharedPreferences
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.delay
 
 class CheckOutFragment : Fragment() {
     private var binding: FragmentCheckOutBinding? = null
@@ -50,7 +52,6 @@ class CheckOutFragment : Fragment() {
         val info = viewModel.profile.value
         viewModel.getCustomer()
         viewModel.getCart()
-       // viewModel.createOrder(idCart.toString(), 1, info?.address.toString(), info?.name.toString(), info?.mob_phone.toString())
         checkoutAdapter = CheckoutAdapter()
         observeCheckout()
         viewModel.cart.observe(viewLifecycleOwner, {cart ->
@@ -75,11 +76,8 @@ class CheckOutFragment : Fragment() {
             }
 
             buttonCheckout.setOnClickListener {
-                Log.d("tungnguyen", viewModel.idcart.value.toString())
-                Log.d("tungnguyen", textviewDiachi.text.toString())
-                Log.d("tungnguyen", textviewName.text.toString())
-                Log.d("tungnguyen", textviewPhone.text.toString())
                 viewModel.createOrder(viewModel.idcart.value.toString(), 1, textviewDiachi.text.toString(), textviewName.text.toString(), textviewPhone.text.toString())
+                Toast.makeText(context, "Thanh toán thàn công", Toast.LENGTH_SHORT).show()
             }
         }
         activity?.let { MySharedPreferences.init(it.applicationContext) }
@@ -97,7 +95,6 @@ class CheckOutFragment : Fragment() {
             textviewName.text = checkout.name
             textviewPhone.text = checkout.mob_phone
             textviewDiachi.text = checkout.address
-         //   layoutLoading.root.visibility = View.INVISIBLE
         }
     }
 }

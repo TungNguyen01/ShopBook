@@ -61,6 +61,10 @@ class ShoppingbagFragment : Fragment() {
                     .addToBackStack("HomeFragment")
                     .commit()
             }
+            swipeRefresh.setOnRefreshListener {
+                swipeRefresh.isRefreshing=false
+                viewModel.getCart()
+            }
            // textPrice.text =
         }
 

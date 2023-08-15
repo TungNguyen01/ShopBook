@@ -85,6 +85,15 @@ class RemoteDataSource() : IDataSource {
         return RetrofitClient.apiService.getProductsByCategory(id, limit, page, description_length)
     }
 
+    override suspend fun getSearchSupply(
+        supplyId: Int,
+        limit: Int,
+        page: Int,
+        description_length: Int,
+        query_string: String
+    ): Response<ProductList>? {
+        return RetrofitClient.apiService.getSearchSupply(supplyId, limit,page,description_length,query_string)
+    }
     override suspend fun getAuthor(authorId: Int): Response<AuthorResult>? {
         return RetrofitClient.apiService.getAuthor(authorId)
     }
@@ -186,5 +195,13 @@ class RemoteDataSource() : IDataSource {
         receiver_phone: String
     ): Response<Messeage>? {
         return RetrofitClient.apiService.createOrder(cart_id, shipping_id, address, receiver_name, receiver_phone)
+    }
+
+    override suspend fun getSuppy(id: Int, limit: Int, page: Int, description_length: Int): Response<ProductList>? {
+        return RetrofitClient.apiService.getSupply(id, limit, page, description_length)
+    }
+
+    override suspend fun addAllWishList(): Response<Messeage>? {
+        return RetrofitClient.apiService.addAllWishList()
     }
 }

@@ -9,4 +9,6 @@ interface WishListRepository {
     suspend fun removeItemInWishList(productId: Int): Response<Messeage>?
 
     suspend fun getWishlist() : Response<WishlistList>?
+
+
 }

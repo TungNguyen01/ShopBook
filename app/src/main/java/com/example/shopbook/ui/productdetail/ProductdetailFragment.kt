@@ -87,6 +87,7 @@ class ProductdetailFragment : Fragment() {
             imageArrow.setOnClickListener {
                 val bundle = Bundle()
                 bundle.putString("publisherId", publisherId.toString())
+              //  bundle.putString("supplyName", supplyName)
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.container, PublisherFragment().apply { arguments = bundle })
                     .addToBackStack("ProductDetail")

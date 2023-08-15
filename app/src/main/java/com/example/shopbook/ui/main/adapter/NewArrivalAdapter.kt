@@ -11,6 +11,7 @@ import com.example.shopbook.R
 import com.example.shopbook.data.model.HotBook
 import com.example.shopbook.data.model.NewArrival
 import com.example.shopbook.ui.adapter.OnItemClickListener
+import com.example.shopbook.utils.FormatMoney
 
 
 class NewArrivalAdapter() : RecyclerView.Adapter<NewArrivalAdapter.NewArrivalViewHolder>() {
@@ -45,11 +46,11 @@ class NewArrivalAdapter() : RecyclerView.Adapter<NewArrivalAdapter.NewArrivalVie
         private val nameBookTextView: TextView = itemView.findViewById(R.id.tv_namebook)
         private val priceTextView: TextView = itemView.findViewById(R.id.tv_price)
         private val spriceTextView: TextView = itemView.findViewById(R.id.tv_sprice)
-
+        val formatMoney = FormatMoney()
         fun bind(newArrival: NewArrival) {
             nameBookTextView.text = newArrival.name
-            priceTextView.text = newArrival.price
-            spriceTextView.text = newArrival.discounted_price
+            priceTextView.text = newArrival.discounted_price.toDouble()?.let { formatMoney.formatMoney(it.toLong()) }.toString()
+            spriceTextView.text = newArrival.price.toDouble()?.let { formatMoney.formatMoney(it.toLong()) }.toString()
             Glide.with(itemView.context)
                 .load(newArrival.thumbnail)
                 .into(imgNewBook)

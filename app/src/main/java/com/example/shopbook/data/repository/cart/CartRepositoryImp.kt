@@ -25,4 +25,7 @@ class CartRepositoryImp(private val dataSource: IDataSource) : CartRepository {
     override suspend fun updateQuantity(itemId: Int, quantity: Int): Response<Messeage>? {
         return dataSource.updateQuantity(itemId, quantity)
     }
+    override suspend fun addAllWishList(): Response<Messeage>? {
+        return dataSource.addAllWishList()
+    }
 }

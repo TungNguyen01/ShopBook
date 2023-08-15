@@ -12,10 +12,12 @@ import com.example.shopbook.R
 import com.example.shopbook.data.model.HotBook
 import com.example.shopbook.data.model.Product
 import com.example.shopbook.ui.adapter.OnItemClickListener
+import com.example.shopbook.utils.FormatMoney
 
 class BookAdapter : RecyclerView.Adapter<BookAdapter.BookViewHolder>() {
     private var hotBooks: MutableList<HotBook> = mutableListOf()
     private var onItemClickListener: OnItemClickListener? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_hot_book, parent, false)
         return BookViewHolder(view)
@@ -46,21 +48,16 @@ class BookAdapter : RecyclerView.Adapter<BookAdapter.BookViewHolder>() {
         private val bookPrice: TextView = itemView.findViewById(R.id.tv_price)
         private val bookSPrice: TextView = itemView.findViewById(R.id.tv_sprice)
         private val cardView : CardView = itemView.findViewById(R.id.img_book)
-
+        val formatMoney = FormatMoney()
         fun bind(book: HotBook) {
 
             bookName.text = book.name
-            bookPrice.text = book.price
-            bookSPrice.text = book.discounted_price
+            bookPrice.text = book.discounted_price.toDouble()?.let { formatMoney.formatMoney(it.toLong()) }.toString()
+            bookSPrice.text = book.price.toDouble()?.let { formatMoney.formatMoney(it.toLong()) }.toString()
             Glide.with(itemView.context)
                 .load(book.thumbnail)
                 .into(imgBook)
-//            binding.cardview.setOnClickListener {
-//                val position = adapterPosition
-//                if (position != RecyclerView.NO_POSITION) {
-//                    onItemClickListener?.onItemClick(position)
-//                }
-//            }
+
             cardView.setOnClickListener{
                 val position = adapterPosition
                 if(position != RecyclerView.NO_POSITION){

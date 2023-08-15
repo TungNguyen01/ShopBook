@@ -43,4 +43,13 @@ class WishlistViewModel : ViewModel() {
             }
         }
     }
+    fun addAllWishList(){
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = cartRepository?.addAllWishList()
+            Log.d("tungson", response?.body().toString())
+            if(response?.isSuccessful == true){
+                Log.d("tungson", "Add all")
+            }
+        }
+    }
 }
