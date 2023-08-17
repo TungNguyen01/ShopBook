@@ -114,14 +114,17 @@ class PublisherFragment : Fragment() {
                 false
             }
 //            if(isGridLayoutManager) {
+//
+//            }else{
+//
+//            }
+            if(isGridLayoutManager == true) {
 //                recyclerCategory.addItemDecoration(
 //                    ItemSpacingDecoration(
 //                        horizontalSpacing,
 //                        verticalSpacing
 //                    )
 //                )
-//            }
-            if(isGridLayoutManager == true) {
                 recyclerCategory.layoutManager = GridLayoutManager(context, 2)
                 recyclerCategory.adapter = gridadapter
             }else{

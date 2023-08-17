@@ -10,7 +10,7 @@
         android:id="@+id/cardview_book"
         app:cardCornerRadius="20dp"
         android:layout_width="match_parent"
-        android:background="@color/background"
+        android:background="@color/white"
         android:layout_height="144dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout

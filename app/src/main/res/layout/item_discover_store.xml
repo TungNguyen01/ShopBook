@@ -12,6 +12,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_width="170dp"
         app:cardCornerRadius="10dp"
+        android:background="@color/white"
         android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/book1"

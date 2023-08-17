@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_marginTop="7dp"
     android:layout_height="71dp"
+    android:background="@color/white"
     android:id="@+id/cardview"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.constraintlayout.widget.ConstraintLayout
