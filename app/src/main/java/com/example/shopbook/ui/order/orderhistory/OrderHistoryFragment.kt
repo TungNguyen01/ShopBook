@@ -51,13 +51,13 @@ class OrderHistoryFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter= OrderHistoryAdapter()
+        adapter = OrderHistoryAdapter()
         binding?.loadingLayout?.root?.visibility = View.VISIBLE
         val list = mutableListOf<OrderHistory>()
         val currentDate = formatDate.formatDate(LocalDateTime.now().toString())
         val mapOrder: MutableMap<String, MutableList<Order>> = mutableMapOf()
         viewModel.orderHistory.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
+            it?.let {
                 mapOrder.clear()
                 for (order in it) {
                     val date = formatDate.formatDate(order.createdOn)
@@ -73,6 +73,9 @@ class OrderHistoryFragment : Fragment() {
                     for (values in value) {
                         list.add(OrderHistory(null, values))
                     }
+                }
+                if (list.isEmpty()) {
+                    binding?.textOrderHistory?.visibility = View.VISIBLE
                 }
                 adapter.setData(list)
                 navToOrderDetail()

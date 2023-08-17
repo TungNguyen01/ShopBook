@@ -16,6 +16,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -24,6 +25,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.example.shopbook.R
 import com.example.shopbook.data.model.Customer
 import com.example.shopbook.databinding.FragmentUpdateProfileBinding
 import com.example.shopbook.utils.FormatDate
@@ -33,8 +35,6 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
 import java.io.FileOutputStream
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 class UpdateProfileFragment : Fragment() {
@@ -89,6 +89,13 @@ class UpdateProfileFragment : Fragment() {
             textUpdateProfile.setOnClickListener {
                 updateProfie()
             }
+            editAddress.setOnEditorActionListener { textView, actionId, keyEvent ->
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    updateProfie()
+                    return@setOnEditorActionListener true
+                }
+                return@setOnEditorActionListener false
+            }
             val myCalendar = Calendar.getInstance()
             var year = myCalendar.get(Calendar.YEAR)
             var month = myCalendar.get(Calendar.MONTH)
@@ -126,7 +133,7 @@ class UpdateProfileFragment : Fragment() {
                 .show()
         })
         viewModel.profile.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
+            it?.let {
                 bindData(it)
                 customer_id = it.customer_id
                 shipping_region_id = it.shipping_region_id
@@ -141,7 +148,7 @@ class UpdateProfileFragment : Fragment() {
         grantResults: IntArray,
     ) {
         if (requestCode == 1) {
-            if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 openImageDirectory()
             } else {
                 Toast.makeText(context, "User ko cap quyen", Toast.LENGTH_SHORT).show()
@@ -182,20 +189,22 @@ class UpdateProfileFragment : Fragment() {
                     .into(imageAvatar)
             }
         } else {
-            binding?.apply {
-                Glide.with(root)
-                    .load(profile.avatar)
-                    .centerCrop()
-                    .into(imageAvatar)
-            }
+            if (profile.avatar == "") {
+                binding?.imageAvatar?.setImageResource(R.drawable.account_profile)
+            } else {
+                binding?.apply {
+                    Glide.with(root)
+                        .load(profile.avatar)
+                        .centerCrop()
+                        .into(imageAvatar)
+                }
 //            MySharedPreferences.putString("imageAvatar", profile.avatar.toString())
+            }
         }
         binding?.apply {
             editFullname.setText(profile.name)
-            if (profile.date_of_birth != null) {
+            profile.date_of_birth?.let {
                 editDob.setText(FormatDate().formatDateOfBirthView(profile.date_of_birth.toString()))
-            } else {
-                editDob.setText(profile.date_of_birth)
             }
             editPhone.setText(profile.mob_phone)
             editAddress.setText(profile.address)
@@ -214,7 +223,13 @@ class UpdateProfileFragment : Fragment() {
         val pattern = Regex("^0\\d{9}$")
         binding?.apply {
             val fullName = editFullname.text.toString()
-            val Dob = FormatDate().formatDateReverse(editDob.text.toString())
+            var dateOfBirth = ""
+            if (editDob.text.toString() != "") {
+                dateOfBirth = FormatDate().formatDateReverse(editDob.text.toString())
+            } else {
+                Toast.makeText(context, "Please enter your date of birth.", Toast.LENGTH_SHORT)
+                    .show()
+            }
             var gender = "Nữ"
             if (radiobtnNam.isChecked) {
                 gender = "Nam"
@@ -222,14 +237,15 @@ class UpdateProfileFragment : Fragment() {
             val phone = editPhone.text.toString()
             val address = editAddress.text.toString()
             val checkPhone = pattern.matches(editPhone.text.toString())
-            if (checkPhone) {
-                viewModel.updateCustomer(fullName, address, Dob, gender, phone)
-            } else {
+            if (!checkPhone) {
                 Toast.makeText(
                     requireContext(),
                     "Please enter the correct format of the phone number!",
                     Toast.LENGTH_SHORT
                 ).show()
+            }
+            if (checkPhone && dateOfBirth != "") {
+                viewModel.updateCustomer(fullName, address, dateOfBirth, gender, phone)
             }
         }
     }

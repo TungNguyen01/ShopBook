@@ -39,7 +39,10 @@ class ProfileFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this, ProfileViewModelFactory(requireActivity().application))[ProfileViewModel::class.java]
+        viewModel = ViewModelProvider(
+            this,
+            ProfileViewModelFactory(requireActivity().application)
+        )[ProfileViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -112,11 +115,15 @@ class ProfileFragment : Fragment() {
                     .into(imageAvatar)
             }
         } else {
-            binding?.apply {
-                Glide.with(root)
-                    .load(profile.avatar)
-                    .centerCrop()
-                    .into(imageAvatar)
+            if (profile.avatar == "") {
+                binding?.imageAvatar?.setImageResource(R.drawable.account_profile)
+            } else {
+                binding?.apply {
+                    Glide.with(root)
+                        .load(profile.avatar)
+                        .centerCrop()
+                        .into(imageAvatar)
+                }
             }
 //            MySharedPreferences.putString("imageAvatar", profile.avatar.toString())
         }

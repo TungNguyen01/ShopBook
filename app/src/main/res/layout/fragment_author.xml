@@ -70,15 +70,20 @@
         app:layout_constraintStart_toStartOf="@+id/search_product"
         app:layout_constraintTop_toBottomOf="@+id/search_product" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_author"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:id="@+id/swipe_refresh"
         android:layout_marginTop="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/search_product"
         app:layout_constraintStart_toStartOf="@+id/search_product"
-        app:layout_constraintTop_toBottomOf="@+id/text_hot" />
+        app:layout_constraintTop_toBottomOf="@+id/text_hot">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_author"
+            android:layout_width="0dp"
+            android:layout_height="0dp"/>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     <include
         layout="@layout/layout_loading"
         android:id="@+id/loadingLayout"

@@ -136,14 +136,14 @@ class ProductdetailFragment : Fragment() {
             textName.text = productInfoList.product.name
             textNum.text = resources.getString(R.string.quantity)
             textMa.text =
-                resources.getString(R.string.productId) + " " + productInfoList.product.productId
+                resources.getString(R.string.productId, productInfoList.product.productId)
             textDescription.text = productInfoList.product.description
             textPrice.text =
                 formatMoney.formatMoney(productInfoList.product.price.toDouble().toLong())
             textAuthor.text = resources.getString(R.string.author) + ": "
             textNameAuthor.text = setAuthorName(productInfoList.author.authorName)
             textNcc.text =
-                resources.getString(R.string.supplier) + ": " + productInfoList.supplier.supplier_name
+                resources.getString(R.string.supplier, productInfoList.supplier.supplier_name)
             textYear.text = resources.getString(R.string.year)
             textLanguage.text = resources.getString(R.string.language)
             readmore.text = resources.getString(R.string.readmore)

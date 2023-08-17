@@ -90,7 +90,7 @@ class AuthorFragment : Fragment() {
                         textAuthor.visibility = View.VISIBLE
                         textHot.visibility = View.VISIBLE
                         currentPage = 1
-                        if (authorId != null) {
+                       authorId?.let {
                             viewModel.getProductsByAuthor(authorId, 10, 1, 100)
                         }
                         loadingLayout.root.visibility = View.VISIBLE
@@ -140,6 +140,12 @@ class AuthorFragment : Fragment() {
                 }
                 false
             }
+            swipeRefresh.setOnRefreshListener {
+                Handler().postDelayed({
+                    swipeRefresh.isRefreshing = false
+                    authorId?.let { viewModel.getProductsByAuthor(it, 10, currentPage, 100) }
+                },1000)
+            }
         }
         binding?.apply {
             recyclerAuthor.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -150,7 +156,7 @@ class AuthorFragment : Fragment() {
                     totalPosition = adapter.itemCount
                     if (lastPosition != currentPosition && ((lastPosition == totalPosition - 3 && totalPosition % 2 == 0) || (lastPosition == totalPosition - 2 && totalPosition % 2 != 0))) {
                         currentPage++
-                        if (authorId != null) {
+                       authorId?.let {
                             viewModel.getProductsByAuthor(authorId, 10, currentPage, 100)
                         }
                         currentPosition = lastPosition
@@ -179,7 +185,7 @@ class AuthorFragment : Fragment() {
             }
         }
         viewModel.author.observe(viewLifecycleOwner) {
-            if (it != null) {
+            it?.let {
                 if (!it.author.authorDescription.contains(it.author.authorName))
                     it.author.authorDescription =
                         it.author.authorName + " " + it.author.authorDescription

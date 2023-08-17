@@ -64,7 +64,7 @@ class CategoryBookFragment : Fragment() {
         adapter = BookAdapter()
         initViewModel()
         val categoryId = arguments?.getString("categoryId")?.toInt()
-        val categoryName=arguments?.getString("categoryName")
+        val categoryName = arguments?.getString("categoryName")
         categoryId?.let {
             viewModel.getProductsInCategory(it, 10, currentPage, 100)
         }
@@ -119,6 +119,14 @@ class CategoryBookFragment : Fragment() {
             imageLeft.setOnClickListener {
                 parentFragmentManager.popBackStack()
             }
+            swipeRefresh.setOnRefreshListener {
+                Handler().postDelayed({
+                    swipeRefresh.isRefreshing = false
+                    categoryId?.let {
+                        viewModel.getProductsInCategory(categoryId, 10, currentPage, 100)
+                    }
+                }, 1000)
+            }
         }
         binding?.apply {
             recyclerCategory.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -129,7 +137,7 @@ class CategoryBookFragment : Fragment() {
                     totalPosition = adapter.itemCount
                     if (lastPosition != currentPosition && ((lastPosition == totalPosition - 3 && totalPosition % 2 == 0) || (lastPosition == totalPosition - 2 && totalPosition % 2 != 0))) {
                         currentPage++
-                        if (categoryId != null) {
+                        categoryId?.let {
                             viewModel.getProductsInCategory(categoryId, 10, currentPage, 100)
                         }
                         currentPosition = lastPosition

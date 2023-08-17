@@ -47,7 +47,7 @@
     <string name="onboard">Book Store</string>
     <string name="history_search">Lịch sử tìm kiếm</string>
     <string name="introduce">Good books, like good friends, are few and chosen; the more select, the more enjoyable</string>
-    <string name="supplier">Tên NCC:</string>
+    <string name="supplier">Tên NCC: %s</string>
     <string name="year">Năm XB: 2022</string>
     <string name="product">sản phẩm</string>
     <string name="createdOn">Ngày đặt hàng :</string>
@@ -57,7 +57,7 @@
     <string name="textStatus">Tình tạng đơn hàng:</string>
     <string name="language">Ngôn Ngữ: Tiếng Việt</string>
     <string name="quantity">Số lượng : 10</string>
-    <string name="productId">Mã hàng:</string>
+    <string name="productId">Mã hàng: %d</string>
     <string name="readmore">Read more.</string>
     <string name="price">Price</string>
     <string name="th_ng_tin_s_n_ph_m">Thông tin sản phẩm</string>

@@ -23,7 +23,7 @@ class SearchViewModel(application: Application) : ViewModel() {
 
     private val _productNameList = MutableLiveData<List<Product>>()
     val productNameList: LiveData<List<Product>> get() = _productNameList
-//    private var productNameList = mutableListOf<String>()
+    var job: Job? = null
 
     private var searchRepository: SearchRepository? = SearchRepositoryImp(RemoteDataSource())
     private var cartRepository: CartRepository? = CartRepositoryImp(RemoteDataSource())
@@ -70,7 +70,6 @@ class SearchViewModel(application: Application) : ViewModel() {
         }
     }
 
-    var job: Job? = null
     fun getHistorySearchLocal(idCustomer: Int) {
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {

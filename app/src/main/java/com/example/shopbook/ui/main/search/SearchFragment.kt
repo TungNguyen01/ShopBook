@@ -3,13 +3,12 @@ package com.example.shopbook.ui.main.search
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
@@ -131,6 +130,30 @@ class SearchFragment : Fragment() {
                     }
                 }
             })
+            editSearch.setOnEditorActionListener { textView, actionId, keyEvent ->
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    val query = editSearch.text.toString()
+                    if (query.isNotEmpty()) {
+                        viewModel.insertHistorySearchLocal(
+                            ProductDb(
+                                idCustomer = idCustomer,
+                                productName = query
+                            )
+                        )
+                    }
+                    currentPage = 1
+                    pastPage = -1
+                    viewModel.getSearchProducts(10, 1, 100, query, filterType, priceSort)
+                    val inputMethodManager =
+                        requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    inputMethodManager.hideSoftInputFromWindow(editSearch.windowToken, 0)
+                    editSearch.clearFocus()
+                    groupHistorySearch.visibility = View.INVISIBLE
+                    groupSearch.visibility = View.VISIBLE
+                    return@setOnEditorActionListener true
+                }
+                return@setOnEditorActionListener false
+            }
             imageSeach.setOnClickListener {
                 val query = editSearch.text.toString()
                 if (!query.isEmpty()) {
@@ -223,7 +246,18 @@ class SearchFragment : Fragment() {
             }
             floatButton.setOnClickListener {
                 recyclerProduct.scrollToPosition(0)
-                floatButton.visibility=View.INVISIBLE
+                floatButton.visibility = View.INVISIBLE
+            }
+            swipeRefresh.setOnRefreshListener {
+                Handler().postDelayed({
+                    swipeRefresh.isRefreshing=false
+                    viewModel.getSearchProducts(
+                        10, currentPage, 100,
+                        queryString,
+                        filterType,
+                        priceSort,
+                    )
+                },1000)
             }
         }
         binding?.apply {
@@ -234,9 +268,9 @@ class SearchFragment : Fragment() {
                         (recyclerProduct.layoutManager as GridLayoutManager).findLastVisibleItemPosition()
                     totalPosition = adapter.itemCount
                     if (lastPosition > 20) {
-                        floatButton.visibility=View.VISIBLE
-                    }else{
-                        floatButton.visibility=View.INVISIBLE
+                        floatButton.visibility = View.VISIBLE
+                    } else {
+                        floatButton.visibility = View.INVISIBLE
                     }
                     if (currentPage != lastPosition && lastPosition == totalPosition - 3) {
                         currentPage++

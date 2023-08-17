@@ -82,14 +82,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/group_search"
-        app:constraint_referenced_ids="constraint_filter, recycler_product"/>
+        app:constraint_referenced_ids="constraint_filter,swipe_refresh"/>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint_filter"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/bg_search2"
-        app:layout_constraintBottom_toTopOf="@+id/recycler_product"
+        app:layout_constraintBottom_toTopOf="@+id/swipe_refresh"
         app:layout_constraintEnd_toEndOf="@+id/image_seach"
         app:layout_constraintStart_toStartOf="@+id/edit_search"
         app:layout_constraintTop_toBottomOf="@+id/edit_search">
@@ -162,15 +162,20 @@
         app:layout_constraintEnd_toEndOf="@id/constraint_filter"
         app:layout_constraintBottom_toBottomOf="parent"
         android:visibility="visible" />
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_product"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:id="@+id/swipe_refresh"
         android:paddingTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/constraint_filter"
         app:layout_constraintStart_toStartOf="@+id/constraint_filter"
-        app:layout_constraintTop_toBottomOf="@+id/constraint_filter" />
+        app:layout_constraintTop_toBottomOf="@+id/constraint_filter">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_product"
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"

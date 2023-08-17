@@ -26,6 +26,20 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/text_order_history"
+        android:text="Bạn chưa đặt mua sản phẩm nào."
+        android:textSize="25dp"
+        android:textStyle="italic"
+        android:visibility="gone"
+        android:gravity="center"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@id/image_left_order"
+        app:layout_constraintEnd_toEndOf="@id/text_order"
+        app:layout_constraintBottom_toBottomOf="parent"/>
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="0dp"
         android:layout_height="0dp"

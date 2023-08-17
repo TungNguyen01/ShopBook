@@ -19,7 +19,8 @@ class MySpanLookSize(
     private var categoryListNew = mutableListOf<Category>()
     private var categoryList = adapter.getAllCategory()
     private var tmp = 0
-//    private var size = 30
+
+    //    private var size = 30
     private var a = 0
     private var b = 35
     override fun getSpanSize(position: Int): Int {
@@ -31,7 +32,7 @@ class MySpanLookSize(
 //            when (it) {
 //            }
 //        }
-    val size=adapter.getCategory(position).name?.length
+        val size = adapter.getCategory(position).name?.length
         if (size != null && size > 25) {
             return spanCount2
         }
