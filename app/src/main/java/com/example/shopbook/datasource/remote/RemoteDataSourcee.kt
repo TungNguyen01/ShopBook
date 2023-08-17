@@ -204,4 +204,8 @@ class RemoteDataSource() : IDataSource {
     override suspend fun addAllWishList(): Response<Messeage>? {
         return RetrofitClient.apiService.addAllWishList()
     }
+
+    override suspend fun getBanner(): Response<BannerList>? {
+        return RetrofitClient.apiService.getBanner()
+    }
 }

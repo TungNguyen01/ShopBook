@@ -1,7 +1,5 @@
 package com.example.shopbook.ui.order.checkout
 
-import android.Manifest
-import android.content.pm.PackageManager
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
@@ -12,25 +10,20 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.example.shopbook.R
 import com.example.shopbook.data.model.Customer
 import com.example.shopbook.databinding.FragmentCheckOutBinding
-import com.example.shopbook.databinding.FragmentProfileBinding
-import com.example.shopbook.databinding.FragmentShoppingBagBinding
-import com.example.shopbook.databinding.FragmentUpdateProfileBinding
-import com.example.shopbook.ui.main.adapter.BagAdapter
 import com.example.shopbook.ui.main.adapter.CheckoutAdapter
 import com.example.shopbook.ui.order.orderinfo.OrderInfoFragment
-import com.example.shopbook.ui.profile.updateprofile.UpdateProfileViewModel
+import com.example.shopbook.utils.FormatMoney
 import com.example.shopbook.utils.MySharedPreferences
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.coroutines.delay
 
 class CheckOutFragment : Fragment() {
     private var binding: FragmentCheckOutBinding? = null
     private lateinit var checkoutAdapter: CheckoutAdapter
     private lateinit var viewModel: CheckOutViewModel
+    private var total = 0.0
+    private var totall = 0.0
     companion object {
         fun newInstance() = CheckOutFragment()
     }
@@ -48,7 +41,7 @@ class CheckOutFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        val formatMoney = FormatMoney()
         val info = viewModel.profile.value
         viewModel.getCustomer()
         viewModel.getCart()
@@ -74,10 +67,23 @@ class CheckOutFragment : Fragment() {
                     .addToBackStack("HomeFragment")
                     .commit()
             }
-
             buttonCheckout.setOnClickListener {
                 viewModel.createOrder(viewModel.idcart.value.toString(), 1, textviewDiachi.text.toString(), textviewName.text.toString(), textviewPhone.text.toString())
                 Toast.makeText(context, "Thanh toán thàn công", Toast.LENGTH_SHORT).show()
+            }
+            viewModel.cart.observe(viewLifecycleOwner) { cart ->
+                checkoutAdapter.updateData(cart)
+                total = 0.0
+                for (i in cart) {
+                    total += i.quantity * i.discounted_price.toDouble()
+                    totall += i.quantity * i.price.toDouble()
+                }
+                textviewTong.text = totall.let { formatMoney.formatMoney(it.toLong()) }.toString()
+                if(totall != 0.0){
+                    textviewShip.text = (50000.00).let { formatMoney.formatMoney(it.toLong()) }.toString()
+                }
+                textviewKm.text = (totall - total).let { formatMoney.formatMoney(it.toLong()) }.toString()
+                textviewAll.text = (total + 50000).let { formatMoney.formatMoney(it.toLong()) }.toString()
             }
         }
         activity?.let { MySharedPreferences.init(it.applicationContext) }

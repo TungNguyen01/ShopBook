@@ -5,8 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.shopbook.data.model.Banner
 import com.example.shopbook.data.model.ProductState
 import com.example.shopbook.data.model.Supply
+import com.example.shopbook.data.repository.banner.BannerRepository
+import com.example.shopbook.data.repository.banner.BannerRepositoryImp
 import com.example.shopbook.data.repository.cart.CartRepository
 import com.example.shopbook.data.repository.cart.CartRepositoryImp
 import com.example.shopbook.data.repository.supply.SupplyRepositoryImp
@@ -16,12 +19,12 @@ import kotlinx.coroutines.launch
 
 
 class PublisherViewModel : ViewModel() {
-    private val _supply = MutableLiveData<List<Supply>>()
-    val supply : MutableLiveData<List<Supply>> get() = supply
+
     private var _productList = MutableLiveData<ProductState>()
     val producList: LiveData<ProductState> get() = _productList
     private var supplyRepository: SupplyRepositoryImp? = SupplyRepositoryImp(RemoteDataSource())
     private var cartRepository: CartRepository? = CartRepositoryImp(RemoteDataSource())
+
     //private var productRepository: ProductRepository? = ProductRepositoryImp(RemoteDataSource())
     fun getSuplly(id: Int, limit: Int, page: Int, description_length: Int){
         viewModelScope.launch(Dispatchers.IO) {
@@ -48,7 +51,6 @@ class PublisherViewModel : ViewModel() {
                 _productList.postValue(ProductState(response.body()?.products, false))
             }
         }
-
-
     }
+
 }

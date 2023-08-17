@@ -8,6 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.shopbook.data.model.*
 import com.example.shopbook.data.repository.author.AuthorRepository
 import com.example.shopbook.data.repository.author.AuthorRepositoryImp
+import com.example.shopbook.data.repository.banner.BannerRepository
+import com.example.shopbook.data.repository.banner.BannerRepositoryImp
 import com.example.shopbook.data.repository.category.CategoryRepository
 import com.example.shopbook.data.repository.category.CategoryRepositoryImp
 import com.example.shopbook.data.repository.hotbook.HotBookRepository
@@ -22,7 +24,8 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel : ViewModel() {
     //private var hotbook = mutableListOf<HotBook>()
-
+    private val _banner = MutableLiveData<List<Banner>>()
+    val banner : MutableLiveData<List<Banner>> get() = _banner
     private var category = mutableListOf<Category>()
 //    fun getHotBooks() : MutableList<HotBook>{
 //        return hotbook
@@ -30,6 +33,7 @@ class HomeViewModel : ViewModel() {
     private val _hotbookList = MutableLiveData<List<HotBook>>()
     val hotBookList: LiveData<List<HotBook>> get() = _hotbookList
     private var hotbookRepository: HotBookRepository? = HotBookRepositoryImp(RemoteDataSource())
+    private var bannerRepository : BannerRepository? = BannerRepositoryImp(RemoteDataSource())
     fun getAllHotBook() {
         viewModelScope.launch(Dispatchers.IO) {
             val response = hotbookRepository?.getHotBook()
@@ -90,6 +94,14 @@ class HomeViewModel : ViewModel() {
             Log.d("tungnui", (response?.body()).toString())
             if (response?.isSuccessful == true) {
                 _productListInfo.postValue(response.body())
+            }
+        }
+    }
+    fun getBanner(){
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = bannerRepository?.getBanner()
+            if(response?.isSuccessful == true){
+                _banner.postValue(response.body()?.products)
             }
         }
     }

@@ -77,6 +77,9 @@ interface ApiInterface {
         @Query("query_string") queryString: String,
         @Query("category_id") categoryId: Int,
     ): Response<ProductList>
+
+    @GET("products/recommend")
+    suspend fun getBanner(): Response<BannerList>
     @GET("products/supplier/search")
     suspend fun getSearchSupply(
         @Query("supplier_id") supplyId: Int,

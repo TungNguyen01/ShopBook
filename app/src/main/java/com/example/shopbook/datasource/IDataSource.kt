@@ -109,6 +109,6 @@ interface IDataSource {
         page: Int,
         description_length: Int,
     ) : Response<ProductList>?
-
+    suspend fun getBanner(): Response<BannerList>?
     suspend fun createOrder(cart_id : String, shipping_id: Int, address : String, receiver_name : String, receiver_phone : String): Response<Messeage>?
 }

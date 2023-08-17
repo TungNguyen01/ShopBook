@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -16,12 +17,16 @@ import android.widget.SearchView
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shopbook.R
 import com.example.shopbook.data.model.Product
 import com.example.shopbook.databinding.FragmentPublisherBinding
 import com.example.shopbook.ui.adapter.BookAdapter
+
 import com.example.shopbook.ui.adapter.OnItemClickListener
+import com.example.shopbook.ui.main.adapter.NXBAdapter
+
 import com.example.shopbook.ui.productdetail.ProductdetailFragment
 import com.example.shopbook.utils.ItemSpacingDecoration
 
@@ -33,8 +38,9 @@ class PublisherFragment : Fragment() {
 
     private lateinit var viewModel: PublisherViewModel
     private var binding: FragmentPublisherBinding? = null
-    private lateinit var adapter: BookAdapter
-    private lateinit var layoutManager: GridLayoutManager
+    private lateinit var gridadapter: NXBAdapter
+    private lateinit var listadapter : NXBAdapter
+    private var isGridLayoutManager = true
     private var bookList = mutableListOf<Product>()
     private var currentPage = 1
     private var lastPosition = 0
@@ -58,13 +64,16 @@ class PublisherFragment : Fragment() {
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = BookAdapter()
+        gridadapter = NXBAdapter(true)
+        listadapter = NXBAdapter(false)
         initViewModel()
         val supplyId = arguments?.getString("publisherId")?.toInt()
      //   val supplyName=arguments?.getString("publisherName")
         supplyId?.let {
             viewModel.getSuplly(it, 10, currentPage, 100)
         }
+        val vertical = resources.getDimensionPixelSize(R.dimen.vertical)
+        val horizontal = resources.getDimensionPixelSize(R.dimen.horizontal)
         val horizontalSpacing =
             resources.getDimensionPixelSize(R.dimen.horizontal_spacing)
         val verticalSpacing =
@@ -104,17 +113,35 @@ class PublisherFragment : Fragment() {
                 }
                 false
             }
-            recyclerCategory.addItemDecoration(
-                ItemSpacingDecoration(
-                    horizontalSpacing,
-                    verticalSpacing
+            if(isGridLayoutManager) {
+                recyclerCategory.addItemDecoration(
+                    ItemSpacingDecoration(
+                        horizontalSpacing,
+                        verticalSpacing
+                    )
                 )
-            )
-            layoutManager = GridLayoutManager(context, 2)
-            recyclerCategory.layoutManager = layoutManager
-            recyclerCategory.adapter = adapter
+            }
+            if(isGridLayoutManager == true) {
+                recyclerCategory.layoutManager = GridLayoutManager(context, 2)
+                recyclerCategory.adapter = gridadapter
+            }else{
+                recyclerCategory.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                recyclerCategory.adapter = listadapter
+            }
             imageLeft.setOnClickListener {
                 parentFragmentManager.popBackStack()
+            }
+            imageChange.setOnClickListener {
+                isGridLayoutManager = !isGridLayoutManager
+                if(isGridLayoutManager){
+                    recyclerCategory.layoutManager = GridLayoutManager(context, 2)
+                    recyclerCategory.adapter = gridadapter
+                    gridadapter.setData(bookList)
+                }else{
+                    recyclerCategory.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                    recyclerCategory.adapter = listadapter
+                    listadapter.setData(bookList)
+                }
             }
         }
         binding?.apply {
@@ -122,8 +149,16 @@ class PublisherFragment : Fragment() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
                     lastPosition =
-                        (recyclerCategory.layoutManager as GridLayoutManager).findLastVisibleItemPosition()
-                    totalPosition = adapter.itemCount
+                        if(isGridLayoutManager){
+                            (recyclerCategory.layoutManager as GridLayoutManager).findLastVisibleItemPosition()
+                        }else{
+                            (recyclerCategory.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                        }
+                    totalPosition = if(isGridLayoutManager){
+                        gridadapter.itemCount
+                    }else {
+                        listadapter.itemCount
+                    }
                     if (lastPosition != currentPosition && ((lastPosition == totalPosition - 3 && totalPosition % 2 == 0) || (lastPosition == totalPosition - 2 && totalPosition % 2 != 0))) {
                         currentPage++
                         if (supplyId != null) {
@@ -135,12 +170,12 @@ class PublisherFragment : Fragment() {
             })
         }
     }
-
     private fun navToProductDetail() {
-        adapter.setOnItemClickListener(object : OnItemClickListener {
+        if(isGridLayoutManager){
+        gridadapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(position: Int) {
                 val productFragment = ProductdetailFragment()
-                val product = adapter.getBook(position)
+                val product = gridadapter.getBook(position)
                 val bundle = Bundle()
                 bundle.putString("bookId", product.product_id.toString())
                 parentFragmentManager.beginTransaction()
@@ -149,17 +184,42 @@ class PublisherFragment : Fragment() {
                     .commit()
                 pastPage = currentPage
             }
-        })
+        })}else{
+            listadapter.setOnItemClickListener(object : OnItemClickListener {
+                override fun onItemClick(position: Int) {
+                    val productFragment = ProductdetailFragment()
+                    val product = listadapter.getBook(position)
+                    val bundle = Bundle()
+                    bundle.putString("bookId", product.product_id.toString())
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.container, productFragment.apply { arguments = bundle })
+                        .addToBackStack("PublisherFragment")
+                        .commit()
+                    pastPage = currentPage
+                }
+            })
+        }
     }
 
     private fun addItemToCart() {
-        adapter.setAddItemToCart(object : OnItemClickListener {
+        if(isGridLayoutManager){
+        gridadapter.setAddItemToCart(object : OnItemClickListener {
             override fun onItemClick(position: Int) {
-                val product = adapter.getBook(position)
+                val product = gridadapter.getBook(position)
+
                 viewModel.addItemToCart(product.product_id)
                 Toast.makeText(context, "ADD ITEM TO CART SUCCESSFUL", Toast.LENGTH_SHORT).show()
             }
-        })
+        })} else{
+            listadapter.setAddItemToCart(object : OnItemClickListener {
+                override fun onItemClick(position: Int) {
+                    val product = listadapter.getBook(position)
+
+                    viewModel.addItemToCart(product.product_id)
+                    Toast.makeText(context, "ADD ITEM TO CART SUCCESSFUL", Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
     }
 
     private fun initViewModel() {
@@ -176,7 +236,11 @@ class PublisherFragment : Fragment() {
                 } else if (!isDefaultState) {
                     bookList = it as MutableList<Product>
                 }
-                adapter.setData(bookList)
+                if(isGridLayoutManager) {
+                    gridadapter.setData(bookList)
+                }else{
+                    listadapter.setData(bookList)
+                }
                 navToProductDetail()
                 addItemToCart()
                 binding?.loadingLayout?.root?.visibility = View.INVISIBLE

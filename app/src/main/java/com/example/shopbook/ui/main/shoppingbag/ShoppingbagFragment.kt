@@ -9,20 +9,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shopbook.R
-import com.example.shopbook.data.api.RetrofitClient.apiService
 import com.example.shopbook.data.model.CartItemBag
 import com.example.shopbook.databinding.FragmentShoppingBagBinding
 import com.example.shopbook.ui.adapter.OnItemClickListener
 import com.example.shopbook.ui.main.adapter.BagAdapter
+import com.example.shopbook.ui.main.adapter.BanerAdapter
 import com.example.shopbook.ui.main.shoppingbag.viewmodel.ShoppingbagViewModel
 import com.example.shopbook.ui.order.checkout.CheckOutFragment
 import com.example.shopbook.ui.profile.ProfileFragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.example.shopbook.utils.FormatMoney
 
 
 class ShoppingbagFragment : Fragment() {
@@ -32,20 +31,26 @@ class ShoppingbagFragment : Fragment() {
     private lateinit var viewModel: ShoppingbagViewModel
     private lateinit var imgAdd : ImageView
     private lateinit var imgReduce : ImageView
+    private var total = 0.0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         viewModel = ViewModelProvider(this).get(ShoppingbagViewModel::class.java)
         val binding = FragmentShoppingBagBinding.inflate(inflater, container, false)
-
+        val formatMoney = FormatMoney()
 
         viewModel.getCart()
         bookAdapter = BagAdapter()
 
-        viewModel.cart.observe(viewLifecycleOwner, {cart ->
+        viewModel.cart.observe(viewLifecycleOwner) { cart ->
             bookAdapter.updateData(cart)
-        })
+            total = 0.0
+            for (i in cart) {
+                total += i.quantity * i.discounted_price.toDouble()
+            }
+            binding.textPrice.text = total.let { formatMoney.formatMoney(it.toLong()) }.toString()
+        }
         binding?.apply {
             imageProfile.setOnClickListener {
                 val profileFragment = ProfileFragment()
@@ -65,7 +70,7 @@ class ShoppingbagFragment : Fragment() {
                 swipeRefresh.isRefreshing=false
                 viewModel.getCart()
             }
-           // textPrice.text =
+
         }
 
         binding.recyclerviewBag.apply {
@@ -108,7 +113,7 @@ class ShoppingbagFragment : Fragment() {
                         viewModel.getCart()
                         bookAdapter.notifyDataSetChanged()
                     }
-                    Toast.makeText(context, "OKOKOK", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "OK", Toast.LENGTH_SHORT).show()
                 }
             })
         }
@@ -121,9 +126,13 @@ class ShoppingbagFragment : Fragment() {
                     viewModel.getCart()
                     bookAdapter.notifyDataSetChanged()
                 }
-                Toast.makeText(context, "OKOKOK", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "OK", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+    override fun onResume() {
+        super.onResume()
+        viewModel.getCart()
     }
 }
 

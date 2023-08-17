@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_marginTop="7dp"
     android:layout_height="71dp"
     android:id="@+id/cardview"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -30,7 +31,7 @@
             app:layout_constraintTop_toBottomOf="@+id/text_name"
             app:layout_constraintLeft_toRightOf="@+id/image_product"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="2dp"
             android:text="500000"
             android:textSize="14dp"
             android:textColor="@color/gray"
@@ -41,7 +42,7 @@
             app:layout_constraintTop_toBottomOf="@+id/text_price"
             app:layout_constraintLeft_toRightOf="@+id/image_product"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="2dp"
             android:text="Vap nga mot lan de truong thanh"
             android:textSize="13dp"
             android:textColor="@color/black"

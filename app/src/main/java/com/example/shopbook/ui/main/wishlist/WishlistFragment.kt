@@ -8,33 +8,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shopbook.R
-import com.example.shopbook.data.model.Wishlist
 
 import com.example.shopbook.databinding.FragmentWishlistBinding
 import com.example.shopbook.ui.adapter.OnItemClickListener
-import com.example.shopbook.ui.main.adapter.BagAdapter
 import com.example.shopbook.ui.main.adapter.WishListAdapter
-import com.example.shopbook.ui.main.shoppingbag.viewmodel.ShoppingbagViewModel
 import com.example.shopbook.ui.main.wishlist.viewmodel.WishlistViewModel
-import com.example.shopbook.ui.order.checkout.CheckOutFragment
 import com.example.shopbook.ui.profile.ProfileFragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.example.shopbook.utils.FormatMoney
 
 class WishlistFragment : Fragment() {
     private lateinit var viewModel: WishlistViewModel
     private lateinit var wishListAdapter: WishListAdapter
+    private var total = 0.0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         viewModel = ViewModelProvider(this).get(WishlistViewModel::class.java)
         val binding = FragmentWishlistBinding.inflate(inflater, container, false)
-        var price = ""
+        val formatMoney = FormatMoney()
         viewModel.getWishlist()
         wishListAdapter = WishListAdapter()
         viewModel.wishlist.observe(viewLifecycleOwner, {wishlist ->
@@ -56,7 +52,14 @@ class WishlistFragment : Fragment() {
                 swipeRefresh.isRefreshing=false
                 viewModel.getWishlist()
             }
-
+            viewModel.wishlist.observe(viewLifecycleOwner) { cart ->
+                wishListAdapter.updateData(cart)
+                total = 0.0
+                for (i in cart) {
+                    total += i.price.toDouble()
+                }
+                binding.textPrice.text = total.let { formatMoney.formatMoney(it.toLong()) }.toString()
+            }
         }
         binding.recyclerviewWishlist.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -83,9 +86,7 @@ class WishlistFragment : Fragment() {
             }
             val itemTouchHelper = ItemTouchHelper(swipeCallback)
             itemTouchHelper.attachToRecyclerView(this)
-            price = total.toString()
         }
-        binding.textPrice.text = price + "VND"
         return binding.root
     }
 
@@ -102,6 +103,9 @@ class WishlistFragment : Fragment() {
             }
         })
     }
-
+    override fun onResume() {
+        super.onResume()
+        viewModel.getWishlist()
+    }
 
 }
